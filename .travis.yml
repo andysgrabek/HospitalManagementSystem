@@ -6,4 +6,5 @@ services:
   - docker
 
 before_install:
+  - sudo service mysql stop
   - docker run -d -p 3306:3306 --name mysql-docker-container -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=hospital -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin mysql:5.6
