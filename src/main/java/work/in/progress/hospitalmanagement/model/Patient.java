@@ -1,16 +1,30 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-@AllArgsConstructor
 @Entity
 public class Patient extends Person {
+
+    @Builder
+    public Patient(String name, String surname, LocalDate birthDate, String phoneNumber, boolean isAlive, Address homeAddress, Admission currentAdmission) {
+        super(name, surname);
+        this.birthDate = birthDate;
+        this.isAlive = isAlive;
+        this.homeAddress = homeAddress;
+        this.currentAdmission = currentAdmission;
+    }
 
     @Getter
     @Basic
@@ -26,6 +40,7 @@ public class Patient extends Person {
 
     @Getter
     @Setter
+    @NotNull
     private boolean isAlive;
 
     @Getter

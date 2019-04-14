@@ -15,11 +15,11 @@ abstract class Admission {
     private Integer id;
 
     @CreatedDate
-    private LocalDate admissionDate;
+    protected LocalDate admissionDate;
 
     @Getter
     @OneToOne(optional = false)
-    private Patient patient;
+    protected Patient patient;
 
     public abstract Department getDepartment();
 

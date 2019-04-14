@@ -1,15 +1,19 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@AllArgsConstructor
 public class Department {
+
+    public Department(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
 
     @Id
     @GeneratedValue
@@ -25,6 +29,6 @@ public class Department {
 
     @Getter
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Bed> beds;
+    private Set<Bed> beds = new HashSet<>();
 
 }

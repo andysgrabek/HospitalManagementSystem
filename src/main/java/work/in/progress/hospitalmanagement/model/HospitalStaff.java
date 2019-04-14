@@ -1,6 +1,6 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -10,11 +10,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@AllArgsConstructor
 public class HospitalStaff extends Person {
 
     public enum Role {
         DOCTOR, NURSE, CLERK, ICT_OFFICER;
+    }
+
+    @Builder
+    public HospitalStaff(String name, String surname, Role role, Department department) {
+        super(name, surname);
+        this.role = role;
+        this.department = department;
     }
 
     @Getter

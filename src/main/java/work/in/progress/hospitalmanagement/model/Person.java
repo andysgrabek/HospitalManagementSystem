@@ -9,17 +9,22 @@ import javax.validation.constraints.NotBlank;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract class Person {
 
+    Person(String name, String surname) {
+        this.name = name;
+        this.surname = surname;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Getter
-    Integer id;
+    protected Integer id;
 
     @Getter
     @NotBlank
-    String name;
+    protected String name;
 
     @Getter
     @NotBlank
-    String surname;
+    protected String surname;
 
 }

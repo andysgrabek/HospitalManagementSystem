@@ -1,15 +1,18 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-@AllArgsConstructor
 @Entity
 public class Bed {
+
+    public Bed(Department department, String roomNumber) {
+        this.department = department;
+        this.roomNumber = roomNumber;
+    }
 
     @Id
     @GeneratedValue
@@ -24,7 +27,7 @@ public class Bed {
     @Setter
     @Getter
     @OneToOne
-    private Admission admission;
+    private InpatientAdmission admission;
 
     @Getter
     @Setter
