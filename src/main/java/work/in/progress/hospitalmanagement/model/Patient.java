@@ -8,8 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@Entity
 @AllArgsConstructor
+@Entity
 public class Patient extends Person {
 
     @Getter

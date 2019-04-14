@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,10 @@ public class Department {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @Getter
+    @NotBlank
+    private String name;
 
     @Getter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)

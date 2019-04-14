@@ -12,8 +12,7 @@ abstract class Admission {
 
     @Id
     @GeneratedValue
-    @Getter
-    Integer id;
+    private Integer id;
 
     @CreatedDate
     private LocalDate admissionDate;
