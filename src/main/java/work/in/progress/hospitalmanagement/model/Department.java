@@ -31,4 +31,8 @@ public class Department {
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Bed> beds = new HashSet<>();
 
+    @Override
+    public String toString() {
+        return String.format("%s in %s with beds %s", name, address, beds);
+    }
 }

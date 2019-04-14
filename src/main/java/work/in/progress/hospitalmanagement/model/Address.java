@@ -26,17 +26,22 @@ public class Address {
     @Getter
     @Setter
     @NotBlank
-    private String city;
+    private String addressLine;
 
     @Getter
     @Setter
     @NotBlank
-    private String addressLine;
+    private String city;
 
     @Getter
     @Setter
     @PositiveOrZero
     @Max(99999)
     private int zipCode;
+
+    @Override
+    public String toString() {
+        return String.format("%s\n%s - %d", addressLine, city, zipCode);
+    }
 
 }

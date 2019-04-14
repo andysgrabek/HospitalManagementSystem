@@ -3,6 +3,7 @@ package work.in.progress.hospitalmanagement.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -51,4 +52,10 @@ public class Patient extends Person {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Admission currentAdmission;
 
+    @Override
+    public String toString() {
+        return String.format("%s %s (%s)\n%s\n%s\nassigned to %s", name, surname, isAlive ? "alive" : "dead",
+                homeAddress, phoneNumber, ObjectUtils.defaultIfNull(currentAdmission, "None"));
+    }
+    
 }

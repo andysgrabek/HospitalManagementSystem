@@ -40,4 +40,9 @@ public class HospitalStaff extends Person {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
+    @Override
+    public String toString() {
+        return String.format("%s %s (%s)\n%s", name, surname, role, department);
+    }
+
 }

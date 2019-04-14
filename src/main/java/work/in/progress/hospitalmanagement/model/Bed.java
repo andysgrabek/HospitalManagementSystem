@@ -2,6 +2,7 @@ package work.in.progress.hospitalmanagement.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,4 +35,9 @@ public class Bed {
     @NotBlank
     private String roomNumber;
 
+    @Override
+    public String toString() {
+        return String.format("In %s room %s assigned to %s",
+                department, roomNumber, ObjectUtils.defaultIfNull(admission, "None"));
+    }
 }
