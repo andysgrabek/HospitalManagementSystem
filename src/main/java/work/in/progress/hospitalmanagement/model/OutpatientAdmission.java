@@ -6,15 +6,13 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
 
 @Entity
 public class OutpatientAdmission extends Admission {
 
-    public OutpatientAdmission(Patient patient, Department department, LocalDate admissionDate) {
+    public OutpatientAdmission(Patient patient, Department department) {
         this.patient = patient;
         this.department = department;
-        this.admissionDate = admissionDate;
     }
 
     @Setter
