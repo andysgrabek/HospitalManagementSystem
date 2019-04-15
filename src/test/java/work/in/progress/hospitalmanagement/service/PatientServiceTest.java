@@ -9,9 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
+import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -33,47 +34,47 @@ public class PatientServiceTest {
         Patient patient = Patient.builder()
                 .name(patientName)
                 .surname(patientSurname)
-                .homeAddress(new Address("Energy 1","Copenhagen", 12345))
+                .homeAddress(new Address("Energy 1", "Copenhagen", 12345))
                 .isAlive(true)
                 .phoneNumber("123456789")
                 .birthDate(patientBirthDate)
                 .build();
 
         Mockito.when(patientRepository.findByName(patient.getName()))
-                .thenReturn(Optional.of(patient));
+                .thenReturn(Collections.singletonList(patient));
         Mockito.when(patientRepository.findBySurname(patient.getSurname()))
-                .thenReturn(Optional.of(patient));
+                .thenReturn(Collections.singletonList(patient));
         Mockito.when(patientRepository.findByBirthDate(patient.getBirthDate()))
-                .thenReturn(Optional.of(patient));
+                .thenReturn(Collections.singletonList(patient));
     }
 
     @Test
     public void whenValidName_thenPatientShouldBeFound() {
-        Optional<Patient> result = patientService.findByName(patientName);
+        List<Patient> result = patientService.findByName(patientName);
 
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getName()).isEqualTo(patientName);
+        assertThat(result.isEmpty()).isFalse();
+        assertThat(result.get(0).getName()).isEqualTo(patientName);
     }
 
     @Test
     public void whenValidSurname_thenPatientShouldBeFound() {
-        Optional<Patient> result = patientService.findBySurname(patientSurname);
+        List<Patient> result = patientService.findBySurname(patientSurname);
 
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getSurname()).isEqualTo(patientSurname);
+        assertThat(result.isEmpty()).isFalse();
+        assertThat(result.get(0).getSurname()).isEqualTo(patientSurname);
     }
 
     @Test
     public void whenValidBirthDate_thenPatientShouldBeFound() {
-        Optional<Patient> result = patientService.findByBirthDate(patientBirthDate);
+        List<Patient> result = patientService.findByBirthDate(patientBirthDate);
 
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getBirthDate()).isEqualTo(patientBirthDate);
+        assertThat(result.isEmpty()).isFalse();
+        assertThat(result.get(0).getBirthDate()).isEqualTo(patientBirthDate);
     }
 
     @Test
     public void whenPatientRegistered_thenPatientShouldBeFound() {
-        Patient patient = Patient.builder().build();
+        Patient patient = Mocks.patient();
         Mockito.when(patientRepository.save(patient)).thenReturn(patient);
 
         Patient registered = patientService.registerPatient(patient);
@@ -83,7 +84,7 @@ public class PatientServiceTest {
 
     @Test
     public void whenRegisteredPatientUnregistered_thenPatientShouldNotBeFound() {
-        Patient patient = Patient.builder().build();
+        Patient patient = Mocks.patient();
         Mockito.when(patientRepository.save(patient)).thenReturn(patient);
 
         Patient registered = patientService.registerPatient(patient);

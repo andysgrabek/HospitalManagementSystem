@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -33,48 +33,35 @@ public class PatientModelTest {
         entityManager.persist(Patient.builder()
                 .name(patientName)
                 .surname(patientSurname)
-                .homeAddress(new Address("Energy 1","Copenhagen", 12345))
-                .isAlive(true)
-                .phoneNumber("123456789")
                 .birthDate(patientBirthDate)
+                .phoneNumber("123456789")
+                .isAlive(true)
+                .homeAddress(new Address("Energy 1", "Copenhagen", 12345))
                 .build());
     }
 
     @Test
     public void whenValidName_thenPatientShouldBeFound() {
-        Optional<Patient> result = patientRepository.findByName(patientName);
+        List<Patient> result = patientRepository.findByName(patientName);
 
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getName()).isEqualTo(patientName);
+        assertThat(result.isEmpty()).isFalse();
+        assertThat(result.get(0).getName()).isEqualTo(patientName);
     }
 
     @Test
     public void whenValidSurname_thenPatientShouldBeFound() {
-        Optional<Patient> result = patientRepository.findBySurname(patientSurname);
+        List<Patient> result = patientRepository.findBySurname(patientSurname);
 
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getSurname()).isEqualTo(patientSurname);
+        assertThat(result.isEmpty()).isFalse();
+        assertThat(result.get(0).getSurname()).isEqualTo(patientSurname);
     }
 
     @Test
-    public void whenInvalidBirthDate_thenThrow() {
-        Patient patient = Patient.builder()
-                .name("")
-                .surname(patientSurname)
-                .homeAddress(new Address("Energy 1","Copenhagen", 12345))
-                .isAlive(true)
-                .phoneNumber("123456789")
-                .birthDate(LocalDate.now().plusDays(1))
-                .build();
-        entityManager.persist(patient);
+    public void whenValidBirthDate_thenPatientShouldBeFound() {
+        List<Patient> result = patientRepository.findByBirthDate(patientBirthDate);
 
-        Optional<Patient> result = patientRepository.findBySurname(patientSurname);
-
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get().getSurname()).isEqualTo(patientSurname);;
-//        assertThatThrownBy();
-//        assertThat
-
+        assertThat(result.isEmpty()).isFalse();
+        assertThat(result.get(0).getBirthDate()).isEqualTo(patientBirthDate);
     }
 
 }
