@@ -4,12 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import work.in.progress.hospitalmanagement.model.Patient;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
-    Collection<Patient> findByName(String name);
+    List<Patient> findByName(String name);
 
-    Collection<Patient> findBySurname(String surname);
+    List<Patient> findBySurname(String surname);
 
-    Collection<Patient> findByBirthDate(LocalDate birthDate);
+    List<Patient> findByBirthDate(LocalDate birthDate);
 }

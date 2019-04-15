@@ -6,7 +6,7 @@ import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 @Service
 public class PatientService {
@@ -26,15 +26,15 @@ public class PatientService {
         patientRepository.delete(patient);
     }
 
-    public Collection<Patient> findByName(String name) {
+    public List<Patient> findByName(String name) {
         return patientRepository.findByName(name);
     }
 
-    public Collection<Patient> findBySurname(String surname) {
+    public List<Patient> findBySurname(String surname) {
         return patientRepository.findBySurname(surname);
     }
 
-    public Collection<Patient> findByBirthDate(LocalDate birthDate) {
+    public List<Patient> findByBirthDate(LocalDate birthDate) {
         return patientRepository.findByBirthDate(birthDate);
     }
 

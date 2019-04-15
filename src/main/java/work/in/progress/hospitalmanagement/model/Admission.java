@@ -15,6 +15,7 @@ abstract class Admission {
     private Integer id;
 
     @CreatedDate
+    @Column(nullable = false)
     protected LocalDate admissionDate;
 
     @Getter

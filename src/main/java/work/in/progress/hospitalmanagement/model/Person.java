@@ -21,10 +21,12 @@ abstract class Person {
 
     @Getter
     @NotBlank
+    @Column(nullable = false, updatable = false)
     protected String name;
 
     @Getter
     @NotBlank
+    @Column(nullable = false, updatable = false)
     protected String surname;
 
 }

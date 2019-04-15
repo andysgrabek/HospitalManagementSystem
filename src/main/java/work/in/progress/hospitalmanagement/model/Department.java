@@ -21,6 +21,7 @@ public class Department {
 
     @Getter
     @NotBlank
+    @Column(nullable = false, updatable = false)
     private String name;
 
     @Getter

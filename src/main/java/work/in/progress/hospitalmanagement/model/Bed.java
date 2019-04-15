@@ -33,6 +33,7 @@ public class Bed {
     @Getter
     @Setter
     @NotBlank
+    @Column(nullable = false)
     private String roomNumber;
 
     @Override

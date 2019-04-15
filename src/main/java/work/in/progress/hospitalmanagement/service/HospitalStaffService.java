@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
 
-import java.util.Collection;
+import java.util.List;
 
 @Service
 public class HospitalStaffService {
@@ -21,11 +21,11 @@ public class HospitalStaffService {
         return hospitalStaffRepository.save(hospitalStaff);
     }
 
-    public Collection<HospitalStaff> findByName(String name) {
+    public List<HospitalStaff> findByName(String name) {
         return hospitalStaffRepository.findByName(name);
     }
 
-    public Collection<HospitalStaff> findBySurname(String surname) {
+    public List<HospitalStaff> findBySurname(String surname) {
         return hospitalStaffRepository.findBySurname(surname);
     }
 

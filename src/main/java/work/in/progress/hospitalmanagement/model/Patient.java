@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.ObjectUtils;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
@@ -31,17 +28,20 @@ public class Patient extends Person {
     @Basic
     @NotNull
     @PastOrPresent
+    @Column(nullable = false, updatable = false)
     private LocalDate birthDate;
 
     @Getter
     @Setter
     @Size(min = 5, max = 15)
     @Pattern(regexp = "^(0|[1-9][0-9]*)$")
+    @Column(nullable = false)
     private String phoneNumber;
 
     @Getter
     @Setter
     @NotNull
+    @Column(nullable = false)
     private boolean isAlive;
 
     @Getter
@@ -57,5 +57,5 @@ public class Patient extends Person {
         return String.format("%s %s (%s)\n%s\n%s\nassigned to %s", name, surname, isAlive ? "alive" : "dead",
                 homeAddress, phoneNumber, ObjectUtils.defaultIfNull(currentAdmission, "None"));
     }
-    
+
 }
