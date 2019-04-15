@@ -19,6 +19,7 @@ public class Patient extends Person {
     public Patient(String name, String surname, LocalDate birthDate, String phoneNumber, boolean isAlive, Address homeAddress, Admission currentAdmission) {
         super(name, surname);
         this.birthDate = birthDate;
+        this.phoneNumber = phoneNumber;
         this.isAlive = isAlive;
         this.homeAddress = homeAddress;
         this.currentAdmission = currentAdmission;
