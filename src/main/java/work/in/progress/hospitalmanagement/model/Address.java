@@ -13,9 +13,9 @@ import javax.validation.constraints.PositiveOrZero;
 @Entity
 public class Address {
 
-    public Address(String city, String addressLine, int zipCode) {
-        this.city = city;
+    public Address(String addressLine, String city, int zipCode) {
         this.addressLine = addressLine;
+        this.city = city;
         this.zipCode = zipCode;
     }
 
