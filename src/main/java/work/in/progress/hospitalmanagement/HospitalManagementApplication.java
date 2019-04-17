@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import work.in.progress.hospitalmanagement.controller.AbstractViewController;
-import work.in.progress.hospitalmanagement.controller.ControllerFactory;
 import work.in.progress.hospitalmanagement.controller.SplashScreenViewController;
 
 @SpringBootApplication
@@ -20,7 +19,7 @@ public class HospitalManagementApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		AbstractViewController viewController = ControllerFactory.instantiateViewController(SplashScreenViewController.class);
+		AbstractViewController viewController = AbstractViewController.instantiateViewController(SplashScreenViewController.class);
 		Scene s = new Scene(viewController.getRoot());
 		primaryStage.setScene(s);
 		primaryStage.sizeToScene();

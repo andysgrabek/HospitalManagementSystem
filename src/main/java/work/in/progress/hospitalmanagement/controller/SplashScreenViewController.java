@@ -21,7 +21,7 @@ public class SplashScreenViewController extends AbstractViewController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PauseTransition pauseTransition = new PauseTransition(Duration.seconds(3));
-        pauseTransition.setOnFinished(event -> presentViewController(ControllerFactory.instantiateViewController(MainMenuViewController.class), true));
+        pauseTransition.setOnFinished(event -> presentViewController(instantiateViewController(MainMenuViewController.class), true));
         pauseTransition.play();
     }
 
