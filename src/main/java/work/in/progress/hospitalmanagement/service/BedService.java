@@ -8,6 +8,11 @@ import work.in.progress.hospitalmanagement.repository.BedRepository;
 
 import java.util.Collection;
 
+/**
+ * Provides a public API to manage {@link Bed}.
+ *
+ * @author jablonskiba
+ */
 @Service
 public class BedService {
 
@@ -18,6 +23,14 @@ public class BedService {
         this.bedRepository = bedRepository;
     }
 
+    /**
+     * Retrieves beds witch are currently assigned to
+     * a Patient {@link work.in.progress.hospitalmanagement.model.Patient} for
+     * a given Department {@link Department}}.
+     *
+     * @param department the department owning beds
+     * @return beds
+     */
     public Collection<Bed> occupiedBeds(Department department) {
         return bedRepository.occupiedBeds(department);
     }

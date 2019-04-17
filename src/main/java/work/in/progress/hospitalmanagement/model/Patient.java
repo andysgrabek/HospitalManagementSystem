@@ -1,8 +1,6 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
@@ -12,6 +10,12 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+/**
+ * Provides an inherited table definition from {@link Person} with constraints and relations.
+ *
+ * @author jablonskiba
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Patient extends Person {
 

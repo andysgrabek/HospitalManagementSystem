@@ -1,10 +1,18 @@
 package work.in.progress.hospitalmanagement.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * Provides a superclass to inherit to define a table.
+ *
+ * @author jablonskiba
+ */
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract class Person {

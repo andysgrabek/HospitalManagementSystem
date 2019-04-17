@@ -4,6 +4,12 @@ import work.in.progress.hospitalmanagement.model.*;
 
 import java.time.LocalDate;
 
+/**
+ * Provides mock for all entity objects {@link work.in.progress.hospitalmanagement.model}
+ * that should only be used in tests, when field details are not relevant or can be mutated.
+ *
+ * @author jablonskiba
+ */
 public class Mocks {
 
     /* Suppresses default constructor, ensuring non-insatiability. */
@@ -11,7 +17,7 @@ public class Mocks {
     }
 
     public static Address address() {
-        return new Address("Energy 1","Copenhagen", 12345);
+        return new Address("Energy 1", "Copenhagen", 12345);
     }
 
     public static Department department() {

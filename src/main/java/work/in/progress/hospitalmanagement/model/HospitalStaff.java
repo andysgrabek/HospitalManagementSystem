@@ -1,14 +1,18 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
+import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Provides an inherited table definition from {@link Person} with constraints and relations.
+ *
+ * @author jablonskiba
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class HospitalStaff extends Person {
 
@@ -28,11 +32,14 @@ public class HospitalStaff extends Person {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    /**
+     * A unique computed email which consists of first for lowercase @{link name} characters,
+     * first for lowercase @{link surname} characters, @{link id} and '@dtu.dk' suffix.
+     */
+    @Getter
     @Email
-    @Transient
-    public String getEmail() {
-        return String.format("%s.%s_%d@dtu.dk", StringUtils.left(name, 4), StringUtils.left(surname, 4), id);
-    }
+    @Formula("CONCAT(LOWER(SUBSTRING(name, 1, 4)), LOWER(SUBSTRING(surname, 1, 4)), id, '@dtu.dk')")
+    private String email;
 
     @Getter
     @Setter

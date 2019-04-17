@@ -1,6 +1,8 @@
 package work.in.progress.hospitalmanagement.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -11,6 +13,12 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
+/**
+ * Provides a table definition with constraints and relations.
+ *
+ * @author jablonskiba
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Address {
 
