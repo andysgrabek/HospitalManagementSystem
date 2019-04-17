@@ -1,12 +1,15 @@
 package work.in.progress.hospitalmanagement.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Bed {
 

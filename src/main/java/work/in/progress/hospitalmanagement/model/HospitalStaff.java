@@ -1,14 +1,13 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class HospitalStaff extends Person {
 

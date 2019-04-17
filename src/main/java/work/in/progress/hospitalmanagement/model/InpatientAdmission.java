@@ -1,10 +1,13 @@
 package work.in.progress.hospitalmanagement.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class InpatientAdmission extends Admission {
 

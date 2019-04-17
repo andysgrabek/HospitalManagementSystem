@@ -1,12 +1,15 @@
 package work.in.progress.hospitalmanagement.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Department {
 
