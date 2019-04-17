@@ -21,6 +21,7 @@ public class HospitalManagementApplication extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		AbstractViewController viewController = ControllerFactory.instantiateViewController(SplashScreenViewController.class);
 		primaryStage.setScene(viewController.getScene());
+		primaryStage.show();
 	}
 
 	@Override
