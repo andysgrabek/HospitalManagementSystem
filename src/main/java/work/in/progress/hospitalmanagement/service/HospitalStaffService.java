@@ -6,6 +6,7 @@ import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HospitalStaffService {
@@ -27,6 +28,10 @@ public class HospitalStaffService {
 
     public List<HospitalStaff> findBySurname(String surname) {
         return hospitalStaffRepository.findBySurname(surname);
+    }
+
+    public Optional<HospitalStaff> findByEmail(String email) {
+        return hospitalStaffRepository.findByEmail(email);
     }
 
 }

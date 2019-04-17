@@ -1,7 +1,7 @@
 package work.in.progress.hospitalmanagement.model;
 
 import lombok.*;
-import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -27,11 +27,10 @@ public class HospitalStaff extends Person {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Getter
     @Email
-    @Transient
-    public String getEmail() {
-        return String.format("%s.%s_%d@dtu.dk", StringUtils.left(name, 4), StringUtils.left(surname, 4), id);
-    }
+    @Formula("CONCAT(LOWER(SUBSTRING(name, 1, 4)), LOWER(SUBSTRING(surname, 1, 4)), id, '@dtu.dk')")
+    private String email;
 
     @Getter
     @Setter
