@@ -24,13 +24,15 @@ public class ControllerFactory {
         AbstractViewController viewController = null;
         try {
             String resourceString = "view/" + identifier.getSimpleName() + ".fxml";
-            FXMLLoader viewControllerLoader = new FXMLLoader(ControllerFactory.class.getClassLoader().getResource(resourceString));
+            FXMLLoader viewControllerLoader = new FXMLLoader(AbstractViewController.class.getClassLoader().getResource(resourceString));
             viewControllerLoader.setControllerFactory(ApplicationContextSingleton.getContext()::getBean);
             Parent parent = viewControllerLoader.load();
             parent.setId(resourceString);
             viewController = viewControllerLoader.getController();
+            viewController.setRoot(parent);
         } catch (IOException e) {
             System.err.println("Failed to instantiate view controller with identifier " + identifier.getName());
+            System.err.println("Was " + identifier.getName() + " annotated with @Component?");
             Platform.exit();
         }
         return viewController;
