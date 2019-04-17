@@ -16,8 +16,7 @@ import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import java.io.IOException;
 
 /**
- * Abstract class to be used as a base class for all view controllers. A root object must be given the id "root" in the
- * corresponding fxml file.
+ * Abstract class to be used as a base class for all view controllers.
  *
  * @author Andrzej Grabowski
  */
