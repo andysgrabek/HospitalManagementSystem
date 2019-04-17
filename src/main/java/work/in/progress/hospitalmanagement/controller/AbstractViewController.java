@@ -5,7 +5,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -15,7 +14,6 @@ import javafx.util.Duration;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Abstract class to be used as a base class for all view controllers. A root object must be given the id "root" in the
