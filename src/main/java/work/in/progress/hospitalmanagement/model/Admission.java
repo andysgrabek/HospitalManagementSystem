@@ -9,6 +9,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Provides a joined table definition with constraints and relations.
+ *
+ * @author jablonskiba
+ */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

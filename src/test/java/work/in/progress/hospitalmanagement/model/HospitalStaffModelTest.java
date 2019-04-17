@@ -29,7 +29,7 @@ public class HospitalStaffModelTest {
         entityManager.persist(hospitalStaff);
         entityManager.flush();
         entityManager.refresh(hospitalStaff);
-        
+
         assertThat(hospitalStaff.getEmail()).
                 isEqualTo(String.format("%s%s%d@dtu.dk",
                         StringUtils.left(hospitalStaff.getName(), 4).toLowerCase(),

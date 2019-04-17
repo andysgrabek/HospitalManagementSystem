@@ -10,6 +10,11 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+/**
+ * Provides an inherited table definition from {@link Person} with constraints and relations.
+ *
+ * @author jablonskiba
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Patient extends Person {

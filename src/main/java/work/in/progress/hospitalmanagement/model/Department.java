@@ -9,6 +9,11 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Provides a table definition with constraints and relations.
+ *
+ * @author jablonskiba
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Department {

@@ -13,6 +13,11 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
+/**
+ * Provides a table definition with constraints and relations.
+ *
+ * @author jablonskiba
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Address {
