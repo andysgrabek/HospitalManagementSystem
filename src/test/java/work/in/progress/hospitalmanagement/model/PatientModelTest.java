@@ -18,26 +18,19 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @DataJpaTest
 public class PatientModelTest {
 
-    @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
-    private PatientRepository patientRepository;
-
     private final static String patientName = "John";
     private final static String patientSurname = "Smith";
     private final static LocalDate patientBirthDate = LocalDate.of(1410, 7, 15);
+    @Autowired
+    private TestEntityManager entityManager;
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Before
     public void setUp() {
-        entityManager.persist(Patient.builder()
-                .name(patientName)
-                .surname(patientSurname)
-                .birthDate(patientBirthDate)
-                .phoneNumber("123456789")
-                .isAlive(true)
-                .homeAddress(new Address("Energy 1", "Copenhagen", 12345))
-                .build());
+        entityManager.persist(Patient.builder().name(patientName).surname(patientSurname)
+                .birthDate(patientBirthDate).phoneNumber("123456789").isAlive(true)
+                .homeAddress(new Address("Energy 1", "Copenhagen", 12345)).build());
     }
 
     @Test

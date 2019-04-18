@@ -8,11 +8,14 @@ import work.in.progress.hospitalmanagement.model.Department;
 import java.util.Collection;
 
 /**
- * Interface for generic CRUD operations and additional methods to retrieve {@link Bed} entries.
+ * Interface for generic CRUD operations and additional methods to retrieve {@link Bed}
+ * entries.
  *
  * @author jablonskiba
  */
 public interface BedRepository extends JpaRepository<Bed, Integer> {
+
     @Query("SELECT bed FROM Bed bed WHERE bed.department = ?1 AND bed.admission IS NOT NULL")
     Collection<Bed> occupiedBeds(Department department);
+
 }

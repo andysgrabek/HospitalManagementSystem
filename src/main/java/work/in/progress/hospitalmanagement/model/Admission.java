@@ -6,7 +6,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
 /**
@@ -23,15 +30,17 @@ abstract class Admission {
     @Id
     @GeneratedValue
     private Integer id;
-
     @Getter
     @CreatedDate
     @Column(nullable = false)
-    protected LocalDate admissionDate;
-
+    private LocalDate admissionDate;
     @Getter
     @OneToOne(optional = false)
-    protected Patient patient;
+    private Patient patient;
+
+    Admission(Patient patient) {
+        this.patient = patient;
+    }
 
     public abstract Department getDepartment();
 
@@ -39,4 +48,5 @@ abstract class Admission {
     public String toString() {
         return String.format("%s to %s on %s", patient, getDepartment(), admissionDate);
     }
+
 }

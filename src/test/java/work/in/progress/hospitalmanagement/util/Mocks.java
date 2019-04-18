@@ -6,13 +6,14 @@ import java.time.LocalDate;
 
 /**
  * Provides mock for all entity objects {@link work.in.progress.hospitalmanagement.model}
- * that should only be used in tests, when field details are not relevant or can be mutated.
+ * that should only be used in tests, when field details are not relevant or can be
+ * mutated.
  *
  * @author jablonskiba
  */
-public class Mocks {
+public final class Mocks {
 
-    /* Suppresses default constructor, ensuring non-insatiability. */
+    /* Suppresses default constructor, ensuring non-instantiable. */
     private Mocks() {
     }
 
@@ -25,23 +26,14 @@ public class Mocks {
     }
 
     public static Patient patient() {
-        return Patient.builder()
-                .name("John")
-                .surname("Smith")
-                .birthDate(LocalDate.of(1410, 7, 15))
-                .phoneNumber("123456789")
-                .isAlive(true)
-                .homeAddress(address())
-                .build();
+        return Patient.builder().name("John").surname("Smith")
+                .birthDate(LocalDate.of(1410, 7, 15)).phoneNumber("123456789")
+                .isAlive(true).homeAddress(address()).build();
     }
 
     public static HospitalStaff hospitalStaff() {
-        return HospitalStaff.builder()
-                .name("Ann")
-                .surname("Williams")
-                .role(HospitalStaff.Role.DOCTOR)
-                .department(department())
-                .build();
+        return HospitalStaff.builder().name("Ann").surname("Williams")
+                .role(HospitalStaff.Role.DOCTOR).department(department()).build();
     }
 
     public static Bed bed() {

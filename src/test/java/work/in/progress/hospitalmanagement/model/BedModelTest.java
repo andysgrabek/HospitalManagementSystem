@@ -31,7 +31,8 @@ public class BedModelTest {
 
         assertThat(bedRepository.occupiedBeds(bed.getDepartment()).size()).isEqualTo(0);
 
-        bed.setAdmission(entityManager.persist(new InpatientAdmission(entityManager.persist(Mocks.patient()), bed)));
+        bed.setAdmission(entityManager.persist(
+                new InpatientAdmission(entityManager.persist(Mocks.patient()), bed)));
 
         assertThat(bedRepository.occupiedBeds(bed.getDepartment()).size()).isEqualTo(1);
     }

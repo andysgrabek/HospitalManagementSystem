@@ -4,7 +4,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -17,24 +23,22 @@ import javax.validation.constraints.NotBlank;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract class Person {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Getter
+    private Integer id;
+    @Getter
+    @NotBlank
+    @Column(nullable = false, updatable = false)
+    private String name;
+    @Getter
+    @NotBlank
+    @Column(nullable = false, updatable = false)
+    private String surname;
+
     Person(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Getter
-    protected Integer id;
-
-    @Getter
-    @NotBlank
-    @Column(nullable = false, updatable = false)
-    protected String name;
-
-    @Getter
-    @NotBlank
-    @Column(nullable = false, updatable = false)
-    protected String surname;
 
 }

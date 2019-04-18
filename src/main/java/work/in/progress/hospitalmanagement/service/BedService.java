@@ -24,9 +24,9 @@ public class BedService {
     }
 
     /**
-     * Retrieves beds witch are currently assigned to
-     * a Patient {@link work.in.progress.hospitalmanagement.model.Patient} for
-     * a given Department {@link Department}}.
+     * Retrieves beds witch are currently assigned to a Patient
+     * {@link work.in.progress.hospitalmanagement.model.Patient} for a given Department
+     * {@link Department}}.
      *
      * @param department the department owning beds
      * @return beds

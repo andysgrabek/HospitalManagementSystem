@@ -12,33 +12,27 @@ import work.in.progress.hospitalmanagement.repository.PatientRepository;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 public class PatientServiceTest {
 
-    private PatientService patientService;
-
-    @MockBean
-    private PatientRepository patientRepository;
-
     private final static String patientName = "John";
     private final static String patientSurname = "Smith";
     private final static LocalDate patientBirthDate = LocalDate.of(1410, 7, 15);
+    private PatientService patientService;
+    @MockBean
+    private PatientRepository patientRepository;
 
     @Before
     public void setUp() {
         patientService = new PatientService(patientRepository);
-        Patient patient = Patient.builder()
-                .name(patientName)
-                .surname(patientSurname)
-                .homeAddress(new Address("Energy 1", "Copenhagen", 12345))
-                .isAlive(true)
-                .phoneNumber("123456789")
-                .birthDate(patientBirthDate)
-                .build();
+        Patient patient = Patient.builder().name(patientName).surname(patientSurname)
+                .homeAddress(new Address("Energy 1", "Copenhagen", 12345)).isAlive(true)
+                .phoneNumber("123456789").birthDate(patientBirthDate).build();
 
         Mockito.when(patientRepository.findByName(patient.getName()))
                 .thenReturn(Collections.singletonList(patient));
