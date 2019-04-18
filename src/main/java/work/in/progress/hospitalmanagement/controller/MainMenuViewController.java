@@ -1,5 +1,7 @@
 package work.in.progress.hospitalmanagement.controller;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,5 +16,10 @@ public class MainMenuViewController extends AbstractViewController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    @FXML
+    private void openPatientRegistration(ActionEvent actionEvent) {
+        presentViewController(instantiateViewController(PatientRegistrationViewController.class), true);
     }
 }

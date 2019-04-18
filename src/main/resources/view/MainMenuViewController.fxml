@@ -20,7 +20,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXButton focusTraversable="false" mnemonicParsing="false" ripplerFill="#73c9ff" text="Patient registration" />
+            <JFXButton focusTraversable="false" mnemonicParsing="false" onAction="#openPatientRegistration" ripplerFill="#73c9ff" text="Patient registration" />
             <JFXButton focusTraversable="false" mnemonicParsing="false" ripplerFill="#73c9ff" text="Patient admission" GridPane.columnIndex="1" />
             <JFXButton focusTraversable="false" mnemonicParsing="false" ripplerFill="#73c9ff" text="Staff management" GridPane.columnIndex="2" />
             <JFXButton focusTraversable="false" mnemonicParsing="false" ripplerFill="#73c9ff" text="Departments management" GridPane.rowIndex="1" />
