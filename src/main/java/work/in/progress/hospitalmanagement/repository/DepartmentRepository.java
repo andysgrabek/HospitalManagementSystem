@@ -9,6 +9,6 @@ import work.in.progress.hospitalmanagement.model.Department;
  *
  * @author jablonskiba
  */
-public interface DepartmentRepository extends JpaRepository<Department, Integer> {
+public interface DepartmentRepository extends JpaRepository<Department, String> {
 
 }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,12 +23,10 @@ import java.util.Set;
 @Entity
 public class Department {
 
-    @Id
-    @GeneratedValue
-    private Integer id;
     @Getter
     @NotBlank
-    @Column(nullable = false, updatable = false)
+    @Id
+    @Column(nullable = false, updatable = false, unique = true)
     private String name;
     @Getter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
