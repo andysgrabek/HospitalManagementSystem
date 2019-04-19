@@ -11,7 +11,6 @@ import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
-import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.util.Collections;
 import java.util.List;
@@ -70,16 +69,6 @@ public class HospitalStaffServiceTest {
         assertThat(result.isPresent()).isTrue();
         // noinspection OptionalGetWithoutIsPresent
         assertThat(result.get().getEmail()).isEqualTo(staffEmail);
-    }
-
-    @Test
-    public void whenPatientRegistered_thenPatientShouldBeFound() {
-        HospitalStaff staff = Mocks.hospitalStaff();
-        Mockito.when(hospitalStaffRepository.save(staff)).thenReturn(staff);
-
-        HospitalStaff registered = hospitalStaffService.registerHospitalStaff(staff);
-
-        assertThat(registered).isNotNull();
     }
 
 }

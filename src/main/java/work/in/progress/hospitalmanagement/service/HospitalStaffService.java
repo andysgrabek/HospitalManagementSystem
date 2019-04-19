@@ -1,6 +1,7 @@
 package work.in.progress.hospitalmanagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
@@ -14,25 +15,14 @@ import java.util.Optional;
  * @author jablonskiba
  */
 @Service
-public class HospitalStaffService {
+public class HospitalStaffService extends AbstractService<HospitalStaff, Integer> {
 
     private final HospitalStaffRepository hospitalStaffRepository;
 
     @Autowired
     public HospitalStaffService(HospitalStaffRepository hospitalStaffRepository) {
+        super(hospitalStaffRepository);
         this.hospitalStaffRepository = hospitalStaffRepository;
-    }
-
-    /**
-     * Registers a given hospital staff. Use the returned staff for further operations as
-     * the register operation might have changed the staff instance.
-     *
-     * @param hospitalStaff the staff to register, must not be {@code null}
-     * @return the registered staff, will never be {@code null}
-     * @throws IllegalArgumentException if the specified staff is {@code null}
-     */
-    public HospitalStaff registerHospitalStaff(HospitalStaff hospitalStaff) {
-        return hospitalStaffRepository.save(hospitalStaff);
     }
 
     /**
@@ -66,6 +56,11 @@ public class HospitalStaffService {
      */
     public Optional<HospitalStaff> findByEmail(String email) {
         return hospitalStaffRepository.findByEmail(email);
+    }
+
+    @Override
+    protected Sort defaultSort() {
+        return Sort.by("id");
     }
 
 }
