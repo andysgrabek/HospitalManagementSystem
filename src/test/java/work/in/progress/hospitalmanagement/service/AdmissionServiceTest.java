@@ -1,6 +1,5 @@
 package work.in.progress.hospitalmanagement.service;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,22 +21,27 @@ public class AdmissionServiceTest {
 
     @MockBean
     private InpatientAdmissionRepository inpatientAdmissionRepository;
+
     @MockBean
     private OutpatientAdmissionRepository outpatientAdmissionRepository;
 
     @Before
     public void setUp() {
-        admissionService = new AdmissionService(inpatientAdmissionRepository, outpatientAdmissionRepository);
+        admissionService = new AdmissionService(inpatientAdmissionRepository,
+                outpatientAdmissionRepository);
     }
 
     @Test
     public void whenPatientAllocated_thenAdmissionShouldBeFound() {
         InpatientAdmission inpatientAdmission = Mocks.inpatientAdmission();
-        Mockito.when(inpatientAdmissionRepository.save(inpatientAdmission)).thenReturn(inpatientAdmission);
+        Mockito.when(inpatientAdmissionRepository.save(inpatientAdmission))
+                .thenReturn(inpatientAdmission);
         OutpatientAdmission outpatientAdmission = Mocks.outpatientAdmission();
-        Mockito.when(outpatientAdmissionRepository.save(outpatientAdmission)).thenReturn(outpatientAdmission);
+        Mockito.when(outpatientAdmissionRepository.save(outpatientAdmission))
+                .thenReturn(outpatientAdmission);
 
-        InpatientAdmission allocated = admissionService.allocatePatient(inpatientAdmission);
+        InpatientAdmission allocated = admissionService
+                .allocatePatient(inpatientAdmission);
         OutpatientAdmission called = admissionService.callPatient(outpatientAdmission);
 
         assertThat(allocated).isNotNull();
@@ -47,11 +51,14 @@ public class AdmissionServiceTest {
     @Test
     public void whenPatientDischarged_thenAdmissionShouldNotBeFound() {
         InpatientAdmission inpatientAdmission = Mocks.inpatientAdmission();
-        Mockito.when(inpatientAdmissionRepository.save(inpatientAdmission)).thenReturn(inpatientAdmission);
+        Mockito.when(inpatientAdmissionRepository.save(inpatientAdmission))
+                .thenReturn(inpatientAdmission);
         OutpatientAdmission outpatientAdmission = Mocks.outpatientAdmission();
-        Mockito.when(outpatientAdmissionRepository.save(outpatientAdmission)).thenReturn(outpatientAdmission);
+        Mockito.when(outpatientAdmissionRepository.save(outpatientAdmission))
+                .thenReturn(outpatientAdmission);
 
-        InpatientAdmission allocated = admissionService.allocatePatient(inpatientAdmission);
+        InpatientAdmission allocated = admissionService
+                .allocatePatient(inpatientAdmission);
         OutpatientAdmission called = admissionService.callPatient(outpatientAdmission);
         admissionService.dischargePatient(allocated);
         admissionService.dischargePatient(called);

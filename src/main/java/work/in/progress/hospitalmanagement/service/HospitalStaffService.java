@@ -36,7 +36,8 @@ public class HospitalStaffService {
     }
 
     /**
-     * Retrieves a hospital staff entries with a specified name {@see HospitalStaff#getName()}.
+     * Retrieves a hospital staff entries with a specified name
+     * {@see HospitalStaff#getName()}.
      *
      * @param name search criteria
      * @return all hospital staff entries with a specified name
@@ -46,7 +47,8 @@ public class HospitalStaffService {
     }
 
     /**
-     * Retrieves a hospital staff entries with a specified name {@see HospitalStaff#getSurname()}.
+     * Retrieves a hospital staff entries with a specified name
+     * {@see HospitalStaff#getSurname()}.
      *
      * @param surname search criteria
      * @return all hospital staff entries with a specified surname
@@ -56,7 +58,8 @@ public class HospitalStaffService {
     }
 
     /**
-     * Retrieves a hospital staff entries with a specified email @see HospitalStaff#getEmail()}.
+     * Retrieves a hospital staff entries with a specified email @see
+     * HospitalStaff#getEmail()}.
      *
      * @param email search criteria
      * @return all hospital staff entries with a specified email

@@ -35,7 +35,9 @@ public class BedServiceTest {
         Department department = bed.getDepartment();
         department.getBeds().add(bed);
 
-        Mockito.when(bedRepository.occupiedBeds(department)).thenReturn(Collections.emptySet()).thenReturn(Collections.singletonList(bed));
+        Mockito.when(bedRepository.occupiedBeds(department))
+                .thenReturn(Collections.emptySet())
+                .thenReturn(Collections.singletonList(bed));
 
         assertThat(bedService.occupiedBeds(department).size()).isEqualTo(0);
         bed.setAdmission(new InpatientAdmission(Mocks.patient(), bed));

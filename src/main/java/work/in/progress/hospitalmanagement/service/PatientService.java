@@ -24,8 +24,8 @@ public class PatientService {
     }
 
     /**
-     * Registers a given patient. Use the returned patient for further operations as
-     * the register operation might have changed the patient instance.
+     * Registers a given patient. Use the returned patient for further operations as the
+     * register operation might have changed the patient instance.
      *
      * @param patient the patient to register, must not be {@code null}
      * @return the registered patient, will never be {@code null}

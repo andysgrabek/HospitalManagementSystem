@@ -20,21 +20,22 @@ public class PersonModelTest {
 
     @Test
     public void whenPersonCreated_thenUniqueSequenceIdShouldBeAssigned() {
-        assertThat(entityManager.persist(Patient.builder().
-                name("John").
-                surname("Smith").
-                birthDate(LocalDate.now()).
-                phoneNumber("123456789").
-                homeAddress(new Address("Car 3", "Ohio", 12354)).
-                build()).getId()).
-                isLessThan(entityManager.persist(
-                        Patient.builder().
-                                name("Ann").
-                                surname("Williams").
-                                birthDate(LocalDate.now()).
-                                phoneNumber("123456789").
-                                homeAddress(new Address("Car 3", "Ohio", 12354)).
-                                build()).getId());
+        assertThat(entityManager
+                .persist(Patient.builder().name("John").surname("Smith")
+                        .birthDate(LocalDate.now()).phoneNumber("123456789")
+                        .homeAddress(new Address("Car 3", "Ohio", 12354)).build())
+                .getId())
+                .isLessThan(
+                        entityManager
+                                .persist(
+                                        Patient.builder().name("Ann")
+                                                .surname("Williams")
+                                                .birthDate(LocalDate.now())
+                                                .phoneNumber("123456789")
+                                                .homeAddress(new Address("Car 3",
+                                                        "Ohio", 12354))
+                                                .build())
+                                .getId());
     }
 
 }

@@ -8,7 +8,8 @@ import work.in.progress.hospitalmanagement.repository.InpatientAdmissionReposito
 import work.in.progress.hospitalmanagement.repository.OutpatientAdmissionRepository;
 
 /**
- * Provides a public API to manage {@link InpatientAdmission} and {@link OutpatientAdmission}.
+ * Provides a public API to manage {@link InpatientAdmission} and
+ * {@link OutpatientAdmission}.
  *
  * @author jablonskiba
  */
@@ -16,17 +17,20 @@ import work.in.progress.hospitalmanagement.repository.OutpatientAdmissionReposit
 public class AdmissionService {
 
     private final InpatientAdmissionRepository inpatientAdmissionRepository;
+
     private final OutpatientAdmissionRepository outpatientAdmissionRepository;
 
     @Autowired
-    public AdmissionService(InpatientAdmissionRepository inpatientAdmissionRepository, OutpatientAdmissionRepository outpatientAdmissionRepository) {
+    public AdmissionService(InpatientAdmissionRepository inpatientAdmissionRepository,
+                            OutpatientAdmissionRepository outpatientAdmissionRepository) {
         this.inpatientAdmissionRepository = inpatientAdmissionRepository;
         this.outpatientAdmissionRepository = outpatientAdmissionRepository;
     }
 
     /**
-     * Allocates a patient using inpatient admission {@link InpatientAdmission}. Use the returned admission for
-     * further operations as the allocation operation might have changed the admission instance.
+     * Allocates a patient using inpatient admission {@link InpatientAdmission}. Use the
+     * returned admission for further operations as the allocation operation might have
+     * changed the admission instance.
      *
      * @param admission the admission used to allocate, must not be {@code null}
      * @return the allocation admission, will never be {@code null}
@@ -37,8 +41,8 @@ public class AdmissionService {
     }
 
     /**
-     * Call a patient using outpatient admission. Use the returned admission for
-     * further operations as the allocation operation might have changed the admission instance.
+     * Call a patient using outpatient admission. Use the returned admission for further
+     * operations as the allocation operation might have changed the admission instance.
      *
      * @param admission the admission used to call, must not be {@code null}
      * @return the called admission, will never be {@code null}
