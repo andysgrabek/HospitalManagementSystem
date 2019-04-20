@@ -18,7 +18,8 @@ public class PatientCell extends ListCell<Patient> {
             return;
         }
         HBox hBox = new HBox();
-        Label label = new Label(item.getName() + " " + item.getSurname() + ", born " + item.getBirthDate().toString());
+        Label label =
+                new Label(item.getName() + " " + item.getSurname() + ", born " + item.getBirthDate().toString());
         Button button = new JFXButton("edit");
         button.setOnAction(event -> {
 //            button.fireEvent();

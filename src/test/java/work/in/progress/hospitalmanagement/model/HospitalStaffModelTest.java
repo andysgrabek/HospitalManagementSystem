@@ -30,11 +30,10 @@ public class HospitalStaffModelTest {
         entityManager.flush();
         entityManager.refresh(hospitalStaff);
 
-        assertThat(hospitalStaff.getEmail()).
-                isEqualTo(String.format("%s%s%d@dtu.dk",
-                        StringUtils.left(hospitalStaff.getName(), 4).toLowerCase(),
-                        StringUtils.left(hospitalStaff.getSurname(), 4).toLowerCase(),
-                        hospitalStaff.getId()));
+        assertThat(hospitalStaff.getEmail()).isEqualTo(String.format("%s%s%d@dtu.dk",
+                StringUtils.left(hospitalStaff.getName(), 4).toLowerCase(),
+                StringUtils.left(hospitalStaff.getSurname(), 4).toLowerCase(),
+                hospitalStaff.getId()));
     }
 
 }

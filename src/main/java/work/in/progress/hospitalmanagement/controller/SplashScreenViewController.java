@@ -15,13 +15,15 @@ import java.util.ResourceBundle;
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class SplashScreenViewController extends AbstractViewController {
 
+    private static final int LOADING_TRANSITION_DURATION = 3;
     @FXML
     private ImageView logoImageView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(3));
-        pauseTransition.setOnFinished(event -> presentViewController(instantiateViewController(MainMenuViewController.class), true));
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(LOADING_TRANSITION_DURATION));
+        pauseTransition.setOnFinished(event ->
+                presentViewController(instantiateViewController(MainMenuViewController.class), true));
         pauseTransition.play();
     }
 

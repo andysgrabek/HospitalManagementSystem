@@ -1,6 +1,10 @@
 package work.in.progress.hospitalmanagement.controller;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -82,7 +86,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
 
     @FXML
     private void registerPatient(ActionEvent actionEvent) {
-        Address address = new Address(addressLineField.getText(), cityField.getText(), Integer.parseInt(postalCodeField.getText()));
+        Address address = new Address(
+                addressLineField.getText(),
+                cityField.getText(),
+                Integer.parseInt(postalCodeField.getText()));
         Patient patient = Patient.builder()
                 .name(nameField.getText())
                 .surname(surnameField.getText())
@@ -91,7 +98,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
                 .isAlive(!deceasedCheckbox.isSelected())
                 .phoneNumber(phoneNumberField.getText())
                 .build();
-        patientService.registerPatient(patient);
+        patientService.save(patient);
         resetFormFields();
     }
 

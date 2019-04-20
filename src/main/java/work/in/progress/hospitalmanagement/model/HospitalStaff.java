@@ -1,14 +1,23 @@
 package work.in.progress.hospitalmanagement.model;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Formula;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 /**
- * Provides an inherited table definition from {@link Person} with constraints and relations.
+ * Provides an inherited table definition from {@link Person} with constraints and
+ * relations.
  *
  * @author jablonskiba
  */
@@ -16,9 +25,24 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class HospitalStaff extends Person {
 
-    public enum Role {
-        DOCTOR, NURSE, CLERK, ICT_OFFICER;
-    }
+    @Getter
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    /**
+     * A unique computed email which consists of first for lowercase @{link name}
+     * characters, first for lowercase @{link surname} characters, @{link id} and
+     * '@dtu.dk' suffix.
+     */
+    @Getter
+    @Email
+    @Formula("CONCAT(LOWER(SUBSTRING(name, 1, 4)), LOWER(SUBSTRING(surname, 1, 4)), id, '@dtu.dk')")
+    private String email;
+    @Getter
+    @Setter
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
 
     @Builder
     public HospitalStaff(String name, String surname, Role role, Department department) {
@@ -27,29 +51,15 @@ public class HospitalStaff extends Person {
         this.department = department;
     }
 
-    @Getter
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    /**
-     * A unique computed email which consists of first for lowercase @{link name} characters,
-     * first for lowercase @{link surname} characters, @{link id} and '@dtu.dk' suffix.
-     */
-    @Getter
-    @Email
-    @Formula("CONCAT(LOWER(SUBSTRING(name, 1, 4)), LOWER(SUBSTRING(surname, 1, 4)), id, '@dtu.dk')")
-    private String email;
-
-    @Getter
-    @Setter
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "department_id", nullable = false)
-    private Department department;
-
     @Override
     public String toString() {
-        return String.format("%s %s (%s)\n%s", name, surname, role, department);
+        return String.format("%s %s (%s)\n%s", getName(), getSurname(), role, department);
+    }
+
+    public enum Role {
+
+        DOCTOR, NURSE, CLERK, ICT_OFFICER
+
     }
 
 }

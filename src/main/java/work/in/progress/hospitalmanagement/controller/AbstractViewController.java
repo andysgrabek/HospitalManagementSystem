@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public abstract class AbstractViewController implements Initializable {
 
-    private static double TRANSITION_CROSS_DISSOLVE_DURATION = 100.0f;
+    private static final double TRANSITION_CROSS_DISSOLVE_DURATION = 100.0f;
     private Parent root;
 
     /**
@@ -70,7 +70,7 @@ public abstract class AbstractViewController implements Initializable {
                     new KeyFrame(new Duration(TRANSITION_CROSS_DISSOLVE_DURATION), transition -> {
                         this.getStage().setScene(new Scene(viewController.getRoot()));
                         Timeline fadeIn = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
-                                new KeyFrame(new Duration(TRANSITION_CROSS_DISSOLVE_DURATION), arg0 -> {},
+                                new KeyFrame(new Duration(TRANSITION_CROSS_DISSOLVE_DURATION), arg0 -> { },
                                         new KeyValue(opacity, 1.0)));
                         fadeIn.play();
                     }, new KeyValue(opacity, 0.0)));
@@ -87,15 +87,14 @@ public abstract class AbstractViewController implements Initializable {
     public void setRoot(Parent parent) {
         if (root == null) {
             root = parent;
-        }
-        else {
+        } else {
             throw new IllegalStateException("Changing a scene's root node is not allowed.");
         }
     }
 
     /**
-     * Method to instantiate a {@link AbstractViewController} using an fxml file. The fxml file links the particular view
-     * to a controller, an instance of which is returned so the next view can be presented.
+     * Method to instantiate a {@link AbstractViewController} using an fxml file. The fxml file links the particular
+     * view to a controller, an instance of which is returned so the next view can be presented.
      * @see AbstractViewController
      * @param identifier view controller type to be presented
      * @return instantiated view controller
@@ -104,7 +103,8 @@ public abstract class AbstractViewController implements Initializable {
         AbstractViewController viewController = null;
         try {
             String resourceString = "view/" + identifier.getSimpleName() + ".fxml";
-            FXMLLoader viewControllerLoader = new FXMLLoader(AbstractViewController.class.getClassLoader().getResource(resourceString));
+            FXMLLoader viewControllerLoader =
+                    new FXMLLoader(AbstractViewController.class.getClassLoader().getResource(resourceString));
             viewControllerLoader.setControllerFactory(ApplicationContextSingleton.getContext()::getBean);
             Parent parent = viewControllerLoader.load();
             parent.setId(resourceString);

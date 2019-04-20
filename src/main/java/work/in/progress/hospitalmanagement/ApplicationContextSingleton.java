@@ -2,7 +2,7 @@ package work.in.progress.hospitalmanagement;
 
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class ApplicationContextSingleton {
+public final class ApplicationContextSingleton {
 
     private static ConfigurableApplicationContext context;
 

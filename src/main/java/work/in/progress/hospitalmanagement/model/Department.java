@@ -4,7 +4,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,30 +23,26 @@ import java.util.Set;
 @Entity
 public class Department {
 
+    @Getter
+    @NotBlank
+    @Id
+    @Column(nullable = false, updatable = false, unique = true)
+    private String name;
+    @Getter
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    private Address address;
+    @Getter
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Bed> beds = new HashSet<>();
+
     public Department(String name, Address address) {
         this.name = name;
         this.address = address;
     }
 
-    @Id
-    @GeneratedValue
-    private Integer id;
-
-    @Getter
-    @NotBlank
-    @Column(nullable = false, updatable = false)
-    private String name;
-
-    @Getter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
-    private Address address;
-
-    @Getter
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Bed> beds = new HashSet<>();
-
     @Override
     public String toString() {
         return String.format("%s in %s with beds %s", name, address, beds);
     }
+
 }

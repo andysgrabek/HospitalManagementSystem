@@ -4,9 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import work.in.progress.hospitalmanagement.model.Department;
 
 /**
- * Interface for generic CRUD operations and additional methods to retrieve {@link Department} entries.
+ * Interface for generic CRUD operations and additional methods to retrieve
+ * {@link Department} entries.
  *
  * @author jablonskiba
  */
-public interface DepartmentRepository extends JpaRepository<Department, Integer> {
+public interface DepartmentRepository extends JpaRepository<Department, String> {
+
 }

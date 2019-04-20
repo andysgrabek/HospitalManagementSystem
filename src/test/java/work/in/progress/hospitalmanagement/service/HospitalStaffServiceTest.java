@@ -11,7 +11,6 @@ import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
-import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,23 +21,20 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(SpringRunner.class)
 public class HospitalStaffServiceTest {
 
-    private HospitalStaffService hospitalStaffService;
-
-    @MockBean
-    private HospitalStaffRepository hospitalStaffRepository;
-
     private final static String staffName = "John";
     private final static String staffSurname = "Smith";
     private final static String staffEmail = "johnsmit1@dtu.dk";
+    private HospitalStaffService hospitalStaffService;
+    @MockBean
+    private HospitalStaffRepository hospitalStaffRepository;
 
     @Before
     public void setUp() {
         hospitalStaffService = new HospitalStaffService(hospitalStaffRepository);
-        HospitalStaff hospitalStaff = HospitalStaff.builder()
-                .name(staffName)
-                .surname(staffSurname)
-                .role(HospitalStaff.Role.DOCTOR)
-                .department(new Department("Intensive Care", new Address("Sky 1", "Warsaw", 54321)))
+        HospitalStaff hospitalStaff = HospitalStaff.builder().name(staffName)
+                .surname(staffSurname).role(HospitalStaff.Role.DOCTOR)
+                .department(new Department("Intensive Care",
+                        new Address("Sky 1", "Warsaw", 54321)))
                 .build();
         ReflectionTestUtils.setField(hospitalStaff, "email", staffEmail);
 
@@ -71,18 +67,8 @@ public class HospitalStaffServiceTest {
         Optional<HospitalStaff> result = hospitalStaffService.findByEmail(staffEmail);
 
         assertThat(result.isPresent()).isTrue();
-        //noinspection OptionalGetWithoutIsPresent
+        // noinspection OptionalGetWithoutIsPresent
         assertThat(result.get().getEmail()).isEqualTo(staffEmail);
-    }
-
-    @Test
-    public void whenPatientRegistered_thenPatientShouldBeFound() {
-        HospitalStaff staff = Mocks.hospitalStaff();
-        Mockito.when(hospitalStaffRepository.save(staff)).thenReturn(staff);
-
-        HospitalStaff registered = hospitalStaffService.registerHospitalStaff(staff);
-
-        assertThat(registered).isNotNull();
     }
 
 }
