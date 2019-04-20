@@ -2,12 +2,16 @@ package work.in.progress.hospitalmanagement.cell;
 
 
 import com.jfoenix.controls.JFXButton;
+import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import work.in.progress.hospitalmanagement.event.PatientEditEvent;
 import work.in.progress.hospitalmanagement.model.Patient;
+
+import static work.in.progress.hospitalmanagement.event.PatientEditEvent.PATIENT_EDIT_EVENT_EVENT_TYPE;
 
 public class PatientCell extends ListCell<Patient> {
     @Override
@@ -22,7 +26,8 @@ public class PatientCell extends ListCell<Patient> {
                 new Label(item.getName() + " " + item.getSurname() + ", born " + item.getBirthDate().toString());
         Button button = new JFXButton("edit");
         button.setOnAction(event -> {
-//            button.fireEvent();
+            Event e = new PatientEditEvent(PATIENT_EDIT_EVENT_EVENT_TYPE, item);
+            getListView().fireEvent(e);
         });
         hBox.getChildren().add(label);
         hBox.getChildren().add(button);
