@@ -11,7 +11,7 @@ public final class ApplicationContextSingleton {
     }
 
     public static void setContext(ConfigurableApplicationContext ctx) {
-        if (context == null) {
+        if (context == null || ctx == null) {
             context = ctx;
         } else {
           throw new IllegalStateException("Context already set");

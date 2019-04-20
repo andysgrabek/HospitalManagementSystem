@@ -31,7 +31,7 @@ public abstract class AbstractViewController implements Initializable {
      */
     public Parent getRoot() {
         if (root == null) {
-            throw new IllegalStateException("Root node cannot is null");
+            throw new IllegalStateException("Root node cannot be null");
         }
         return root;
     }

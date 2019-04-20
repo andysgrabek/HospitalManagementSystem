@@ -13,7 +13,17 @@ import work.in.progress.hospitalmanagement.model.Patient;
 
 import static work.in.progress.hospitalmanagement.event.PatientEditEvent.PATIENT_EDIT_EVENT_EVENT_TYPE;
 
+/**
+ * Class to display a {@link Patient} in a {@link javafx.scene.control.ListView} with an edit button.
+ * {@link PatientEditEvent} PATIENT_EDIT_EVENT_EVENT_TYPE is emitted when the edit button is pressed on the
+ * containing {@link javafx.scene.control.ListView}
+ * @author Andrzej Grabowski
+ */
 public class PatientCell extends ListCell<Patient> {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateItem(Patient item, boolean empty) {
         super.updateItem(item, empty);
