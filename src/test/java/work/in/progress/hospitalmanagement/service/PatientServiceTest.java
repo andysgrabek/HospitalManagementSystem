@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
-import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -64,27 +63,6 @@ public class PatientServiceTest {
 
         assertThat(result.isEmpty()).isFalse();
         assertThat(result.get(0).getBirthDate()).isEqualTo(patientBirthDate);
-    }
-
-    @Test
-    public void whenPatientRegistered_thenPatientShouldBeFound() {
-        Patient patient = Mocks.patient();
-        Mockito.when(patientRepository.save(patient)).thenReturn(patient);
-
-        Patient registered = patientService.registerPatient(patient);
-
-        assertThat(registered).isNotNull();
-    }
-
-    @Test
-    public void whenRegisteredPatientUnregistered_thenPatientShouldNotBeFound() {
-        Patient patient = Mocks.patient();
-        Mockito.when(patientRepository.save(patient)).thenReturn(patient);
-
-        Patient registered = patientService.registerPatient(patient);
-        patientService.unregisterPatient(patient);
-
-        Mockito.verify(patientRepository, Mockito.times(1)).delete(registered);
     }
 
 }
