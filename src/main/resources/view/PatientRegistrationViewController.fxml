@@ -20,6 +20,18 @@
                         <JFXButton buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#backToMainMenu" prefHeight="30.0" prefWidth="87.0" text="Back" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" />
                      </children>
                   </AnchorPane>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <JFXTextField fx:id="nameSearchField" promptText="Name" HBox.hgrow="ALWAYS" />
+                        <JFXTextField fx:id="surnameSearchField" promptText="Surname" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <JFXDatePicker fx:id="birthDateSearchPicker" promptText="Date of birth" HBox.hgrow="ALWAYS" />
+                        <JFXButton mnemonicParsing="false" onAction="#clearSearchFields" text="Clear" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                   <JFXListView fx:id="registeredPatientListView" prefHeight="448.0" prefWidth="329.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
