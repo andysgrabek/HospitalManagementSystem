@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public final class Mocks {
 
-    /* Suppresses default constructor, ensuring non-instantiable. */
+    /* Suppresses default constructor, ensuring noninstantiability. */
     private Mocks() {
     }
 

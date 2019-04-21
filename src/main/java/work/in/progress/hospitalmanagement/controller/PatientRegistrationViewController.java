@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.event.PatientEditEvent;
 import work.in.progress.hospitalmanagement.factory.PatientCellFactory;
 import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Patient;
@@ -74,7 +76,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
     @FXML
     private JFXTextField postalCodeField;
     private List<Node> formFields;
-    private ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
+    private ObservableList<Patient> patientObservableList;
     private final PatientService patientService;
     private final Validator validator;
 
@@ -86,6 +88,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        patientObservableList = FXCollections.observableArrayList();
         formButtonsParent.getChildren().remove(confirmEditPatientButton);
         formButtonsParent.getChildren().remove(cancelEditPatientButton);
         formFields = Arrays.asList(
@@ -99,31 +102,27 @@ public class PatientRegistrationViewController extends AbstractViewController {
         PatientCellFactory patientCellFactory = new PatientCellFactory();
         registeredPatientListView.setCellFactory(patientCellFactory);
         patientObservableList.addAll(patientService.findAll());
-        //item editing
-        registeredPatientListView.addEventHandler(EDIT_EVENT, event -> {
-            if (editedPatient != null) {
-                cancelEditPatient(null);
-            }
-            resetFormFields();
-            Patient p = event.getPatient();
-            nameField.setText(p.getName());
-            surnameField.setText(p.getSurname());
-            birthDatePicker.setValue(p.getBirthDate());
-            phoneNumberField.setText(p.getPhoneNumber());
-            deceasedCheckbox.setSelected(!p.isAlive());
-            addressLineField.setText(p.getHomeAddress().getAddressLine());
-            cityField.setText(p.getHomeAddress().getCity());
-            postalCodeField.setText(String.valueOf(p.getHomeAddress().getZipCode()));
-            formButtonsParent.getChildren().remove(registerPatientButton);
-            formButtonsParent.getChildren().add(cancelEditPatientButton);
-            formButtonsParent.getChildren().add(confirmEditPatientButton);
-            editedPatient = p;
-        });
-        registeredPatientListView.addEventHandler(DELETE_EVENT, event -> {
-            patientService.delete(event.getPatient());
-            patientObservableList.remove(event.getPatient());
-        });
-        //form validation
+        registeredPatientListView.addEventHandler(EDIT_EVENT, handlePatientEditPressed());
+        registeredPatientListView.addEventHandler(DELETE_EVENT, handlePatientDeletePressed());
+        initFormValidation();
+        initListFiltering();
+    }
+
+    private void initListFiltering() {
+        FilteredList<Patient> filteredList = new FilteredList<>(patientObservableList, patient -> true);
+        nameSearchField.textProperty().addListener((o, oV, newValue)
+                -> filteredList.setPredicate(composePatientPredicate(
+                        newValue, surnameSearchField.getText(), birthDateSearchPicker.getValue())));
+        surnameSearchField.textProperty().addListener((o, oV, newValue)
+                -> filteredList.setPredicate(composePatientPredicate(
+                        nameSearchField.getText(), newValue, birthDateSearchPicker.getValue())));
+        birthDateSearchPicker.valueProperty().addListener((o, oV, newValue)
+                -> filteredList.setPredicate(composePatientPredicate(
+                        nameSearchField.getText(), surnameSearchField.getText(), newValue)));
+        registeredPatientListView.setItems(filteredList);
+    }
+
+    private void initFormValidation() {
         nameField.getValidators().add(
                 new TextFieldValidator(Patient.class, "name", validator));
         surnameField.getValidators().add(
@@ -143,18 +142,39 @@ public class PatientRegistrationViewController extends AbstractViewController {
                 ((IFXValidatableControl) field).validate();
             }
         }));
-        //filtering
-        FilteredList<Patient> filteredList = new FilteredList<>(patientObservableList, patient -> true);
-        nameSearchField.textProperty().addListener((o, oV, newValue)
-                -> filteredList.setPredicate(composePatientPredicate(
-                        newValue, surnameSearchField.getText(), birthDateSearchPicker.getValue())));
-        surnameSearchField.textProperty().addListener((o, oV, newValue)
-                -> filteredList.setPredicate(composePatientPredicate(
-                        nameSearchField.getText(), newValue, birthDateSearchPicker.getValue())));
-        birthDateSearchPicker.valueProperty().addListener((o, oV, newValue)
-                -> filteredList.setPredicate(composePatientPredicate(
-                        nameSearchField.getText(), surnameSearchField.getText(), newValue)));
-        registeredPatientListView.setItems(filteredList);
+    }
+
+    private EventHandler<PatientEditEvent> handlePatientDeletePressed() {
+        return this::removePatientOnDelete;
+    }
+
+    private void removePatientOnDelete(PatientEditEvent event) {
+        patientService.delete(event.getPatient());
+        patientObservableList.remove(event.getPatient());
+    }
+
+    private EventHandler<PatientEditEvent> handlePatientEditPressed() {
+        return this::updatePatientOnEdit;
+    }
+
+    private void updatePatientOnEdit(PatientEditEvent event) {
+        if (editedPatient != null) {
+            cancelEditPatient(null);
+        }
+        resetFormFields();
+        Patient p = event.getPatient();
+        nameField.setText(p.getName());
+        surnameField.setText(p.getSurname());
+        birthDatePicker.setValue(p.getBirthDate());
+        phoneNumberField.setText(p.getPhoneNumber());
+        deceasedCheckbox.setSelected(!p.isAlive());
+        addressLineField.setText(p.getHomeAddress().getAddressLine());
+        cityField.setText(p.getHomeAddress().getCity());
+        postalCodeField.setText(String.valueOf(p.getHomeAddress().getZipCode()));
+        formButtonsParent.getChildren().remove(registerPatientButton);
+        formButtonsParent.getChildren().add(cancelEditPatientButton);
+        formButtonsParent.getChildren().add(confirmEditPatientButton);
+        editedPatient = p;
     }
 
     private Predicate<Patient> composePatientPredicate(String name, String surname, LocalDate date) {
@@ -200,14 +220,14 @@ public class PatientRegistrationViewController extends AbstractViewController {
     }
 
     private boolean validatePatientForm() {
-        final boolean[] isCorrect = {true};
-        formFields.forEach(field -> {
+        boolean isCorrect = true;
+        for (Node field : formFields) {
             boolean p = ((IFXValidatableControl) field).validate();
-            if (isCorrect[0]) {
-                isCorrect[0] = p;
+            if (isCorrect) {
+                isCorrect = p;
             }
-        });
-        return isCorrect[0];
+        }
+        return isCorrect;
     }
 
     private Patient getPatientFromForm() {
@@ -229,6 +249,11 @@ public class PatientRegistrationViewController extends AbstractViewController {
     private void confirmEditPatient(ActionEvent actionEvent) {
         if (validatePatientForm()) {
             Patient p = getPatientFromForm();
+            editedPatient.setAlive(p.isAlive());
+            editedPatient.setPhoneNumber(p.getPhoneNumber());
+            editedPatient.getHomeAddress().setAddressLine(p.getHomeAddress().getAddressLine());
+            editedPatient.getHomeAddress().setCity(p.getHomeAddress().getCity());
+            editedPatient.getHomeAddress().setZipCode(p.getHomeAddress().getZipCode());
             patientObservableList.remove(editedPatient);
             patientObservableList.add(patientService.save(p));
             resetFormFields();

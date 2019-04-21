@@ -75,12 +75,6 @@ public class AbstractViewControllerTest implements ApplicationContextAware {
     }
 
     @Test
-    public void instantiateViewController_instantiationFailure() {
-        AbstractViewController vc = AbstractViewController.instantiateViewController(SplashScreenViewController.class);
-        assertNull(vc);
-    }
-
-    @Test
     public void presentViewController_animated() {
         controller.presentViewController(AbstractViewController.instantiateViewController(TestViewController.class), true);
     }
