@@ -6,8 +6,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Set;
 
+/**
+ * Validator class to validate a whole number.
+ * @author Andrzej Grabowski
+ */
 public class NumberFieldValidator extends AbstractFieldValidator {
 
+    /**
+     * {@inheritDoc}
+     */
     public NumberFieldValidator(Class c, String field, Validator validator) {
         super(c, field, validator);
     }

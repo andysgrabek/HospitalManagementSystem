@@ -6,8 +6,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Set;
 
+/**
+ * Validator class to validate a piece of text.
+ * @author Andrzej Grabowski
+ */
 public class TextFieldValidator extends AbstractFieldValidator {
 
+    /**
+     * {@inheritDoc}
+     */
     public TextFieldValidator(Class c, String field, Validator validator) {
         super(c, field, validator);
     }

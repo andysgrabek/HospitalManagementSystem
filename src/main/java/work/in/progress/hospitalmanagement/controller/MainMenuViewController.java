@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the main menu of the application.
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class MainMenuViewController extends AbstractViewController {

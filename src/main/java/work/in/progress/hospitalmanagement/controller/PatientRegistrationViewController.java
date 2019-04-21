@@ -38,6 +38,10 @@ import java.util.function.Predicate;
 import static work.in.progress.hospitalmanagement.event.PatientEditEvent.DELETE_EVENT;
 import static work.in.progress.hospitalmanagement.event.PatientEditEvent.EDIT_EVENT;
 
+/**
+ * Controller for the view responsible for controlling patient registration.
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class PatientRegistrationViewController extends AbstractViewController {
@@ -108,6 +112,9 @@ public class PatientRegistrationViewController extends AbstractViewController {
         initListFiltering();
     }
 
+    /**
+     * Method setting up listeners on list filtering search boxes and date picker to filter the results using predicates.
+     */
     private void initListFiltering() {
         FilteredList<Patient> filteredList = new FilteredList<>(patientObservableList, patient -> true);
         nameSearchField.textProperty().addListener((o, oV, newValue)
@@ -122,6 +129,9 @@ public class PatientRegistrationViewController extends AbstractViewController {
         registeredPatientListView.setItems(filteredList);
     }
 
+    /**
+     * Method setting up validation of patient edit/register form using {@link Validator}
+     */
     private void initFormValidation() {
         nameField.getValidators().add(
                 new TextFieldValidator(Patient.class, "name", validator));
@@ -144,19 +154,35 @@ public class PatientRegistrationViewController extends AbstractViewController {
         }));
     }
 
+    /**
+     * Method to return the event handler of pressing the delete button next to a patient entry in the list
+     * @return event handler deleting the patient from the database
+     */
     private EventHandler<PatientEditEvent> handlePatientDeletePressed() {
         return this::removePatientOnDelete;
     }
 
+    /**
+     * Method handling the deletion of a patient from the database and the list itself
+     * @param event the received deletion event
+     */
     private void removePatientOnDelete(PatientEditEvent event) {
         patientService.delete(event.getPatient());
         patientObservableList.remove(event.getPatient());
     }
 
+    /**
+     * Method to return the event handler of pressing the edit button next to a patient entry in the list
+     * @return event handler editing the patient in the database
+     */
     private EventHandler<PatientEditEvent> handlePatientEditPressed() {
         return this::updatePatientOnEdit;
     }
 
+    /**
+     * Method handling the edition of a patient in the database and in the list itself
+     * @param event the received edition event
+     */
     private void updatePatientOnEdit(PatientEditEvent event) {
         if (editedPatient != null) {
             cancelEditPatient(null);
@@ -177,6 +203,13 @@ public class PatientRegistrationViewController extends AbstractViewController {
         editedPatient = p;
     }
 
+    /**
+     * Method composing a complex predicate used to filter the results in the list of patients.
+     * @param name name of the patient in the search field
+     * @param surname surname of the patient in the search field
+     * @param date birth date of the patient in the search field
+     * @return the composed filtering predicate
+     */
     private Predicate<Patient> composePatientPredicate(String name, String surname, LocalDate date) {
         Predicate<Patient> namePredicate =
                 (name == null || name.length() == 0)
@@ -193,6 +226,9 @@ public class PatientRegistrationViewController extends AbstractViewController {
         return namePredicate.and(surnamePredicate).and(datePredicate);
     }
 
+    /**
+     * Method clearing the form data provided in the edit/register form
+     */
     private void resetFormFields() {
         nameField.setText("");
         surnameField.setText("");
@@ -219,6 +255,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
         }
     }
 
+    /**
+     * Method validating the correctness of data provided in the patient edit/register form.
+     * @return true if all fields were correctly filled
+     */
     private boolean validatePatientForm() {
         boolean isCorrect = true;
         for (Node field : formFields) {
@@ -230,6 +270,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
         return isCorrect;
     }
 
+    /**
+     * Creates a {@link Patient} object from data provided by the user in the edit/register form.
+     * @return the newly created patient
+     */
     private Patient getPatientFromForm() {
         Address address = new Address(
                 addressLineField.getText(),

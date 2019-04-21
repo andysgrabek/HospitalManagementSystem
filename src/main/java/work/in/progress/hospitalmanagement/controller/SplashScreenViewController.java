@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Simple splash screen controller. Does nothing except for pausing the program for 3 seconds to display the logo,
+ * then continues to the {@link MainMenuViewController} screen.
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class SplashScreenViewController extends AbstractViewController {
