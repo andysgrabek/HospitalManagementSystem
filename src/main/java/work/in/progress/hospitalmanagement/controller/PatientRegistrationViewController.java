@@ -113,7 +113,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
     }
 
     /**
-     * Method setting up listeners on list filtering search boxes and date picker to filter the results using predicates.
+     * Method setting up listeners on list filtering search boxes and date picker to filter the results using predicates
      */
     private void initListFiltering() {
         FilteredList<Patient> filteredList = new FilteredList<>(patientObservableList, patient -> true);
