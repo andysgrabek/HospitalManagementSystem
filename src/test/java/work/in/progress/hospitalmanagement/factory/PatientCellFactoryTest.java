@@ -1,16 +1,18 @@
 package work.in.progress.hospitalmanagement.factory;
 
-import de.saxsys.javafx.test.JfxRunner;
 import javafx.scene.control.ListView;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import work.in.progress.hospitalmanagement.cell.PatientCell;
 import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-@RunWith(JfxRunner.class)
 public class PatientCellFactoryTest {
+
+    @Rule
+    public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
     @Test
     public void call() {

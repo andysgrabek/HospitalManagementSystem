@@ -1,21 +1,18 @@
 package work.in.progress.hospitalmanagement.cell;
 
-import de.saxsys.javafx.test.JfxRunner;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.stage.Stage;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
-import java.time.LocalDate;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import static org.junit.Assert.*;
-
-@RunWith(JfxRunner.class)
 public class PatientCellTest {
+
+    @Rule
+    public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
     @Test
     public void updateItemTestNullItem() {

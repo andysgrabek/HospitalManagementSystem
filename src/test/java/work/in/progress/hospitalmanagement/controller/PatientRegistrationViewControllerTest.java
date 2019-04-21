@@ -1,16 +1,12 @@
 package work.in.progress.hospitalmanagement.controller;
 
-import com.jfoenix.controls.base.IFXValidatableControl;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,7 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
-import sun.applet.Main;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.event.PatientEditEvent;
 import work.in.progress.hospitalmanagement.model.Patient;
@@ -35,8 +30,6 @@ import work.in.progress.hospitalmanagement.service.PatientService;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.Validator;
-
-import java.sql.Ref;
 
 import static org.junit.Assert.*;
 

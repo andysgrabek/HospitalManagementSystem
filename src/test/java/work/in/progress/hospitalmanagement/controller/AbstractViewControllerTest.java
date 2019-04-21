@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class,
