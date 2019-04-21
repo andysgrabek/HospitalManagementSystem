@@ -187,6 +187,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         if (editedPatient != null) {
             cancelEditPatient(null);
         }
+        lockEditableFormFields(true);
         resetFormFields();
         Patient p = event.getPatient();
         nameField.setText(p.getName());
@@ -201,6 +202,12 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formButtonsParent.getChildren().add(cancelEditPatientButton);
         formButtonsParent.getChildren().add(confirmEditPatientButton);
         editedPatient = p;
+    }
+
+    private void lockEditableFormFields(boolean lock) {
+        nameField.setDisable(lock);
+        surnameField.setDisable(lock);
+        birthDatePicker.setDisable(lock);
     }
 
     /**
@@ -299,13 +306,14 @@ public class PatientRegistrationViewController extends AbstractViewController {
             editedPatient.getHomeAddress().setCity(p.getHomeAddress().getCity());
             editedPatient.getHomeAddress().setZipCode(p.getHomeAddress().getZipCode());
             patientObservableList.remove(editedPatient);
-            patientObservableList.add(patientService.save(p));
+            patientObservableList.add(patientService.save(editedPatient));
             resetFormFields();
             formButtonsParent.getChildren().add(registerPatientButton);
             formButtonsParent.getChildren().remove(cancelEditPatientButton);
             formButtonsParent.getChildren().remove(confirmEditPatientButton);
             editedPatient = null;
             formFields.forEach(field -> ((IFXValidatableControl) field).resetValidation());
+            lockEditableFormFields(false);
         }
     }
 
@@ -316,6 +324,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formButtonsParent.getChildren().add(registerPatientButton);
         formButtonsParent.getChildren().remove(cancelEditPatientButton);
         formButtonsParent.getChildren().remove(confirmEditPatientButton);
+        lockEditableFormFields(false);
         editedPatient = null;
     }
 
