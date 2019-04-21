@@ -8,7 +8,8 @@ import work.in.progress.hospitalmanagement.model.Patient;
 
 public class PatientEditEvent extends Event {
 
-    public static final EventType<PatientEditEvent> PATIENT_EDIT_EVENT_EVENT_TYPE = new EventType<>(ANY);
+    public static final EventType<PatientEditEvent> EDIT_EVENT = new EventType<>(ANY, "EDIT_EVENT");
+    public static final EventType<PatientEditEvent> DELETE_EVENT = new EventType<>(ANY, "DELETE_EVENT");
 
     @Getter
     @Setter

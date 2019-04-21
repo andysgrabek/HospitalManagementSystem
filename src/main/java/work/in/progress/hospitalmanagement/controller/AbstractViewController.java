@@ -104,7 +104,7 @@ public abstract class AbstractViewController implements Initializable {
         try {
             String resourceString = "view/" + identifier.getSimpleName() + ".fxml";
             FXMLLoader viewControllerLoader =
-                    new FXMLLoader(AbstractViewController.class.getClassLoader().getResource(resourceString));
+                    new FXMLLoader(identifier.getClassLoader().getResource(resourceString));
             viewControllerLoader.setControllerFactory(ApplicationContextSingleton.getContext()::getBean);
             Parent parent = viewControllerLoader.load();
             parent.setId(resourceString);

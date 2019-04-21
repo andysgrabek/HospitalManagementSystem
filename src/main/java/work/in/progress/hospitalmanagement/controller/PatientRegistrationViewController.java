@@ -33,7 +33,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-import static work.in.progress.hospitalmanagement.event.PatientEditEvent.PATIENT_EDIT_EVENT_EVENT_TYPE;
+import static work.in.progress.hospitalmanagement.event.PatientEditEvent.DELETE_EVENT;
+import static work.in.progress.hospitalmanagement.event.PatientEditEvent.EDIT_EVENT;
 
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
@@ -99,7 +100,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         registeredPatientListView.setCellFactory(patientCellFactory);
         patientObservableList.addAll(patientService.findAll());
         //item editing
-        registeredPatientListView.addEventHandler(PATIENT_EDIT_EVENT_EVENT_TYPE, event -> {
+        registeredPatientListView.addEventHandler(EDIT_EVENT, event -> {
             if (editedPatient != null) {
                 cancelEditPatient(null);
             }
@@ -117,6 +118,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
             formButtonsParent.getChildren().add(cancelEditPatientButton);
             formButtonsParent.getChildren().add(confirmEditPatientButton);
             editedPatient = p;
+        });
+        registeredPatientListView.addEventHandler(DELETE_EVENT, event -> {
+            patientService.delete(event.getPatient());
+            patientObservableList.remove(event.getPatient());
         });
         //form validation
         nameField.getValidators().add(
@@ -225,7 +230,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         if (validatePatientForm()) {
             Patient p = getPatientFromForm();
             patientObservableList.remove(editedPatient);
-            patientObservableList.add(patientService.save(p)); //TODO: make sure it updates not adds a new patient
+            patientObservableList.add(patientService.save(p));
             resetFormFields();
             formButtonsParent.getChildren().add(registerPatientButton);
             formButtonsParent.getChildren().remove(cancelEditPatientButton);
