@@ -36,4 +36,16 @@ public class HospitalStaffModelTest {
                 hospitalStaff.getId()));
     }
 
+    @Test
+    public void whenToStringCalled_thenProperStringShouldBeReturned() {
+        HospitalStaff hospitalStaff = Mocks.hospitalStaff();
+        assertThat(hospitalStaff.toString()).isEqualTo("HospitalStaff(" +
+                "super=Person(id=" + hospitalStaff.getId() + ", " +
+                "name=" + hospitalStaff.getName() + ", " +
+                "surname=" + hospitalStaff.getSurname() + "), " +
+                "role=" + hospitalStaff.getRole() + ", " +
+                "email=" + hospitalStaff.getEmail() + ", " +
+                "department=" + hospitalStaff.getDepartment() + ")");
+    }
+
 }

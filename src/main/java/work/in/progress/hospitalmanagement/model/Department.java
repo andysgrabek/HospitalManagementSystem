@@ -3,6 +3,7 @@ package work.in.progress.hospitalmanagement.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import java.util.Set;
  *
  * @author jablonskiba
  */
+@ToString
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Department {
@@ -38,11 +40,6 @@ public class Department {
     public Department(String name, Address address) {
         this.name = name;
         this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s in %s with beds %s", name, address, beds);
     }
 
 }

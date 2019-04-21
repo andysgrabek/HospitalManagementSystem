@@ -37,4 +37,13 @@ public class BedModelTest {
         assertThat(bedRepository.occupiedBeds(bed.getDepartment()).size()).isEqualTo(1);
     }
 
+    @Test
+    public void whenToStringCalled_thenProperStringShouldBeReturned() {
+        Bed bed = Mocks.bed();
+        assertThat(bed.toString()).isEqualTo("Bed(" +
+                "department=" + bed.getDepartment() + ", " +
+                "admission=" + bed.getAdmission() + ", " +
+                "roomNumber=" + bed.getRoomNumber() + ")");
+    }
+
 }

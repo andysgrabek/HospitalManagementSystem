@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.ObjectUtils;
+import lombok.ToString;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -24,6 +24,7 @@ import java.time.LocalDate;
  *
  * @author jablonskiba
  */
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Patient extends Person {
@@ -62,13 +63,6 @@ public class Patient extends Person {
         this.isAlive = isAlive;
         this.homeAddress = homeAddress;
         this.currentAdmission = currentAdmission;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s %s (%s)\n%s\n%s\nassigned to %s", getName(), getSurname(),
-                isAlive ? "alive" : "dead", homeAddress, phoneNumber,
-                ObjectUtils.defaultIfNull(currentAdmission, "None"));
     }
 
 }
