@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class,
@@ -64,13 +65,19 @@ public class AbstractViewControllerTest implements ApplicationContextAware {
 
             }
         };
-        AbstractViewController vc = AbstractViewController.instantiateViewController(unknown.getClass());
+        AbstractViewController.instantiateViewController(unknown.getClass());
     }
 
     @Test(expected = IllegalStateException.class)
     public void instantiateViewController_nullContext() {
         ApplicationContextSingleton.setContext(null);
         AbstractViewController vc = AbstractViewController.instantiateViewController(TestViewController.class);
+    }
+
+    @Test
+    public void instantiateViewController_instantiationFailure() {
+        AbstractViewController vc = AbstractViewController.instantiateViewController(SplashScreenViewController.class);
+        assertNull(vc);
     }
 
     @Test
@@ -89,19 +96,23 @@ public class AbstractViewControllerTest implements ApplicationContextAware {
         controller.presentViewController(null, false);
     }
 
-    @Test
-    public void getSceneTest() {
-    }
-
-    @Test
-    public void getStageTest() {
-    }
-
     @Test(expected = IllegalStateException.class)
     public void changeRootTest() {
         AnchorPane pane = new AnchorPane();
         AbstractViewController vc = AbstractViewController.instantiateViewController(TestViewController.class);
         vc.setRoot(pane);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void getRoot_nullRoot() {
+        AbstractViewController vc = new TestViewController();
+        vc.getRoot();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void getScene_nullScene() {
+        AbstractViewController vc = new TestViewController();
+        vc.getScene();
     }
 
     @Override
