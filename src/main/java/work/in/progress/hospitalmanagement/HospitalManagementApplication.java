@@ -19,6 +19,9 @@ import work.in.progress.hospitalmanagement.controller.SplashScreenViewController
 @SpringBootApplication
 public class HospitalManagementApplication extends Application {
 
+    private static final double MIN_WINDOW_WIDTH = 1024.0;
+    private static final double MIN_WINDOW_HEIGHT = 768;
+
     /**
      * Application entry point. Requires no arguments.
      * @param args CL arguments list. Unused.
@@ -34,7 +37,8 @@ public class HospitalManagementApplication extends Application {
                 AbstractViewController.instantiateViewController(SplashScreenViewController.class);
         Scene s = new Scene(viewController.getRoot());
         primaryStage.setScene(s);
-        primaryStage.sizeToScene();
+        primaryStage.setMinHeight(MIN_WINDOW_HEIGHT);
+        primaryStage.setMinWidth(MIN_WINDOW_WIDTH);
         primaryStage.show();
     }
 
