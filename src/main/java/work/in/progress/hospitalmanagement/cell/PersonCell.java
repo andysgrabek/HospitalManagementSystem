@@ -9,25 +9,25 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Paint;
-import work.in.progress.hospitalmanagement.event.PatientEditEvent;
-import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.event.PersonEvent;
+import work.in.progress.hospitalmanagement.model.Person;
 
-import static work.in.progress.hospitalmanagement.event.PatientEditEvent.DELETE_EVENT;
-import static work.in.progress.hospitalmanagement.event.PatientEditEvent.EDIT_EVENT;
+import static work.in.progress.hospitalmanagement.event.PersonEvent.DELETE_EVENT;
+import static work.in.progress.hospitalmanagement.event.PersonEvent.EDIT_EVENT;
 
 /**
- * Class to display a {@link Patient} in a {@link javafx.scene.control.ListView} with an edit button.
- * {@link PatientEditEvent} EDIT_EVENT is emitted when the edit button is pressed on the
+ * Class to display a {@link Person} in a {@link javafx.scene.control.ListView} with an edit button.
+ * {@link PersonEvent} EDIT_EVENT is emitted when the edit button is pressed on the
  * containing {@link javafx.scene.control.ListView}. Also a DELETE_EVENT is emitted when the delete button is pressed.
  * @author Andrzej Grabowski
  */
-public class PatientCell extends ListCell<Patient> {
+public class PersonCell<T extends Person> extends ListCell<T> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void updateItem(Patient item, boolean empty) {
+    public void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
         if (item == null || empty) {
             setGraphic(null);
@@ -39,13 +39,13 @@ public class PatientCell extends ListCell<Patient> {
         label.getStyleClass().add("hms-text");
         JFXButton button1 = new JFXButton("EDIT");
         button1.setOnAction(event -> {
-            Event e = new PatientEditEvent(EDIT_EVENT, item);
+            Event e = new PersonEvent(EDIT_EVENT, item);
             getListView().fireEvent(e);
         });
         button1.getStyleClass().add("hms-button");
         JFXButton button2 = new JFXButton("DELETE");
         button2.setOnAction(event -> {
-            Event e = new PatientEditEvent(DELETE_EVENT, item);
+            Event e = new PersonEvent(DELETE_EVENT, item);
             getListView().fireEvent(e);
         });
         button2.getStyleClass().add("hms-button");
