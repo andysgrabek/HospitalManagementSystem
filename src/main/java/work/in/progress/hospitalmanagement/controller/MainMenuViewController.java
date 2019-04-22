@@ -104,4 +104,9 @@ public class MainMenuViewController extends AbstractViewController {
     private void exit(ActionEvent actionEvent) {
         createExitDialog().show();
     }
+
+    @FXML
+    private void openStaffManagement(ActionEvent actionEvent) {
+        presentViewController(instantiateViewController(StaffManagementViewController.class), true);
+    }
 }

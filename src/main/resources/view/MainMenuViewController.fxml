@@ -71,7 +71,7 @@
                         </JFXButton>
                         </VBox>
                         <VBox alignment="CENTER" spacing="30.0" HBox.hgrow="ALWAYS">
-                            <JFXButton contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" styleClass="hms-main-menu-button" text="Staff" GridPane.columnIndex="2">
+                            <JFXButton contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" onAction="#openStaffManagement" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" styleClass="hms-main-menu-button" text="Staff" GridPane.columnIndex="2">
                            <graphic>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
