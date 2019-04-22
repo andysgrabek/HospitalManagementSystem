@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,9 +32,11 @@ public class Department {
     @Column(nullable = false, updatable = false, unique = true)
     private String name;
     @Getter
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private Address address;
     @Getter
+    @NotNull
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Bed> beds = new HashSet<>();
 

@@ -49,8 +49,10 @@ public class Patient extends Person {
     @Column(nullable = false)
     private boolean isAlive;
     @Getter
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private Address homeAddress;
+    @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Admission currentAdmission;
 

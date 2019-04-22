@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  * Provides a table definition with constraints and relations.
@@ -19,6 +20,7 @@ import javax.persistence.OneToOne;
 public class InpatientAdmission extends Admission {
 
     @Getter
+    @NotNull
     @OneToOne(optional = false)
     private Bed bed;
 

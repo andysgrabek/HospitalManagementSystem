@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
@@ -33,10 +34,12 @@ public abstract class Admission {
     @GeneratedValue
     private Integer id;
     @Getter
+    @NotNull
     @CreatedDate
     @Column(nullable = false)
     private LocalDate admissionDate;
     @Getter
+    @NotNull
     @OneToOne(optional = false)
     private Patient patient;
 

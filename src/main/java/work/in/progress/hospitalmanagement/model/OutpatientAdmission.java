@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  * Provides a table definition with constraints and relations.
@@ -22,6 +23,7 @@ public class OutpatientAdmission extends Admission {
 
     @Setter
     @Getter
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
