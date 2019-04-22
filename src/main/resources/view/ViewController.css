@@ -21,3 +21,8 @@
     -fx-font-family: "Helvetica";
     -fx-font-size: 16;
 }
+
+.hms-form-text {
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 14;
+}

@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -46,6 +47,8 @@ import static work.in.progress.hospitalmanagement.event.PatientEditEvent.EDIT_EV
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class PatientRegistrationViewController extends AbstractViewController {
 
+    @FXML
+    private Label formLabel;
     private Patient editedPatient;
     @FXML
     private JFXTextField nameSearchField;
@@ -202,6 +205,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formButtonsParent.getChildren().add(cancelEditPatientButton);
         formButtonsParent.getChildren().add(confirmEditPatientButton);
         editedPatient = p;
+        formLabel.setText("EDITING PATIENT");
     }
 
     private void lockEditableFormFields(boolean lock) {
@@ -314,6 +318,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
             editedPatient = null;
             formFields.forEach(field -> ((IFXValidatableControl) field).resetValidation());
             lockEditableFormFields(false);
+            formLabel.setText("REGISTER NEW PATIENT");
         }
     }
 
@@ -326,6 +331,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formButtonsParent.getChildren().remove(confirmEditPatientButton);
         lockEditableFormFields(false);
         editedPatient = null;
+        formLabel.setText("REGISTER NEW PATIENT");
     }
 
     @FXML
