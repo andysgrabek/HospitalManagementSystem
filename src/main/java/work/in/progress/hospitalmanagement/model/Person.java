@@ -3,6 +3,7 @@ package work.in.progress.hospitalmanagement.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotBlank;
  *
  * @author jablonskiba
  */
+@ToString
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

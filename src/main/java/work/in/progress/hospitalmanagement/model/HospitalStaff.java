@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author jablonskiba
  */
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class HospitalStaff extends Person {
@@ -49,11 +51,6 @@ public class HospitalStaff extends Person {
         super(name, surname);
         this.role = role;
         this.department = department;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s %s (%s)\n%s", getName(), getSurname(), role, department);
     }
 
     public enum Role {

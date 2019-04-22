@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import javax.validation.constraints.PositiveOrZero;
  *
  * @author jablonskiba
  */
+@ToString(exclude = "id")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Address {
@@ -47,11 +49,6 @@ public class Address {
         this.addressLine = addressLine;
         this.city = city;
         this.zipCode = zipCode;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s\n%s - %d", addressLine, city, zipCode);
     }
 
 }
