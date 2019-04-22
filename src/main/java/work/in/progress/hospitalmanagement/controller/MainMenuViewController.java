@@ -100,7 +100,8 @@ public class MainMenuViewController extends AbstractViewController {
         return jfxDialog;
     }
 
-    public void exit(ActionEvent actionEvent) {
+    @FXML
+    private void exit(ActionEvent actionEvent) {
         createExitDialog().show();
     }
 }
