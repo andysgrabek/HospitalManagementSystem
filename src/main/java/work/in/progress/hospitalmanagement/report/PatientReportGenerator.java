@@ -12,7 +12,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import work.in.progress.hospitalmanagement.model.Admission;
 import work.in.progress.hospitalmanagement.model.Patient;
 
 import java.io.File;
@@ -22,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -62,17 +60,21 @@ public class PatientReportGenerator implements ReportGenerator<Patient> {
 
     @Override
     public File generate(Collection<Patient> entries, String path) throws IOException, DocumentException {
+        /* Document doesn't implement AutoClosable */
         final Document document = new Document();
-        final File file = new File(path);
+        try {
+            final File file = new File(path);
+            PdfWriter.getInstance(document, new FileOutputStream(file));
 
-        PdfWriter.getInstance(document, new FileOutputStream(file));
+            document.open();
+            addContent(document, entries);
+            document.addCreationDate();
+            document.close();
 
-        document.open();
-        addContent(document, entries);
-        document.addCreationDate();
-        document.close();
-
-        return file;
+            return file;
+        } finally {
+            document.close();
+        }
     }
 
     private void addContent(Document document, Collection<Patient> entries) throws DocumentException, IOException {
@@ -81,34 +83,33 @@ public class PatientReportGenerator implements ReportGenerator<Patient> {
         addTitleImage(document);
         addDescription(document);
         addTableHeader(table);
-        entries.forEach(patient -> addRow(table, patient));
+        entries.forEach(patient -> addTableRow(table, patient));
 
         document.add(table);
     }
 
     private void addDescription(Document document) throws DocumentException {
-        Paragraph title = new Paragraph(String.format(
+        final Paragraph title = new Paragraph(String.format(
                 "Patient report: %s", TITLE_DATE_FORMATTER.format(LocalDateTime.now())));
+
         title.setIndentationLeft(TEXT_LEFT_INDENTATION);
         document.add(title);
         document.add(Chunk.NEWLINE);
     }
 
     private void addTitleImage(Document document) throws DocumentException, IOException {
-        Image image = Image.getInstance(
+        final Image image = Image.getInstance(
                 new ClassPathResource(IMAGE_PATH).getFile().getAbsolutePath());
 
-        float scale = ((document.getPageSize().getWidth() - document.leftMargin()
-                - document.rightMargin() - 0) / image.getWidth()) * IMAGE_SCALE_FACTOR;
-
-        image.scalePercent(scale);
+        image.scalePercent(((document.getPageSize().getWidth() - document.leftMargin()
+                - document.rightMargin() - 0) / image.getWidth()) * IMAGE_SCALE_FACTOR);
         document.add(image);
     }
 
     private void addTableHeader(PdfPTable table) {
         Stream.of("ID", "Name", "Surname", "Birth date", "Alive", "Department")
                 .forEach(columnTitle -> {
-                    PdfPCell header = new PdfPCell();
+                    final PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
                     header.setBorderWidth(2);
                     header.setPhrase(new Phrase(columnTitle));
@@ -116,16 +117,15 @@ public class PatientReportGenerator implements ReportGenerator<Patient> {
                 });
     }
 
-    private void addRow(PdfPTable table, Patient patient) {
+    private void addTableRow(PdfPTable table, Patient patient) {
         table.addCell(String.valueOf(patient.getId()));
         table.addCell(patient.getName());
         table.addCell(patient.getSurname());
         table.addCell(patient.getBirthDate().toString());
         table.addCell(patient.isAlive() ? "Yes" : "No");
-
-        Optional<Admission> admission = patient.getCurrentAdmission();
-        table.addCell(admission.isPresent()
-                ? admission.get().getDepartment().getName() : "None");
+        table.addCell(patient.getCurrentAdmission()
+                .map(admission -> admission.getDepartment().getName())
+                .orElseGet(() -> "None"));
     }
 
 }

@@ -8,12 +8,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import work.in.progress.hospitalmanagement.model.OutpatientAdmission;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -40,7 +42,10 @@ public class PatientReportGeneratorTest {
 
     @Test
     public void whenDefaultReportGenerated_thenFileShouldBeCreated() throws IOException, DocumentException {
-        File file = patientReportGenerator.generate(Arrays.asList(Mocks.patient(), Mocks.patient(), Mocks.patient()));
+        Patient patient =  Mocks.patient();
+        patient.setCurrentAdmission(new OutpatientAdmission(patient, Mocks.department()));
+
+        File file = patientReportGenerator.generate(Collections.singletonList(patient));
         file.deleteOnExit();
 
         assertThat(file.exists()).isTrue();
