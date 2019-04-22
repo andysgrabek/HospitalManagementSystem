@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
@@ -27,16 +28,18 @@ import java.time.LocalDate;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @EntityListeners(AuditingEntityListener.class)
-abstract class Admission {
+public abstract class Admission {
 
     @Id
     @GeneratedValue
     private Integer id;
     @Getter
+    @NotNull
     @CreatedDate
     @Column(nullable = false)
     private LocalDate admissionDate;
     @Getter
+    @NotNull
     @OneToOne(optional = false)
     private Patient patient;
 

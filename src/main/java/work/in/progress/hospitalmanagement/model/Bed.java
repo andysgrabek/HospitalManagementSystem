@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * Provides a table definition with constraints and relations.
@@ -30,11 +32,11 @@ public class Bed {
     private Integer id;
     @Getter
     @Setter
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
     @Setter
-    @Getter
     @OneToOne
     private InpatientAdmission admission;
     @Getter
@@ -46,6 +48,10 @@ public class Bed {
     public Bed(Department department, String roomNumber) {
         this.department = department;
         this.roomNumber = roomNumber;
+    }
+
+    public Optional<InpatientAdmission> getAdmission() {
+        return Optional.ofNullable(admission);
     }
 
 }

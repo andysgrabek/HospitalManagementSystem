@@ -42,6 +42,7 @@ public class HospitalStaff extends Person {
     private String email;
     @Getter
     @Setter
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;

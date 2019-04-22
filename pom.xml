@@ -99,6 +99,13 @@
             <artifactId>hibernate-validator-cdi</artifactId>
             <version>6.0.16.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13</version>
+        </dependency>
+
     </dependencies>
 
     <build>
