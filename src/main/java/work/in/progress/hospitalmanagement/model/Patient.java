@@ -17,6 +17,7 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * Provides an inherited table definition from {@link Person} with constraints and
@@ -50,7 +51,6 @@ public class Patient extends Person {
     @Getter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private Address homeAddress;
-    @Getter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Admission currentAdmission;
 
@@ -63,6 +63,10 @@ public class Patient extends Person {
         this.isAlive = isAlive;
         this.homeAddress = homeAddress;
         this.currentAdmission = currentAdmission;
+    }
+
+    public Optional<Admission> getCurrentAdmission() {
+        return Optional.ofNullable(currentAdmission);
     }
 
 }

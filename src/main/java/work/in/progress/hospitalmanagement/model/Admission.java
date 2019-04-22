@@ -27,7 +27,7 @@ import java.time.LocalDate;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @EntityListeners(AuditingEntityListener.class)
-abstract class Admission {
+public abstract class Admission {
 
     @Id
     @GeneratedValue
