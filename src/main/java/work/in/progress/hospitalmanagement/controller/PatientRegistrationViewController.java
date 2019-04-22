@@ -170,6 +170,9 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * @param event the received deletion event
      */
     private void removePatientOnDelete(PatientEditEvent event) {
+        if (editedPatient != null) {
+            cancelEditPatient(null);
+        }
         patientService.delete(event.getPatient());
         patientObservableList.remove(event.getPatient());
     }

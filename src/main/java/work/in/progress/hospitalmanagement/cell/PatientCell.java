@@ -3,11 +3,12 @@ package work.in.progress.hospitalmanagement.cell;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.event.Event;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Paint;
 import work.in.progress.hospitalmanagement.event.PatientEditEvent;
 import work.in.progress.hospitalmanagement.model.Patient;
 
@@ -17,7 +18,7 @@ import static work.in.progress.hospitalmanagement.event.PatientEditEvent.EDIT_EV
 /**
  * Class to display a {@link Patient} in a {@link javafx.scene.control.ListView} with an edit button.
  * {@link PatientEditEvent} EDIT_EVENT is emitted when the edit button is pressed on the
- * containing {@link javafx.scene.control.ListView}
+ * containing {@link javafx.scene.control.ListView}. Also a DELETE_EVENT is emitted when the delete button is pressed.
  * @author Andrzej Grabowski
  */
 public class PatientCell extends ListCell<Patient> {
@@ -34,21 +35,29 @@ public class PatientCell extends ListCell<Patient> {
         }
         HBox hBox = new HBox();
         Label label =
-                new Label(item.getName() + " " + item.getSurname() + ", born " + item.getBirthDate().toString());
-        Button button1 = new JFXButton("edit");
+                new Label(item.getName() + " " + item.getSurname());
+        label.getStyleClass().add("hms-text");
+        JFXButton button1 = new JFXButton("EDIT");
         button1.setOnAction(event -> {
             Event e = new PatientEditEvent(EDIT_EVENT, item);
             getListView().fireEvent(e);
         });
-        Button button2 = new JFXButton("delete");
+        button1.getStyleClass().add("hms-button");
+        JFXButton button2 = new JFXButton("DELETE");
         button2.setOnAction(event -> {
             Event e = new PatientEditEvent(DELETE_EVENT, item);
             getListView().fireEvent(e);
         });
-        hBox.getChildren().add(label);
+        button2.getStyleClass().add("hms-button");
         hBox.getChildren().add(button1);
         hBox.getChildren().add(button2);
+        hBox.getChildren().add(label);
+        button1.setRipplerFill(Paint.valueOf("#f0ab8d"));
+        button2.setRipplerFill(Paint.valueOf("#f0ab8d"));
+        button1.setButtonType(JFXButton.ButtonType.RAISED);
+        button2.setButtonType(JFXButton.ButtonType.RAISED);
         HBox.setHgrow(label, Priority.ALWAYS);
+        hBox.setAlignment(Pos.CENTER_LEFT);
         setGraphic(hBox);
     }
 }
