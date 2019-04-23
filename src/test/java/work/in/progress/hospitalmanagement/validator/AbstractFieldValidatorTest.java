@@ -1,9 +1,10 @@
 package work.in.progress.hospitalmanagement.validator;
 
 import de.saxsys.javafx.test.JfxRunner;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.Validator;
