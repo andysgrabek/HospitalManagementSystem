@@ -19,8 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
+import work.in.progress.hospitalmanagement.converter.RoleStringConverter;
 import work.in.progress.hospitalmanagement.event.PersonEvent;
 import work.in.progress.hospitalmanagement.factory.PersonCellFactory;
+import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
@@ -103,10 +106,13 @@ public class StaffManagementViewController extends AbstractViewController {
         staffListView.addEventHandler(DELETE_EVENT, handleStaffDeletedEvent());
         initFormValidation();
         initListFiltering();
-//        if (!departmentService.findAll().isEmpty()) {
-//            departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
-//            departmentField.getSelectionModel().selectFirst();
-//        }
+        departmentSearchField.setConverter(new DepartmentStringConverter(departmentService.findAll()));
+        roleField.setConverter(new RoleStringConverter());
+        departmentField.setConverter(new DepartmentStringConverter(departmentService.findAll()));
+        if (!departmentService.findAll().isEmpty()) {
+            departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
+            departmentField.getSelectionModel().selectFirst();
+        }
         if (HospitalStaff.Role.values().length != 0) {
             roleField.setItems(FXCollections.observableArrayList(HospitalStaff.Role.values()));
             roleField.getSelectionModel().selectFirst();
