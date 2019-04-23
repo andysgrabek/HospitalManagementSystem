@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -29,7 +30,8 @@ public class Department {
     @Getter
     @NotBlank
     @Id
-    @Column(nullable = false, updatable = false, unique = true)
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @Column(length = 100, nullable = false, updatable = false, unique = true)
     private String name;
     @Getter
     @NotNull
@@ -37,7 +39,7 @@ public class Department {
     private Address address;
     @Getter
     @NotNull
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Bed> beds = new HashSet<>();
 
     public Department(String name, Address address) {
