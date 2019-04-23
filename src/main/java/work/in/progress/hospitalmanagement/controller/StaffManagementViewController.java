@@ -23,7 +23,6 @@ import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
 import work.in.progress.hospitalmanagement.converter.RoleStringConverter;
 import work.in.progress.hospitalmanagement.event.PersonEvent;
 import work.in.progress.hospitalmanagement.factory.PersonCellFactory;
-import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
