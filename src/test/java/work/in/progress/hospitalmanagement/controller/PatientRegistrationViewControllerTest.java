@@ -1,11 +1,10 @@
 package work.in.progress.hospitalmanagement.controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +22,8 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.event.PersonEvent;
+import work.in.progress.hospitalmanagement.model.Department;
+import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
@@ -30,6 +31,9 @@ import work.in.progress.hospitalmanagement.service.PatientService;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.Validator;
+
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -73,6 +77,47 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
     }
 
     @Test
+    public void testPredicateAllFieldsEmpty() {
+        PatientRegistrationViewController vc
+                = (PatientRegistrationViewController) AbstractViewController.instantiateViewController(PatientRegistrationViewController.class);
+        Patient p = Mocks.patient();
+        TextField nameFieldS = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameSearchField");
+        TextField surnameFieldS = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameSearchField");
+        DatePicker birthDateSearchPicker = (DatePicker) ReflectionTestUtils.getField(vc, vc.getClass(), "birthDateSearchPicker");
+        nameFieldS.setText("");
+        surnameFieldS.setText("");
+        birthDateSearchPicker.setValue(null);
+        FilteredList<Patient> filteredList = new FilteredList<>(FXCollections.observableArrayList(p));
+        Predicate<Patient> predicate = ReflectionTestUtils.invokeMethod(vc, "composePatientPredicate",
+                nameFieldS.getText(),
+                surnameFieldS.getText(),
+                birthDateSearchPicker.getValue());
+        filteredList.setPredicate(predicate);
+        assertTrue(filteredList.stream().collect(Collectors.toList()).contains(p));
+    }
+
+    @Test
+    public void testPredicateFindStaffMember() {
+        PatientRegistrationViewController vc
+                = (PatientRegistrationViewController) AbstractViewController.instantiateViewController(PatientRegistrationViewController.class);
+        Patient p = Mocks.patient();
+        TextField nameFieldS = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameSearchField");
+        TextField surnameFieldS = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameSearchField");
+        DatePicker birthDateSearchPicker = (DatePicker) ReflectionTestUtils.getField(vc, vc.getClass(), "birthDateSearchPicker");
+        nameFieldS.setText(p.getName());
+        surnameFieldS.setText(p.getSurname());
+        birthDateSearchPicker.setValue(p.getBirthDate());
+        FilteredList<Patient> filteredList = new FilteredList<>(FXCollections.observableArrayList(p));
+        Predicate<Patient> predicate = ReflectionTestUtils.invokeMethod(vc, "composePatientPredicate",
+                nameFieldS.getText(),
+                surnameFieldS.getText(),
+                birthDateSearchPicker.getValue());
+        filteredList.setPredicate(predicate);
+        assertTrue(filteredList.stream().collect(Collectors.toList()).contains(p));
+    }
+
+
+    @Test
     public void removePatientOnDeleteTest() {
         PatientRegistrationViewController vc
                 = (PatientRegistrationViewController) AbstractViewController.instantiateViewController(PatientRegistrationViewController.class);
@@ -80,7 +125,7 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
                 (ObservableList<Patient>) ReflectionTestUtils.getField(vc, vc.getClass(), "patientObservableList");
         Patient p = Mocks.patient();
         list.add(p);
-        ReflectionTestUtils.invokeMethod(vc, "removePatientOnDelete", new PersonEvent(PersonEvent.DELETE_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "removePatientOnDelete", new PersonEvent<>(PersonEvent.DELETE_EVENT, p));
         assertFalse(list.contains(p));
     }
 
@@ -89,7 +134,7 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
         PatientRegistrationViewController vc
                 = (PatientRegistrationViewController) AbstractViewController.instantiateViewController(PatientRegistrationViewController.class);
         Patient p = Mocks.patient();
-        ReflectionTestUtils.invokeMethod(vc, "updatePatientOnEdit", new PersonEvent(PersonEvent.EDIT_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "updatePatientOnEdit", new PersonEvent<>(PersonEvent.EDIT_EVENT, p));
         Patient edited = Patient.builder().build();
         TextField nameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameField");
         TextField surnameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameField");
@@ -117,7 +162,7 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
         PatientRegistrationViewController vc
                 = (PatientRegistrationViewController) AbstractViewController.instantiateViewController(PatientRegistrationViewController.class);
         Patient p = Mocks.patient();
-        ReflectionTestUtils.invokeMethod(vc, "updatePatientOnEdit", new PersonEvent(PersonEvent.EDIT_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "updatePatientOnEdit", new PersonEvent<>(PersonEvent.EDIT_EVENT, p));
         TextField nameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameField");
         TextField surnameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameField");
         DatePicker birthDatePicker = (DatePicker) ReflectionTestUtils.getField(vc, vc.getClass(), "birthDatePicker");
@@ -152,7 +197,7 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
         TextField addressLineField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "addressLineField");
         TextField cityField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "cityField");
         TextField postalCodeField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "postalCodeField");
-        ReflectionTestUtils.invokeMethod(vc, "updatePatientOnEdit", new PersonEvent(PersonEvent.EDIT_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "updatePatientOnEdit", new PersonEvent<>(PersonEvent.EDIT_EVENT, p));
         ReflectionTestUtils.invokeMethod(vc, "resetFormFields");
         assertEquals("", nameField.getText());
         assertEquals("", surnameField.getText());

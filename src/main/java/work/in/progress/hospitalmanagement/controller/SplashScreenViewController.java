@@ -24,6 +24,9 @@ public class SplashScreenViewController extends AbstractViewController {
     @FXML
     private ImageView logoImageView;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         PauseTransition pauseTransition = new PauseTransition(Duration.seconds(LOADING_TRANSITION_DURATION));

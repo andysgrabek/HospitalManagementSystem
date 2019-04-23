@@ -17,7 +17,7 @@ public class PersonCellTest {
     @Test
     public void updateItemTestNullItem() {
         Patient patient = null;
-        PersonCell cell = new PersonCell();
+        PersonCell<Patient> cell = new PersonCell<>();
         cell.updateItem(patient, false);
         assertNull(cell.getGraphic());
     }
@@ -25,7 +25,7 @@ public class PersonCellTest {
     @Test
     public void updateItemTestEmptyCell() {
         Patient patient = Mocks.patient();
-        PersonCell cell = new PersonCell();
+        PersonCell<Patient> cell = new PersonCell<>();
         cell.updateItem(patient, true);
         assertNull(cell.getGraphic());
     }
@@ -33,7 +33,7 @@ public class PersonCellTest {
     @Test
     public void updateItemTestLoadedCell() {
         Patient patient = Mocks.patient();
-        PersonCell cell = new PersonCell();
+        PersonCell<Patient> cell = new PersonCell<>();
         cell.updateItem(patient, false);
         assertNotNull(cell.getGraphic());
     }

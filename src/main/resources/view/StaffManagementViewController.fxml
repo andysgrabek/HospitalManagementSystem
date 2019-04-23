@@ -71,7 +71,7 @@
                                     <children>
                                         <JFXButton fx:id="cancelEditStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#cancelEditStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CANCEL" />
                                         <JFXButton fx:id="confirmEditStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#confirmEditStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CONFIRM" />
-                                        <JFXButton fx:id="createStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#registerPatient" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CREATE" />
+                                        <JFXButton fx:id="createStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#registerStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CREATE" />
                                     </children>
                                 </HBox>
                             </children>

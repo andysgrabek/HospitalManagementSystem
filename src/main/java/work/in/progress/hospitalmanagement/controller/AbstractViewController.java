@@ -76,7 +76,7 @@ public abstract class AbstractViewController implements Initializable {
                     }, new KeyValue(opacity, 0.0)));
             fade.play();
         } else {
-            this.getStage().setScene(new Scene(viewController.getRoot()));
+            Platform.runLater(() -> this.getStage().setScene(new Scene(viewController.getRoot())));
         }
     }
 

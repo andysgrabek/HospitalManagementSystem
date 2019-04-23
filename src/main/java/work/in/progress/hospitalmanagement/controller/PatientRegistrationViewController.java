@@ -211,6 +211,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formLabel.setText("EDITING PATIENT");
     }
 
+    /**
+     * Locks or unlocks fields that should not be available for edit then editing a {@link Patient}
+     * @param lock indicates if the fields should be locked
+     */
     private void lockEditableFormFields(boolean lock) {
         nameField.setDisable(lock);
         surnameField.setDisable(lock);
