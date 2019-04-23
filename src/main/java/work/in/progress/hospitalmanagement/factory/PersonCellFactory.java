@@ -12,6 +12,9 @@ import work.in.progress.hospitalmanagement.model.Person;
  */
 public class PersonCellFactory<T extends Person> implements Callback<ListView<T>, ListCell<T>> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListCell<T> call(ListView<T> listView) {
         return new PersonCell<T>();

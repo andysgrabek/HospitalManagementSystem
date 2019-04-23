@@ -34,7 +34,7 @@ public final class ApplicationContextSingleton {
     /**
      * Method returning the spring context.
      * @return the current context
-     * @throws if the context is null
+     * @throws IllegalStateException when the context is null
      */
     public static ConfigurableApplicationContext getContext() {
         if (context == null) {

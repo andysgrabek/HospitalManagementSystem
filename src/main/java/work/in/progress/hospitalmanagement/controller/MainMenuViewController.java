@@ -40,6 +40,9 @@ public class MainMenuViewController extends AbstractViewController {
     @FXML
     private StackPane stackPane;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -55,6 +58,10 @@ public class MainMenuViewController extends AbstractViewController {
         createInfoDialog().show();
     }
 
+    /**
+     * Creates an information dialog containing important information about used assets and authors.
+     * @return an instance of {@link JFXDialog} with the information.
+     */
     private JFXDialog createInfoDialog() {
         JFXDialogLayout jfxDialogLayout = new JFXDialogLayout();
         Text headingText = new Text(SOFTWARE_INFORMATION);
@@ -78,6 +85,12 @@ public class MainMenuViewController extends AbstractViewController {
         return jfxDialog;
     }
 
+    /**
+     * Creates a {@link JFXButton} that serves as one of the action buttons in a {@link JFXDialog}
+     * @param text text to be on the button
+     * @param buttonHandler button handler to be executed when the button is clicked
+     * @return the new button
+     */
     private JFXButton createDialogActionButton(String text, EventHandler<ActionEvent> buttonHandler) {
         JFXButton button = new JFXButton(text);
         button.setPrefWidth(INFO_DIALOG_BUTTON_PREF_WIDTH);
@@ -88,6 +101,10 @@ public class MainMenuViewController extends AbstractViewController {
         return button;
     }
 
+    /**
+     * Creates a {@link JFXDialog} that verifies if the user want to quit.
+     * @return the new dialog asking if the user wants to quit.
+     */
     private JFXDialog createExitDialog() {
         JFXDialogLayout jfxDialogLayout = new JFXDialogLayout();
         Text headingText = new Text("Are you sure you want to quit?");

@@ -92,6 +92,9 @@ public class StaffManagementViewController extends AbstractViewController {
         this.departmentService = departmentService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         staffObservableList = FXCollections.observableArrayList();

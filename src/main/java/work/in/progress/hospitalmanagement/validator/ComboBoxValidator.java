@@ -6,10 +6,16 @@ import javax.validation.Validator;
 
 public class ComboBoxValidator extends AbstractFieldValidator {
 
+    /**
+     * {@inheritDoc}
+     */
     public ComboBoxValidator(Class c, String field, Validator validator) {
         super(c, field, validator);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void eval() {
         hasErrors.set(false);

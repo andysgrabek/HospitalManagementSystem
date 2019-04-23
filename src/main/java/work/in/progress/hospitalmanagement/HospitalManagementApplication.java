@@ -31,6 +31,9 @@ public class HospitalManagementApplication extends Application {
         launch(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         AbstractViewController viewController =
@@ -42,6 +45,9 @@ public class HospitalManagementApplication extends Application {
         primaryStage.show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() throws Exception {
         super.stop();
