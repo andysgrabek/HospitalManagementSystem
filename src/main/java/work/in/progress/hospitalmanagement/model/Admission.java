@@ -3,6 +3,7 @@ package work.in.progress.hospitalmanagement.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
@@ -21,20 +23,23 @@ import java.time.LocalDate;
  *
  * @author jablonskiba
  */
+@ToString(exclude = "id")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @EntityListeners(AuditingEntityListener.class)
-abstract class Admission {
+public abstract class Admission {
 
     @Id
     @GeneratedValue
     private Integer id;
     @Getter
+    @NotNull
     @CreatedDate
     @Column(nullable = false)
     private LocalDate admissionDate;
     @Getter
+    @NotNull
     @OneToOne(optional = false)
     private Patient patient;
 
@@ -43,10 +48,5 @@ abstract class Admission {
     }
 
     public abstract Department getDepartment();
-
-    @Override
-    public String toString() {
-        return String.format("%s to %s on %s", patient, getDepartment(), admissionDate);
-    }
 
 }

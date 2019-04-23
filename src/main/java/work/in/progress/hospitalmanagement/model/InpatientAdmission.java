@@ -3,20 +3,24 @@ package work.in.progress.hospitalmanagement.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  * Provides a table definition with constraints and relations.
  *
  * @author jablonskiba
  */
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class InpatientAdmission extends Admission {
 
     @Getter
+    @NotNull
     @OneToOne(optional = false)
     private Bed bed;
 

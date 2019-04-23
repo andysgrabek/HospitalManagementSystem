@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
+import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,6 +56,20 @@ public class PatientModelTest {
 
         assertThat(result.isEmpty()).isFalse();
         assertThat(result.get(0).getBirthDate()).isEqualTo(patientBirthDate);
+    }
+
+    @Test
+    public void whenToStringCalled_thenProperStringShouldBeReturned() {
+        Patient patient = Mocks.patient();
+        assertThat(patient.toString()).isEqualTo("Patient(" +
+                "super=Person(id=" + patient.getId() + ", " +
+                "name=" + patient.getName() + ", " +
+                "surname=" + patient.getSurname() + "), " +
+                "birthDate=" + patient.getBirthDate() + ", " +
+                "phoneNumber=" + patient.getPhoneNumber() + ", " +
+                "isAlive=" + patient.isAlive() + ", " +
+                "homeAddress=" + patient.getHomeAddress() + ", " +
+                "currentAdmission=" + patient.getCurrentAdmission() + ")");
     }
 
 }

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.ObjectUtils;
+import lombok.ToString;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +17,7 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * Provides an inherited table definition from {@link Person} with constraints and
@@ -24,6 +25,7 @@ import java.time.LocalDate;
  *
  * @author jablonskiba
  */
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Patient extends Person {
@@ -47,9 +49,10 @@ public class Patient extends Person {
     @Column(nullable = false)
     private boolean isAlive;
     @Getter
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private Address homeAddress;
-    @Getter
+    @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Admission currentAdmission;
 
@@ -64,11 +67,8 @@ public class Patient extends Person {
         this.currentAdmission = currentAdmission;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s %s (%s)\n%s\n%s\nassigned to %s", getName(), getSurname(),
-                isAlive ? "alive" : "dead", homeAddress, phoneNumber,
-                ObjectUtils.defaultIfNull(currentAdmission, "None"));
+    public Optional<Admission> getCurrentAdmission() {
+        return Optional.ofNullable(currentAdmission);
     }
 
 }

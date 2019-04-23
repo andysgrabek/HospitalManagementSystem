@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.ObjectUtils;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +14,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * Provides a table definition with constraints and relations.
  *
  * @author jablonskiba
  */
+@ToString(exclude = "id")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Bed {
@@ -29,11 +32,11 @@ public class Bed {
     private Integer id;
     @Getter
     @Setter
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
     @Setter
-    @Getter
     @OneToOne
     private InpatientAdmission admission;
     @Getter
@@ -47,10 +50,8 @@ public class Bed {
         this.roomNumber = roomNumber;
     }
 
-    @Override
-    public String toString() {
-        return String.format("In %s room %s assigned to %s", department, roomNumber,
-                ObjectUtils.defaultIfNull(admission, "None"));
+    public Optional<InpatientAdmission> getAdmission() {
+        return Optional.ofNullable(admission);
     }
 
 }
