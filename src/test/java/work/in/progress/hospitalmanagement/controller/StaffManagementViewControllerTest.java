@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
-import work.in.progress.hospitalmanagement.event.PersonEvent;
+import work.in.progress.hospitalmanagement.event.ListCellEvent;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
@@ -34,7 +34,6 @@ import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.Validator;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -134,7 +133,7 @@ public class StaffManagementViewControllerTest implements ApplicationContextAwar
                 (ObservableList<HospitalStaff>) ReflectionTestUtils.getField(vc, vc.getClass(), "staffObservableList");
         HospitalStaff p = Mocks.hospitalStaff();
         list.add(p);
-        ReflectionTestUtils.invokeMethod(vc, "removeStaffOnDelete", new PersonEvent<>(PersonEvent.DELETE_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "removeStaffOnDelete", new ListCellEvent<>(ListCellEvent.DELETE_EVENT, p));
         assertFalse(list.contains(p));
     }
 
@@ -143,7 +142,7 @@ public class StaffManagementViewControllerTest implements ApplicationContextAwar
         StaffManagementViewController vc
                 = (StaffManagementViewController) AbstractViewController.instantiateViewController(StaffManagementViewController.class);
         HospitalStaff p = Mocks.hospitalStaff();
-        ReflectionTestUtils.invokeMethod(vc, "updateStaffOnEdit", new PersonEvent<>(PersonEvent.EDIT_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "updateStaffOnEdit", new ListCellEvent<>(ListCellEvent.EDIT_EVENT, p));
         HospitalStaff edited = HospitalStaff.builder().build();
         TextField nameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameField");
         TextField surnameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameField");
@@ -165,7 +164,7 @@ public class StaffManagementViewControllerTest implements ApplicationContextAwar
         StaffManagementViewController vc
                 = (StaffManagementViewController) AbstractViewController.instantiateViewController(StaffManagementViewController.class);
         HospitalStaff p = Mocks.hospitalStaff();
-        ReflectionTestUtils.invokeMethod(vc, "updateStaffOnEdit", new PersonEvent<>(PersonEvent.EDIT_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "updateStaffOnEdit", new ListCellEvent<>(ListCellEvent.EDIT_EVENT, p));
         TextField nameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameField");
         TextField surnameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameField");
         ComboBox<HospitalStaff.Role> roleField = (ComboBox<HospitalStaff.Role>) ReflectionTestUtils.getField(vc, vc.getClass(), "roleField");
@@ -192,7 +191,7 @@ public class StaffManagementViewControllerTest implements ApplicationContextAwar
         TextField surnameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameField");
         ComboBox<HospitalStaff.Role> roleField = (ComboBox<HospitalStaff.Role>) ReflectionTestUtils.getField(vc, vc.getClass(), "roleField");
         ComboBox<Department> departmentField = (ComboBox<Department>) ReflectionTestUtils.getField(vc, vc.getClass(), "departmentField");
-        ReflectionTestUtils.invokeMethod(vc, "updateStaffOnEdit", new PersonEvent<>(PersonEvent.EDIT_EVENT, p));
+        ReflectionTestUtils.invokeMethod(vc, "updateStaffOnEdit", new ListCellEvent<>(ListCellEvent.EDIT_EVENT, p));
         ReflectionTestUtils.invokeMethod(vc, "resetFormFields");
         assertEquals("", nameField.getText());
         assertEquals("", surnameField.getText());

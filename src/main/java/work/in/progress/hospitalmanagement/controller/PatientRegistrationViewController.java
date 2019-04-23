@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import work.in.progress.hospitalmanagement.event.PersonEvent;
+import work.in.progress.hospitalmanagement.event.ListCellEvent;
 import work.in.progress.hospitalmanagement.factory.PersonCellFactory;
 import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Patient;
@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-import static work.in.progress.hospitalmanagement.event.PersonEvent.DELETE_EVENT;
-import static work.in.progress.hospitalmanagement.event.PersonEvent.EDIT_EVENT;
+import static work.in.progress.hospitalmanagement.event.ListCellEvent.DELETE_EVENT;
+import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT;
 
 /**
  * Controller for the view responsible for controlling patient registration.
@@ -161,7 +161,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * Method to return the event handler of pressing the delete button next to a patient entry in the list
      * @return event handler deleting the patient from the database
      */
-    private EventHandler<PersonEvent> handlePatientDeletePressed() {
+    private EventHandler<ListCellEvent> handlePatientDeletePressed() {
         return this::removePatientOnDelete;
     }
 
@@ -169,19 +169,19 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * Method handling the deletion of a patient from the database and the list itself
      * @param event the received deletion event
      */
-    private void removePatientOnDelete(PersonEvent<Patient> event) {
+    private void removePatientOnDelete(ListCellEvent<Patient> event) {
         if (editedPatient != null) {
             cancelEditPatient(null);
         }
-        patientService.delete(event.getPerson());
-        patientObservableList.remove(event.getPerson());
+        patientService.delete(event.getSubject());
+        patientObservableList.remove(event.getSubject());
     }
 
     /**
      * Method to return the event handler of pressing the edit button next to a patient entry in the list
      * @return event handler editing the patient in the database
      */
-    private EventHandler<PersonEvent> handlePatientEditPressed() {
+    private EventHandler<ListCellEvent> handlePatientEditPressed() {
         return this::updatePatientOnEdit;
     }
 
@@ -189,13 +189,13 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * Method handling the edition of a patient in the database and in the list itself
      * @param event the received edition event
      */
-    private void updatePatientOnEdit(PersonEvent<Patient> event) {
+    private void updatePatientOnEdit(ListCellEvent<Patient> event) {
         if (editedPatient != null) {
             cancelEditPatient(null);
         }
         lockEditableFormFields(true);
         resetFormFields();
-        Patient p = event.getPerson();
+        Patient p = event.getSubject();
         nameField.setText(p.getName());
         surnameField.setText(p.getSurname());
         birthDatePicker.setValue(p.getBirthDate());
