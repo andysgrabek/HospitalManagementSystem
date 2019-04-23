@@ -8,9 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" styleClass="hms-background-pane" stylesheets="ViewController.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="work.in.progress.hospitalmanagement.controller.SplashScreenViewController">
-   <stylesheets>
-      <URL value="@ViewController.css" />
-   </stylesheets>
    <children>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" spacing="30.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0">
          <children>
@@ -23,4 +20,7 @@
          </children>
       </HBox>
    </children>
+   <stylesheets>
+      <URL value="@ViewController.css" />
+   </stylesheets>
 </AnchorPane>
