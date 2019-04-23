@@ -39,13 +39,13 @@ public class PersonCell<T extends Person> extends ListCell<T> {
         label.getStyleClass().add("hms-text");
         JFXButton button1 = new JFXButton("EDIT");
         button1.setOnAction(event -> {
-            Event e = new PersonEvent(EDIT_EVENT, item);
+            Event e = new PersonEvent<T>(EDIT_EVENT, item);
             getListView().fireEvent(e);
         });
         button1.getStyleClass().add("hms-button");
         JFXButton button2 = new JFXButton("DELETE");
         button2.setOnAction(event -> {
-            Event e = new PersonEvent(DELETE_EVENT, item);
+            Event e = new PersonEvent<T>(DELETE_EVENT, item);
             getListView().fireEvent(e);
         });
         button2.getStyleClass().add("hms-button");
