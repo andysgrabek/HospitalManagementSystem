@@ -23,7 +23,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-abstract class Person {
+public abstract class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

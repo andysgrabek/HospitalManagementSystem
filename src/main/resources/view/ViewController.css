@@ -1,0 +1,28 @@
+.hms-main-menu-button {
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 17;
+}
+
+.hms-button {
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 16;
+}
+
+.hms-label-title {
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 36;
+}
+
+.hms-background-pane {
+    -fx-background-color: rgba(211, 211, 211, 0.50);
+}
+
+.hms-text {
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 16;
+}
+
+.hms-form-text {
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 14;
+}

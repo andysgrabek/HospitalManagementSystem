@@ -9,7 +9,7 @@ import work.in.progress.hospitalmanagement.util.Mocks;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class PatientCellTest {
+public class PersonCellTest {
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
@@ -17,7 +17,7 @@ public class PatientCellTest {
     @Test
     public void updateItemTestNullItem() {
         Patient patient = null;
-        PatientCell cell = new PatientCell();
+        PersonCell cell = new PersonCell();
         cell.updateItem(patient, false);
         assertNull(cell.getGraphic());
     }
@@ -25,7 +25,7 @@ public class PatientCellTest {
     @Test
     public void updateItemTestEmptyCell() {
         Patient patient = Mocks.patient();
-        PatientCell cell = new PatientCell();
+        PersonCell cell = new PersonCell();
         cell.updateItem(patient, true);
         assertNull(cell.getGraphic());
     }
@@ -33,7 +33,7 @@ public class PatientCellTest {
     @Test
     public void updateItemTestLoadedCell() {
         Patient patient = Mocks.patient();
-        PatientCell cell = new PatientCell();
+        PersonCell cell = new PersonCell();
         cell.updateItem(patient, false);
         assertNotNull(cell.getGraphic());
     }

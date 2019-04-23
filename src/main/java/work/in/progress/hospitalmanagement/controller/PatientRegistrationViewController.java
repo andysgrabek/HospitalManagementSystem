@@ -13,13 +13,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import work.in.progress.hospitalmanagement.event.PatientEditEvent;
-import work.in.progress.hospitalmanagement.factory.PatientCellFactory;
+import work.in.progress.hospitalmanagement.event.PersonEvent;
+import work.in.progress.hospitalmanagement.factory.PersonCellFactory;
 import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.service.PatientService;
@@ -35,8 +36,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-import static work.in.progress.hospitalmanagement.event.PatientEditEvent.DELETE_EVENT;
-import static work.in.progress.hospitalmanagement.event.PatientEditEvent.EDIT_EVENT;
+import static work.in.progress.hospitalmanagement.event.PersonEvent.DELETE_EVENT;
+import static work.in.progress.hospitalmanagement.event.PersonEvent.EDIT_EVENT;
 
 /**
  * Controller for the view responsible for controlling patient registration.
@@ -46,6 +47,8 @@ import static work.in.progress.hospitalmanagement.event.PatientEditEvent.EDIT_EV
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class PatientRegistrationViewController extends AbstractViewController {
 
+    @FXML
+    private Label formLabel;
     private Patient editedPatient;
     @FXML
     private JFXTextField nameSearchField;
@@ -103,8 +106,8 @@ public class PatientRegistrationViewController extends AbstractViewController {
                 addressLineField,
                 cityField,
                 postalCodeField);
-        PatientCellFactory patientCellFactory = new PatientCellFactory();
-        registeredPatientListView.setCellFactory(patientCellFactory);
+        PersonCellFactory<Patient> personCellFactory = new PersonCellFactory<>();
+        registeredPatientListView.setCellFactory(personCellFactory);
         patientObservableList.addAll(patientService.findAll());
         registeredPatientListView.addEventHandler(EDIT_EVENT, handlePatientEditPressed());
         registeredPatientListView.addEventHandler(DELETE_EVENT, handlePatientDeletePressed());
@@ -158,7 +161,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * Method to return the event handler of pressing the delete button next to a patient entry in the list
      * @return event handler deleting the patient from the database
      */
-    private EventHandler<PatientEditEvent> handlePatientDeletePressed() {
+    private EventHandler<PersonEvent> handlePatientDeletePressed() {
         return this::removePatientOnDelete;
     }
 
@@ -166,16 +169,19 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * Method handling the deletion of a patient from the database and the list itself
      * @param event the received deletion event
      */
-    private void removePatientOnDelete(PatientEditEvent event) {
-        patientService.delete(event.getPatient());
-        patientObservableList.remove(event.getPatient());
+    private void removePatientOnDelete(PersonEvent<Patient> event) {
+        if (editedPatient != null) {
+            cancelEditPatient(null);
+        }
+        patientService.delete(event.getPerson());
+        patientObservableList.remove(event.getPerson());
     }
 
     /**
      * Method to return the event handler of pressing the edit button next to a patient entry in the list
      * @return event handler editing the patient in the database
      */
-    private EventHandler<PatientEditEvent> handlePatientEditPressed() {
+    private EventHandler<PersonEvent> handlePatientEditPressed() {
         return this::updatePatientOnEdit;
     }
 
@@ -183,13 +189,13 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * Method handling the edition of a patient in the database and in the list itself
      * @param event the received edition event
      */
-    private void updatePatientOnEdit(PatientEditEvent event) {
+    private void updatePatientOnEdit(PersonEvent<Patient> event) {
         if (editedPatient != null) {
             cancelEditPatient(null);
         }
         lockEditableFormFields(true);
         resetFormFields();
-        Patient p = event.getPatient();
+        Patient p = event.getPerson();
         nameField.setText(p.getName());
         surnameField.setText(p.getSurname());
         birthDatePicker.setValue(p.getBirthDate());
@@ -202,6 +208,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formButtonsParent.getChildren().add(cancelEditPatientButton);
         formButtonsParent.getChildren().add(confirmEditPatientButton);
         editedPatient = p;
+        formLabel.setText("EDITING PATIENT");
     }
 
     private void lockEditableFormFields(boolean lock) {
@@ -314,6 +321,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
             editedPatient = null;
             formFields.forEach(field -> ((IFXValidatableControl) field).resetValidation());
             lockEditableFormFields(false);
+            formLabel.setText("REGISTER NEW PATIENT");
         }
     }
 
@@ -326,6 +334,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formButtonsParent.getChildren().remove(confirmEditPatientButton);
         lockEditableFormFields(false);
         editedPatient = null;
+        formLabel.setText("REGISTER NEW PATIENT");
     }
 
     @FXML
