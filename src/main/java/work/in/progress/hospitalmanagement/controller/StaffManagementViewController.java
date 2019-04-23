@@ -40,6 +40,10 @@ import java.util.function.Predicate;
 import static work.in.progress.hospitalmanagement.event.PersonEvent.DELETE_EVENT;
 import static work.in.progress.hospitalmanagement.event.PersonEvent.EDIT_EVENT;
 
+/**
+ * Controller for the view responsible for controlling staff registration
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class StaffManagementViewController extends AbstractViewController {
@@ -86,7 +90,6 @@ public class StaffManagementViewController extends AbstractViewController {
         this.hospitalStaffService = hospitalStaffService;
         this.validator = validator;
         this.departmentService = departmentService;
-//        departmentService.save(new Department("Administration", new Address("", "", 55555)));
     }
 
     @Override
@@ -108,10 +111,7 @@ public class StaffManagementViewController extends AbstractViewController {
         departmentSearchField.setConverter(new DepartmentStringConverter(departmentService.findAll()));
         roleField.setConverter(new RoleStringConverter());
         departmentField.setConverter(new DepartmentStringConverter(departmentService.findAll()));
-        if (!departmentService.findAll().isEmpty()) {
-            departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
-            departmentField.getSelectionModel().selectFirst();
-        }
+        departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
         if (HospitalStaff.Role.values().length != 0) {
             roleField.setItems(FXCollections.observableArrayList(HospitalStaff.Role.values()));
             roleField.getSelectionModel().selectFirst();
@@ -182,13 +182,15 @@ public class StaffManagementViewController extends AbstractViewController {
         presentViewController(instantiateViewController(MainMenuViewController.class), true);
     }
 
-    @FXML private void clearSearchFields(ActionEvent actionEvent) {
+    @FXML
+    private void clearSearchFields(ActionEvent actionEvent) {
         nameSearchField.setText("");
-        departmentSearchField.setValue(null);
+        departmentSearchField.getSelectionModel().clearSelection();
         surnameSearchField.setText("");
     }
 
-    @FXML private void cancelEditStaff(ActionEvent actionEvent) {
+    @FXML
+    private void cancelEditStaff(ActionEvent actionEvent) {
         resetFormFields();
         formFields.forEach(field -> ((IFXValidatableControl) field).resetValidation());
         formButtonsParent.getChildren().add(createStaffButton);
@@ -199,7 +201,8 @@ public class StaffManagementViewController extends AbstractViewController {
         formLabel.setText("CREATE NEW STAFF MEMBER");
     }
 
-    @FXML private void confirmEditStaff(ActionEvent actionEvent) {
+    @FXML
+    private void confirmEditStaff(ActionEvent actionEvent) {
         if (validateStaffForm()) {
             HospitalStaff p = getStaffFromForm();
             editedStaff.setDepartment(p.getDepartment());
@@ -216,7 +219,8 @@ public class StaffManagementViewController extends AbstractViewController {
         }
     }
 
-    @FXML private void registerPatient(ActionEvent actionEvent) {
+    @FXML
+    private void registerStaff(ActionEvent actionEvent) {
         if (validateStaffForm()) {
             staffObservableList.add(hospitalStaffService.save(getStaffFromForm()));
             resetFormFields();
@@ -238,7 +242,7 @@ public class StaffManagementViewController extends AbstractViewController {
     }
 
     /**
-     * Method validating the correctness of data provided in the patient edit/register form.
+     * Method validating the correctness of data provided in the staff edit/create form.
      * @return true if all fields were correctly filled
      */
     private boolean validateStaffForm() {
@@ -253,15 +257,15 @@ public class StaffManagementViewController extends AbstractViewController {
     }
 
     /**
-     * Method to return the event handler of pressing the delete button next to a patient entry in the list
-     * @return event handler deleting the patient from the database
+     * Method to return the event handler of pressing the delete button next to a staff entry in the list
+     * @return event handler deleting the staff from the database
      */
     private EventHandler<PersonEvent> handleStaffDeletedEvent() {
         return this::removeStaffOnDelete;
     }
 
     /**
-     * Method handling the deletion of a patient from the database and the list itself
+     * Method handling the deletion of a staff member from the database and the list itself
      * @param event the received deletion event
      */
     private void removeStaffOnDelete(PersonEvent<HospitalStaff> event) {
@@ -281,7 +285,7 @@ public class StaffManagementViewController extends AbstractViewController {
     }
 
     /**
-     * Method handling the edition of a patient in the database and in the list itself
+     * Method handling the edition of a staff member in the database and in the list itself
      * @param event the received edition event
      */
     private void updateStaffOnEdit(PersonEvent<HospitalStaff> event) {
@@ -302,6 +306,10 @@ public class StaffManagementViewController extends AbstractViewController {
         formLabel.setText("EDITING STAFF MEMBER");
     }
 
+    /**
+     * Locks or unlocks fields that should not be available for edit then editing a {@link HospitalStaff}
+     * @param lock indicates if the fields should be locked
+     */
     private void lockEditableFormFields(boolean lock) {
         nameField.setDisable(lock);
         surnameField.setDisable(lock);
