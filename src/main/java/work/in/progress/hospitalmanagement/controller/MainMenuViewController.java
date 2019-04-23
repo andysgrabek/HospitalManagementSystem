@@ -36,6 +36,7 @@ public class MainMenuViewController extends AbstractViewController {
             "Hospital Management System by WorkInProgress team developed as part of 02160\n"
                     + "Agile Object-oriented Software Development course at Technical University of Denmark.\n"
                     + "Assets used with permission from pngtree.com/free-icon excluding application logo.";
+    private static final String SOFTWARE_INFORMATION = "Software Information";
     @FXML
     private StackPane stackPane;
 
@@ -56,7 +57,7 @@ public class MainMenuViewController extends AbstractViewController {
 
     private JFXDialog createInfoDialog() {
         JFXDialogLayout jfxDialogLayout = new JFXDialogLayout();
-        Text headingText = new Text("Software Information");
+        Text headingText = new Text(SOFTWARE_INFORMATION);
         Text bodyText = new Text(INFO_DIALOG_BODY_TEXT);
         bodyText.setLineSpacing(INFO_DIALOG_LINE_SPACING);
         jfxDialogLayout.setHeading(headingText);
