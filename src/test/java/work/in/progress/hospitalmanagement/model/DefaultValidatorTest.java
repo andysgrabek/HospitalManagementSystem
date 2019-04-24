@@ -29,7 +29,7 @@ public class DefaultValidatorTest {
     }
 
     @Test
-    public void whenDepartmentNameToLong_thenConstraintValidationShouldOccur() {
+    public void whenDepartmentNameTooLong_thenConstraintValidationShouldOccur() {
         Department department = Mocks.department();
         ReflectionTestUtils.setField(department, "name", StringUtils.repeat('a', 101));
 
