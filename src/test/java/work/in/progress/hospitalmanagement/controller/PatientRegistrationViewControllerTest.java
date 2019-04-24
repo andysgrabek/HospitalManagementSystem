@@ -337,7 +337,7 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
         ObservableList<Patient> list =
                 (ObservableList<Patient>) ReflectionTestUtils.getField(vc, vc.getClass(), "patientObservableList");
         Patient p = ReflectionTestUtils.invokeMethod(vc, "getPatientFromForm");
-        ReflectionTestUtils.invokeMethod(vc, "createDepartment", new ActionEvent());
+        ReflectionTestUtils.invokeMethod(vc, "registerPatient", new ActionEvent());
         TextField nameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameField");
         TextField surnameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "surnameField");
         DatePicker birthDatePicker = (DatePicker) ReflectionTestUtils.getField(vc, vc.getClass(), "birthDatePicker");
@@ -363,7 +363,7 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
         fillFormInvalid(vc);
         ObservableList<Patient> list =
                 (ObservableList<Patient>) ReflectionTestUtils.getField(vc, vc.getClass(), "patientObservableList");
-        ReflectionTestUtils.invokeMethod(vc, "createDepartment", new ActionEvent());
+        ReflectionTestUtils.invokeMethod(vc, "registerPatient", new ActionEvent());
         TextField postalCodeField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "postalCodeField");
         assertEquals(postalCodeField.getText(), "XD");
     }
