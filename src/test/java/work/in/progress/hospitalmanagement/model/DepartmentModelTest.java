@@ -17,7 +17,6 @@ public class DepartmentModelTest {
         Department department = Mocks.department();
         assertThat(department.toString()).isEqualTo("Department(" +
                 "name=" + department.getName() + ", " +
-                "address=" + department.getAddress() + ", " +
                 "beds=" + department.getBeds() + ")");
     }
 

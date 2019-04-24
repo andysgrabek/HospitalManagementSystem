@@ -38,7 +38,6 @@ public class Patient extends Person {
     private LocalDate birthDate;
     @Getter
     @Setter
-    @SuppressWarnings("checkstyle:MagicNumber")
     @Size(min = 5, max = 15)
     @Pattern(regexp = "^(0|[1-9][0-9]*)$")
     @Column(nullable = false)

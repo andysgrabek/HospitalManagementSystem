@@ -13,6 +13,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * Provides a superclass to inherit to define a table.
@@ -31,10 +33,14 @@ public abstract class Person {
     private Integer id;
     @Getter
     @NotBlank
+    @Size(max = 255)
+    @Pattern(regexp = "^[A-Za-z \\-]+$")
     @Column(nullable = false, updatable = false)
     private String name;
     @Getter
     @NotBlank
+    @Size(max = 255)
+    @Pattern(regexp = "^[A-Za-z \\-]+$")
     @Column(nullable = false, updatable = false)
     private String surname;
 
