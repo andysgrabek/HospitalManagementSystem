@@ -42,7 +42,6 @@ public class BedModelTest {
         Bed bed = Mocks.bed();
         assertThat(bed.toString()).isEqualTo("Bed(" +
                 "department=" + bed.getDepartment() + ", " +
-                "admission=" + bed.getAdmission() + ", " +
                 "roomNumber=" + bed.getRoomNumber() + ")");
     }
 

@@ -24,7 +24,7 @@ import java.util.Optional;
  *
  * @author jablonskiba
  */
-@ToString(exclude = "id")
+@ToString(exclude = {"id", "admission"})
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Bed {

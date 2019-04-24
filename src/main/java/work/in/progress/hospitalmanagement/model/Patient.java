@@ -25,7 +25,7 @@ import java.util.Optional;
  *
  * @author jablonskiba
  */
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "currentAdmission")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Patient extends Person {

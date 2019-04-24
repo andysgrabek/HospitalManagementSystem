@@ -22,7 +22,7 @@ import java.util.Set;
  *
  * @author jablonskiba
  */
-@ToString
+@ToString(exclude = "beds")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Department {

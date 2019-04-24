@@ -68,8 +68,7 @@ public class PatientModelTest {
                 "birthDate=" + patient.getBirthDate() + ", " +
                 "phoneNumber=" + patient.getPhoneNumber() + ", " +
                 "isAlive=" + patient.isAlive() + ", " +
-                "homeAddress=" + patient.getHomeAddress() + ", " +
-                "currentAdmission=" + patient.getCurrentAdmission() + ")");
+                "homeAddress=" + patient.getHomeAddress() + ")");
     }
 
 }
