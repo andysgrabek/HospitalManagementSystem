@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
 import work.in.progress.hospitalmanagement.converter.RoleStringConverter;
-import work.in.progress.hospitalmanagement.event.PersonEvent;
+import work.in.progress.hospitalmanagement.event.ListCellEvent;
 import work.in.progress.hospitalmanagement.factory.PersonCellFactory;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-import static work.in.progress.hospitalmanagement.event.PersonEvent.DELETE_EVENT;
-import static work.in.progress.hospitalmanagement.event.PersonEvent.EDIT_EVENT;
+import static work.in.progress.hospitalmanagement.event.ListCellEvent.DELETE_EVENT;
+import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT;
 
 /**
  * Controller for the view responsible for controlling staff registration
@@ -173,11 +173,6 @@ public class StaffManagementViewController extends AbstractViewController {
                 new ComboBoxValidator(HospitalStaff.class, "department", validator));
         roleField.getValidators().add(
                 new ComboBoxValidator(HospitalStaff.class, "role", validator));
-        formFields.forEach(field -> field.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                ((IFXValidatableControl) field).validate();
-            }
-        }));
     }
 
     @FXML
@@ -263,7 +258,7 @@ public class StaffManagementViewController extends AbstractViewController {
      * Method to return the event handler of pressing the delete button next to a staff entry in the list
      * @return event handler deleting the staff from the database
      */
-    private EventHandler<PersonEvent> handleStaffDeletedEvent() {
+    private EventHandler<ListCellEvent> handleStaffDeletedEvent() {
         return this::removeStaffOnDelete;
     }
 
@@ -271,19 +266,19 @@ public class StaffManagementViewController extends AbstractViewController {
      * Method handling the deletion of a staff member from the database and the list itself
      * @param event the received deletion event
      */
-    private void removeStaffOnDelete(PersonEvent<HospitalStaff> event) {
+    private void removeStaffOnDelete(ListCellEvent<HospitalStaff> event) {
         if (editedStaff != null) {
             cancelEditStaff(null);
         }
-        hospitalStaffService.delete(event.getPerson());
-        staffObservableList.remove(event.getPerson());
+        hospitalStaffService.delete(event.getSubject());
+        staffObservableList.remove(event.getSubject());
     }
 
     /**
      * Method to return the event handler of pressing the edit button next to a staff entry in the list
      * @return event handler editing the staff in the database
      */
-    private EventHandler<PersonEvent> handleStaffEditPressed() {
+    private EventHandler<ListCellEvent> handleStaffEditPressed() {
         return this::updateStaffOnEdit;
     }
 
@@ -291,13 +286,13 @@ public class StaffManagementViewController extends AbstractViewController {
      * Method handling the edition of a staff member in the database and in the list itself
      * @param event the received edition event
      */
-    private void updateStaffOnEdit(PersonEvent<HospitalStaff> event) {
+    private void updateStaffOnEdit(ListCellEvent<HospitalStaff> event) {
         if (editedStaff != null) {
             cancelEditStaff(null);
         }
         lockEditableFormFields(true);
         resetFormFields();
-        HospitalStaff p = event.getPerson();
+        HospitalStaff p = event.getSubject();
         nameField.setText(p.getName());
         surnameField.setText(p.getSurname());
         roleField.getSelectionModel().select(p.getRole());
