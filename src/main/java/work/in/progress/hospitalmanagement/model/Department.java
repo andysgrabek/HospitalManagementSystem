@@ -35,7 +35,8 @@ public class Department {
     private String name;
     @Getter
     @NotNull
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "department", orphanRemoval = true,
+            cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH})
     private Set<Bed> beds = new HashSet<>();
 
     public Department(String name) {
