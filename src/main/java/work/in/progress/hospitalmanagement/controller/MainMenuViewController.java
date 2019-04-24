@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.factory.ButtonFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -92,12 +93,8 @@ public class MainMenuViewController extends AbstractViewController {
      * @return the new button
      */
     private JFXButton createDialogActionButton(String text, EventHandler<ActionEvent> buttonHandler) {
-        JFXButton button = new JFXButton(text);
-        button.setPrefWidth(INFO_DIALOG_BUTTON_PREF_WIDTH);
-        button.getStyleClass().add("hms-button");
-        button.setButtonType(JFXButton.ButtonType.RAISED);
+        JFXButton button = ButtonFactory.getDefaultFactory().defaultButton(text);
         button.setOnAction(buttonHandler);
-        button.setFocusTraversable(false);
         return button;
     }
 
@@ -111,8 +108,8 @@ public class MainMenuViewController extends AbstractViewController {
         jfxDialogLayout.setHeading(headingText);
         jfxDialogLayout.getStyleClass().add("hms-text");
         JFXDialog jfxDialog = new JFXDialog(stackPane, jfxDialogLayout, JFXDialog.DialogTransition.CENTER);
-        JFXButton yesButton = createDialogActionButton("Yes", event -> Platform.exit());
-        JFXButton noButton = createDialogActionButton("No", event -> jfxDialog.close());
+        JFXButton yesButton = createDialogActionButton("YES", event -> Platform.exit());
+        JFXButton noButton = createDialogActionButton("NO", event -> jfxDialog.close());
         stackPane.setOnMouseClicked(event -> { });
         jfxDialogLayout.setActions(yesButton, noButton);
         return jfxDialog;

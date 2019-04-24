@@ -43,6 +43,7 @@ public class HospitalManagementApplication extends Application {
         primaryStage.setMinHeight(MIN_WINDOW_HEIGHT);
         primaryStage.setMinWidth(MIN_WINDOW_WIDTH);
         primaryStage.show();
+        primaryStage.setTitle("Hospital Management System");
     }
 
     /**

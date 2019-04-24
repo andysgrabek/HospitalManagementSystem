@@ -12,10 +12,9 @@ public class BedCell extends DeleteListCell<Bed> {
         }
         String occupant = "";
         if (item.getAdmission().isPresent()) {
-            occupant = "occupied by: " + item.getAdmission().get().getPatient().getSurname();
+            occupant = ", occupied by: " + item.getAdmission().get().getPatient().getSurname();
         }
-        getHBox().getChildren().remove(getEditButton());
-        getLabel().setText("Room " + item.getRoomNumber() + ", " + occupant);
+        getLabel().setText("Room " + item.getRoomNumber() + occupant);
         setGraphic(getHBox());
     }
 }

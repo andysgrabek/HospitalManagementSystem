@@ -150,11 +150,6 @@ public class PatientRegistrationViewController extends AbstractViewController {
                 new NumberFieldValidator(Address.class, "zipCode", validator));
         birthDatePicker.getValidators().add(
                 new BirthDateValidator(Patient.class, "birthDate", validator));
-        formFields.forEach(field -> field.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                ((IFXValidatableControl) field).validate();
-            }
-        }));
     }
 
     /**

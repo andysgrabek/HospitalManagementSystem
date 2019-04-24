@@ -14,7 +14,7 @@ public class PersonCell<T extends Person> extends DeleteListCell<T> {
             setGraphic(null);
             return;
         }
-        getLabel().setText(item.getName() + " " + item.getSurname());
+        getLabel().setText("ID: " + item.getId() + " " + item.getName() + " " + item.getSurname());
         setGraphic(getHBox());
     }
 }

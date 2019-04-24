@@ -173,11 +173,6 @@ public class StaffManagementViewController extends AbstractViewController {
                 new ComboBoxValidator(HospitalStaff.class, "department", validator));
         roleField.getValidators().add(
                 new ComboBoxValidator(HospitalStaff.class, "role", validator));
-        formFields.forEach(field -> field.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                ((IFXValidatableControl) field).validate();
-            }
-        }));
     }
 
     @FXML
