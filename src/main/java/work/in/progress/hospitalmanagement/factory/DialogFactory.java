@@ -7,6 +7,8 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import lombok.AccessLevel;
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DialogFactory {
 
+    private static final double IMAGE_DIALOG_IMAGE_HEIGHT = 0.8;
     @Getter
     private static DialogFactory defaultFactory = new DialogFactory();
 
@@ -54,7 +57,7 @@ public final class DialogFactory {
         jfxTextField.setPromptText(prompt);
         content.setBody(jfxTextField);
         JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
-        JFXButton yesButton = ButtonFactory.getDefaultFactory().defaultButton("YES");
+        JFXButton yesButton = ButtonFactory.getDefaultFactory().defaultButton("CONFIRM");
         content.getStyleClass().add("hms-text");
         yesButton.setOnAction(event -> {
             if (jfxTextField.validate()) {
@@ -64,6 +67,27 @@ public final class DialogFactory {
             }
         });
         content.setActions(yesButton);
+        return dialog;
+    }
+
+    public JFXDialog imageDialog(String header,
+                                 Image image,
+                                 EventHandler<ActionEvent> onClose,
+                                 StackPane root) {
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(header));
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(IMAGE_DIALOG_IMAGE_HEIGHT * root.getHeight());
+        content.setBody(imageView);
+        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton closeButton = ButtonFactory.getDefaultFactory().defaultButton("CLOSE");
+        content.getStyleClass().add("hms-text");
+        closeButton.setOnAction(event -> {
+            onClose.handle(event);
+            dialog.close();
+        });
+        content.setActions(closeButton);
         return dialog;
     }
 }

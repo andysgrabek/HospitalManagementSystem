@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -121,8 +122,12 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     @FXML
     private void showSchema(ActionEvent actionEvent) {
-        //TODO add image of finished schema and display it in a dialog
-        System.out.println("Show dialog with schema image here");
+        DialogFactory.getDefaultFactory().imageDialog(
+                "Hospital Management System Schema",
+                new Image("images/admission.png"),
+                event -> { },
+                (StackPane) getRoot()
+        ).show();
     }
 
     @FXML
