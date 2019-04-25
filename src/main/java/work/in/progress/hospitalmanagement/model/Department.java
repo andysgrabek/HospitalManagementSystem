@@ -1,6 +1,7 @@
 package work.in.progress.hospitalmanagement.model;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,6 +18,7 @@ import javax.validation.constraints.Size;
  * @author jablonskiba
  */
 @ToString
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Department {
@@ -27,9 +29,5 @@ public class Department {
     @Size(max = 100)
     @Column(length = 100, nullable = false, updatable = false)
     private String name;
-
-    public Department(String name) {
-        this.name = name;
-    }
 
 }
