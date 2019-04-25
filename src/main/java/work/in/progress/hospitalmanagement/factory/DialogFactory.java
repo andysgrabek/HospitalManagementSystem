@@ -3,6 +3,8 @@ package work.in.progress.hospitalmanagement.factory;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
@@ -41,4 +43,27 @@ public final class DialogFactory {
         return dialog;
     }
 
+    public JFXDialog textFieldDialog(String header,
+                                     String prompt,
+                                     StringProperty stringProperty,
+                                     EventHandler<ActionEvent> onConfirm,
+                                     StackPane root) {
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(header));
+        JFXTextField jfxTextField = new JFXTextField();
+        jfxTextField.setPromptText(prompt);
+        content.setBody(jfxTextField);
+        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton yesButton = ButtonFactory.getDefaultFactory().defaultButton("YES");
+        content.getStyleClass().add("hms-text");
+        yesButton.setOnAction(event -> {
+            if (jfxTextField.validate()) {
+                stringProperty.setValue(jfxTextField.getText());
+                onConfirm.handle(event);
+                dialog.close();
+            }
+        });
+        content.setActions(yesButton);
+        return dialog;
+    }
 }
