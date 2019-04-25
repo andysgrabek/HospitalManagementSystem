@@ -60,7 +60,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                            <JFXButton contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" styleClass="hms-main-menu-button" text="Admissions" GridPane.columnIndex="1">
+                            <JFXButton contentDisplay="TOP" onAction="#openAdmissionManagement" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" styleClass="hms-main-menu-button" text="Admissions" GridPane.columnIndex="1">
                            <graphic>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -92,7 +92,7 @@
       
                         </VBox>
                         <VBox alignment="CENTER" spacing="30.0" HBox.hgrow="ALWAYS">
-                            <JFXButton contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" styleClass="hms-main-menu-button" text="Patients waiting" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <JFXButton contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" styleClass="hms-main-menu-button" onAction="#openPatientsWaiting" text="Patients waiting" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <graphic>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -101,7 +101,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                            <JFXButton contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" styleClass="hms-main-menu-button" text="Advanced search">
+                            <JFXButton contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" ripplerFill="#f0ab8d" onAction="#openAdvancedSearch" styleClass="hms-main-menu-button" text="Advanced search">
                            <graphic>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
