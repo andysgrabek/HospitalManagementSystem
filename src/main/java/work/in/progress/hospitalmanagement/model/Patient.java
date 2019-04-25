@@ -25,7 +25,7 @@ import java.util.Optional;
  *
  * @author jablonskiba
  */
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "currentAdmission")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Patient extends Person {
@@ -38,7 +38,6 @@ public class Patient extends Person {
     private LocalDate birthDate;
     @Getter
     @Setter
-    @SuppressWarnings("checkstyle:MagicNumber")
     @Size(min = 5, max = 15)
     @Pattern(regexp = "^(0|[1-9][0-9]*)$")
     @Column(nullable = false)
@@ -53,7 +52,7 @@ public class Patient extends Person {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private Address homeAddress;
     @Setter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private Admission currentAdmission;
 
     @Builder

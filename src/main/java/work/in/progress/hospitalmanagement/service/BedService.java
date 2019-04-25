@@ -34,7 +34,11 @@ public class BedService extends AbstractService<Bed, Integer> {
      * @return beds
      */
     public Collection<Bed> occupiedBeds(Department department) {
-        return bedRepository.occupiedBeds(department);
+        return bedRepository.findByDepartmentAndAdmissionNotNull(department);
+    }
+
+    public Collection<Bed> findByDepartment(Department department) {
+        return bedRepository.findAllByDepartment(department);
     }
 
     @Override

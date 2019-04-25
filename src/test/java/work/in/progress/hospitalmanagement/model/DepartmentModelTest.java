@@ -16,9 +16,7 @@ public class DepartmentModelTest {
     public void whenToStringCalled_thenProperStringShouldBeReturned() {
         Department department = Mocks.department();
         assertThat(department.toString()).isEqualTo("Department(" +
-                "name=" + department.getName() + ", " +
-                "address=" + department.getAddress() + ", " +
-                "beds=" + department.getBeds() + ")");
+                "name=" + department.getName() + ")");
     }
 
 }

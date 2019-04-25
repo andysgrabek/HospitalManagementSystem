@@ -33,9 +33,8 @@ public class BedServiceTest {
     public void whenBedAssigned_thenOccupiedBedsIncrease() {
         Bed bed = Mocks.bed();
         Department department = bed.getDepartment();
-        department.getBeds().add(bed);
 
-        Mockito.when(bedRepository.occupiedBeds(department))
+        Mockito.when(bedRepository.findByDepartmentAndAdmissionNotNull(department))
                 .thenReturn(Collections.emptySet())
                 .thenReturn(Collections.singletonList(bed));
 

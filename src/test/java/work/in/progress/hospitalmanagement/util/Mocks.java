@@ -30,7 +30,7 @@ public final class Mocks {
     }
 
     public static Department department() {
-        return new Department("Intensive Care", address());
+        return new Department("Intensive Care");
     }
 
     public static Patient patient() {
