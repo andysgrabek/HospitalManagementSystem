@@ -1,6 +1,10 @@
 package work.in.progress.hospitalmanagement.controller;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +23,6 @@ import work.in.progress.hospitalmanagement.factory.BedCellFactory;
 import work.in.progress.hospitalmanagement.factory.ButtonFactory;
 import work.in.progress.hospitalmanagement.factory.DepartmentCellFactory;
 import work.in.progress.hospitalmanagement.factory.DialogFactory;
-import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Bed;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.Patient;
@@ -134,7 +137,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
         formButtonsParent.getChildren().add(cancelEditDepartmentButton);
         formButtonsParent.getChildren().add(addBedButton);
         editedDepartment = p;
-        bedsListView.setItems(FXCollections.observableArrayList(editedDepartment.getBeds()));
+        bedsListView.setItems(FXCollections.observableArrayList(bedService.findByDepartment(editedDepartment)));
         formLabel.setText("EDITING DEPARTMENT");
     }
 
@@ -200,7 +203,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
      * @return the newly created department
      */
     private Department getDepartmentFromForm() {
-        return new Department(nameField.getText(), new Address("a", "b", 44444));
+        return new Department(nameField.getText());
     }
 
     @FXML

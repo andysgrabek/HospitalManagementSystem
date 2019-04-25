@@ -52,7 +52,7 @@ public class Patient extends Person {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private Address homeAddress;
     @Setter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private Admission currentAdmission;
 
     @Builder

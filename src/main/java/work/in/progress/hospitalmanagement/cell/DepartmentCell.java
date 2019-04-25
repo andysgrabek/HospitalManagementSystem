@@ -10,7 +10,7 @@ public class DepartmentCell extends DeleteListCell<Department> {
             setGraphic(null);
             return;
         }
-        getLabel().setText(item.getName() + ", beds: " + item.getBeds().size());
+        getLabel().setText(item.getName() + ", beds: " + 1);
         setGraphic(getHBox());
     }
 }

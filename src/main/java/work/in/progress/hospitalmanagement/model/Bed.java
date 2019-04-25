@@ -5,10 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -34,11 +37,12 @@ public class Bed {
     private Integer id;
     @Getter
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Department department;
     @Setter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "bed", cascade = CascadeType.ALL, orphanRemoval = true)
     private InpatientAdmission admission;
     @Getter
     @Setter

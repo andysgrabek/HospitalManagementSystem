@@ -25,16 +25,15 @@ public class BedModelTest {
 
     @Test
     public void whenBedAssigned_thenOccupiedBedsIncrease() {
-        Bed bed = Mocks.bed();
-        Department department = entityManager.persist(bed.getDepartment());
-        department.getBeds().add(bed);
+        Department department = entityManager.persistAndFlush(Mocks.department());
+        Bed bed = bedRepository.saveAndFlush(new Bed(department, "12E"));
 
-        assertThat(bedRepository.occupiedBeds(bed.getDepartment()).size()).isEqualTo(0);
+        assertThat(bedRepository.findByDepartmentAndAdmissionNotNull(department)).isEmpty();
 
         bed.setAdmission(entityManager.persist(
                 new InpatientAdmission(entityManager.persist(Mocks.patient()), bed)));
 
-        assertThat(bedRepository.occupiedBeds(bed.getDepartment()).size()).isEqualTo(1);
+        assertThat(bedRepository.findByDepartmentAndAdmissionNotNull(department)).isNotEmpty();
     }
 
     @Test

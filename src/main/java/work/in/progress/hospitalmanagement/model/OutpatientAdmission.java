@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -18,14 +21,16 @@ import javax.validation.constraints.NotNull;
  */
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@OnDelete(action = OnDeleteAction.CASCADE)
 @Entity
 public class OutpatientAdmission extends Admission {
 
     @Setter
     @Getter
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Department department;
 
     public OutpatientAdmission(Patient patient, Department department) {
