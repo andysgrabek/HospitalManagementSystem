@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
 import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
@@ -33,8 +32,7 @@ public class HospitalStaffServiceTest {
         hospitalStaffService = new HospitalStaffService(hospitalStaffRepository);
         HospitalStaff hospitalStaff = HospitalStaff.builder().name(staffName)
                 .surname(staffSurname).role(HospitalStaff.Role.DOCTOR)
-                .department(new Department("Intensive Care",
-                        new Address("Sky 1", "Warsaw", 54321)))
+                .department(new Department("Intensive Care"))
                 .build();
         ReflectionTestUtils.setField(hospitalStaff, "email", staffEmail);
 

@@ -25,9 +25,8 @@ public class HospitalStaffModelTest {
     @Test
     public void whenFetched_calculateEmailBasedOnFields() {
         HospitalStaff hospitalStaff = Mocks.hospitalStaff();
-        entityManager.persist(hospitalStaff.getDepartment());
-        entityManager.persist(hospitalStaff);
-        entityManager.flush();
+        entityManager.persistAndFlush(hospitalStaff.getDepartment());
+        entityManager.persistAndFlush(hospitalStaff);
         entityManager.refresh(hospitalStaff);
 
         assertThat(hospitalStaff.getEmail()).isEqualTo(String.format("%s%s%d@dtu.dk",

@@ -2,38 +2,38 @@ package work.in.progress.hospitalmanagement.cell;
 
 import org.junit.Rule;
 import org.junit.Test;
-import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import static org.junit.Assert.*;
 
-public class PersonCellTest {
+public class DepartmentCellTest {
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
     @Test
     public void updateItemTestNullItem() {
-        Patient patient = null;
-        PersonCell<Patient> cell = new PersonCell<>();
-        cell.updateItem(patient, false);
+        Department department = null;
+        DepartmentCell cell = new DepartmentCell();
+        cell.updateItem(department, false);
         assertNull(cell.getGraphic());
     }
 
     @Test
     public void updateItemTestEmptyCell() {
-        Patient patient = Mocks.patient();
-        PersonCell<Patient> cell = new PersonCell<>();
-        cell.updateItem(patient, true);
+        Department department = Mocks.department();
+        DepartmentCell cell = new DepartmentCell();
+        cell.updateItem(department, true);
         assertNull(cell.getGraphic());
     }
 
     @Test
     public void updateItemTestLoadedCell() {
-        Patient patient = Mocks.patient();
-        PersonCell<Patient> cell = new PersonCell<>();
-        cell.updateItem(patient, false);
+        Department department = Mocks.department();
+        DepartmentCell cell = new DepartmentCell();
+        cell.updateItem(department, false);
         assertNotNull(cell.getGraphic());
         assertEquals(3, cell.getHBox().getChildren().size());
     }

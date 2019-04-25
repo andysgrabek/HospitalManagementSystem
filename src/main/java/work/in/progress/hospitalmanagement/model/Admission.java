@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -41,6 +44,8 @@ public abstract class Admission {
     @Getter
     @NotNull
     @OneToOne(optional = false)
+    @JoinColumn(name = "patient_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Patient patient;
 
     Admission(Patient patient) {

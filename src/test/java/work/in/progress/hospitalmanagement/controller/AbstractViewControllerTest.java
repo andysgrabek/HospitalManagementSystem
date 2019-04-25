@@ -3,7 +3,10 @@ package work.in.progress.hospitalmanagement.controller;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -15,12 +18,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Timer;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class,
@@ -68,7 +66,6 @@ public class AbstractViewControllerTest implements ApplicationContextAware {
 
     @Test
     public void presentViewController_notAnimated() {
-        AbstractViewController vc = AbstractViewController.instantiateViewController(TestViewController.class);
         controller.presentViewController(AbstractViewController.instantiateViewController(TestViewController.class), false);
     }
 
