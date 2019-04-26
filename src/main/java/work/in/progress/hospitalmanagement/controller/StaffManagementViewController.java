@@ -176,11 +176,6 @@ public class StaffManagementViewController extends AbstractViewController {
     }
 
     @FXML
-    private void backToMainMenu(ActionEvent actionEvent) {
-        presentViewController(instantiateViewController(MainMenuViewController.class), true);
-    }
-
-    @FXML
     private void clearSearchFields(ActionEvent actionEvent) {
         nameSearchField.setText("");
         departmentSearchField.getSelectionModel().clearSelection();

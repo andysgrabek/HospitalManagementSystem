@@ -1,6 +1,5 @@
 package work.in.progress.hospitalmanagement.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -19,10 +18,5 @@ public class AdvancedSearchViewController extends AbstractViewController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-    }
-
-    @FXML
-    private void backToMainMenu(ActionEvent actionEvent) {
-        presentViewController(instantiateViewController(MainMenuViewController.class), true);
     }
 }

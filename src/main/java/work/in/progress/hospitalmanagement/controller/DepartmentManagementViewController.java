@@ -184,11 +184,6 @@ public class DepartmentManagementViewController extends AbstractViewController {
     }
 
     @FXML
-    private void backToMainMenu(ActionEvent actionEvent) {
-        presentViewController(instantiateViewController(MainMenuViewController.class), true);
-    }
-
-    @FXML
     private void createDepartment(ActionEvent actionEvent) {
         if (nameField.validate()) {
             departmentObservableList.add(departmentService.save(getDepartmentFromForm()));
@@ -243,8 +238,8 @@ public class DepartmentManagementViewController extends AbstractViewController {
         vBox.getChildren().add(jfxTextField);
         content.setBody(vBox);
         JFXDialog dialog = new JFXDialog((StackPane) getRoot(), content, JFXDialog.DialogTransition.CENTER);
-        JFXButton button = ButtonFactory.getDefaultFactory().defaultButton("SAVE");
-        JFXButton cancel = ButtonFactory.getDefaultFactory().defaultButton("CANCEL");
+        JFXButton button = ButtonFactory.getDefaultFactory().defaultButton("Save");
+        JFXButton cancel = ButtonFactory.getDefaultFactory().defaultButton("Cancel");
         content.getStyleClass().add("hms-text");
         if (bed == null) {
             button.setOnAction(event -> {

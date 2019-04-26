@@ -255,11 +255,6 @@ public class PatientRegistrationViewController extends AbstractViewController {
     }
 
     @FXML
-    private void backToMainMenu(ActionEvent actionEvent) {
-        presentViewController(instantiateViewController(MainMenuViewController.class), true);
-    }
-
-    @FXML
     private void registerPatient(ActionEvent actionEvent) {
         if (validatePatientForm()) {
             patientObservableList.add(patientService.save(getPatientFromForm()));
