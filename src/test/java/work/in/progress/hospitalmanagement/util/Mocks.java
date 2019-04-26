@@ -56,6 +56,10 @@ public final class Mocks {
         return new OutpatientAdmission(patient(), department());
     }
 
+    public static SearchQuery searchQuery() {
+        return new SearchQuery("All department names", "SELECT name FROM Department");
+    }
+
     public static Validator validatorAlwaysCorrect() {
         return new Validator() {
             @Override

@@ -5,12 +5,16 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.Property;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Control;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -26,6 +30,7 @@ import work.in.progress.hospitalmanagement.model.OutpatientAdmission;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.validator.ComboBoxValidator;
+import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
 
 import javax.validation.Validator;
 import java.util.List;
@@ -34,7 +39,7 @@ import java.util.List;
 public final class DialogFactory {
 
     private static final Paint PAINT = Paint.valueOf("#f0ab8d");
-
+    private static final double VBOX_SPACING = 20.0;
     @Getter
     private static DialogFactory defaultFactory = new DialogFactory();
     private static final double ADMISSION_PREF_WIDTH = 400.0;
@@ -115,7 +120,7 @@ public final class DialogFactory {
             child.getStyleClass().add("hms-form-text");
             ((Control) child).setPrefWidth(ADMISSION_PREF_WIDTH);
         });
-        vBox.setSpacing(20);
+        vBox.setSpacing(VBOX_SPACING);
         inpatientCheckbox.selectedProperty().addListener((obs, o, newValue) -> bedComboBox.setVisible(newValue));
         JFXButton confirmButton = ButtonFactory.getDefaultFactory().defaultButton("Admit");
         content.setBody(vBox);
@@ -144,6 +149,54 @@ public final class DialogFactory {
             }
         });
         content.setActions(confirmButton);
+        return dialog;
+    }
+
+    public JFXDialog textFieldDialog(String header,
+                                     String prompt,
+                                     StringProperty stringProperty,
+                                     EventHandler<ActionEvent> onConfirm,
+                                     StackPane root,
+                                     TextFieldValidator validator) {
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(header));
+        JFXTextField jfxTextField = new JFXTextField();
+        jfxTextField.getValidators().add(validator);
+        jfxTextField.setFocusColor(PAINT);
+        jfxTextField.setPromptText(prompt);
+        content.setBody(jfxTextField);
+        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton yesButton = ButtonFactory.getDefaultFactory().defaultButton("CONFIRM");
+        content.getStyleClass().add("hms-text");
+        yesButton.setOnAction(event -> {
+            if (jfxTextField.validate()) {
+                stringProperty.setValue(jfxTextField.getText());
+                onConfirm.handle(event);
+                dialog.close();
+            }
+        });
+        content.setActions(yesButton);
+        return dialog;
+    }
+
+    public JFXDialog imageDialog(String header,
+                                 Image image,
+                                 EventHandler<ActionEvent> onClose,
+                                 StackPane root) {
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(header));
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(MAX_HEIGHT_RATIO * root.getHeight());
+        content.setBody(imageView);
+        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton closeButton = ButtonFactory.getDefaultFactory().defaultButton("CLOSE");
+        content.getStyleClass().add("hms-text");
+        closeButton.setOnAction(event -> {
+            onClose.handle(event);
+            dialog.close();
+        });
+        content.setActions(closeButton);
         return dialog;
     }
 }

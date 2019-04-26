@@ -8,13 +8,14 @@ import work.in.progress.hospitalmanagement.util.Mocks;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-public class DepartmentModelTest {
+public class SearchQueryModelTest {
 
     @Test
     public void whenToStringCalled_thenProperStringShouldBeReturned() {
-        Department department = Mocks.department();
-        assertThat(department.toString()).isEqualTo("Department(" +
-                "name=" + department.getName() + ")");
+        SearchQuery searchQuery = Mocks.searchQuery();
+        assertThat(searchQuery.toString()).isEqualTo("SearchQuery(" +
+                "label=" + searchQuery.getLabel() + ", " +
+                "expression=" + searchQuery.getExpression() + ")");
     }
 
 }
