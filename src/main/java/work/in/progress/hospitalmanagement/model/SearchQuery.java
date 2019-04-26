@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import work.in.progress.hospitalmanagement.constraint.SqlExpression;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,13 +22,20 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-public class Department {
+public class SearchQuery {
 
     @Getter
     @NotBlank
     @Id
     @Size(max = 100)
     @Column(length = 100, nullable = false, updatable = false)
-    private String name;
+    private String label;
+
+    @Getter
+    @SqlExpression
+    @NotBlank
+    @Size(max = 300)
+    @Column(length = 300, nullable = false)
+    private String expression;
 
 }

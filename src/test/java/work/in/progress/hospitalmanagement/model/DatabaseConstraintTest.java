@@ -141,4 +141,21 @@ public class DatabaseConstraintTest {
         assertThat(outpatientAdmissionRepository.findAll()).isEmpty();
     }
 
+//    @Test
+//    public void whenPatientCurrentAdmissionChanged_then() {
+//        Patient patient = patientRepository.saveAndFlush(Mocks.patient());
+//        Department department = departmentRepository.saveAndFlush(Mocks.department());
+//
+//        OutpatientAdmission outpatientAdmission =
+//                outpatientAdmissionRepository.saveAndFlush(
+//                        new OutpatientAdmission(patient, department));
+//        patient = patientRepository.findAll().get(0);
+//        assertThat(outpatientAdmissionRepository.findAll()).isNotEmpty();
+//        patient.setCurrentAdmission(null);
+//        patientRepository.save(patient);
+//        entityManager.clear();
+//        outpatientAdmissionRepository.flush();
+//        assertThat(outpatientAdmissionRepository.findAll()).isEmpty();
+//    }
+
 }
