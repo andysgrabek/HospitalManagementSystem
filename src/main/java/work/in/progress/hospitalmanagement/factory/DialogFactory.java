@@ -37,6 +37,8 @@ public final class DialogFactory {
 
     @Getter
     private static DialogFactory defaultFactory = new DialogFactory();
+    private static final double ADMISSION_PREF_WIDTH = 400.0;
+    private static final double MAX_HEIGHT_RATIO = 0.8;
 
     public <T> JFXDialog comboBoxDialog(String header,
                                         ObservableList<T> values,
@@ -95,7 +97,7 @@ public final class DialogFactory {
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text(header));
         VBox vBox = new VBox();
-        vBox.setMaxHeight(0.8 * root.getHeight());
+        vBox.setMaxHeight(MAX_HEIGHT_RATIO * root.getHeight());
         JFXCheckBox inpatientCheckbox = new JFXCheckBox("Admit as inpatient?");
         inpatientCheckbox.setSelected(true);
         inpatientCheckbox.setCheckedColor(PAINT);
@@ -111,12 +113,12 @@ public final class DialogFactory {
         vBox.getChildren().addAll(inpatientCheckbox, departmentComboBox, bedComboBox);
         vBox.getChildren().forEach(child -> {
             child.getStyleClass().add("hms-form-text");
-            ((Control) child).setPrefWidth(400);
+            ((Control) child).setPrefWidth(ADMISSION_PREF_WIDTH);
         });
+        vBox.setSpacing(20);
         inpatientCheckbox.selectedProperty().addListener((obs, o, newValue) -> bedComboBox.setVisible(newValue));
         JFXButton confirmButton = ButtonFactory.getDefaultFactory().defaultButton("Admit");
         content.setBody(vBox);
-        vBox.setSpacing(20);
         bedComboBox.setPromptText("Bed");
         departmentComboBox.setPromptText("Department");
         JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);

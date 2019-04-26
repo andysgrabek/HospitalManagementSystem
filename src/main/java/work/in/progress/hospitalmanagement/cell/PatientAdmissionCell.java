@@ -31,6 +31,7 @@ public class PatientAdmissionCell extends PersonCell<Patient> {
             getListView().fireEvent(e);
         });
         getDeleteButton().setText("Discharge");
+        getDeleteButton().setPrefWidth(ButtonFactory.getLARGE_BUTTON_WIDTH());
         if (item.getCurrentAdmission().isPresent()) {
             if (item.getCurrentAdmission().get() instanceof OutpatientAdmission) {
                 getHBox().getChildren().remove(getEditButton());

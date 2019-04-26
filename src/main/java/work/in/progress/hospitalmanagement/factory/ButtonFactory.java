@@ -9,11 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ButtonFactory {
 
+    @Getter
     private static final double WIDTH = 80;
+    @Getter
+    private static final double LARGE_BUTTON_WIDTH = WIDTH * 1.5;
+    @Getter
     private static final double HEIGHT = 30.0;
+    @Getter
     private static final Paint PAINT = Paint.valueOf("#f0ab8d");
+    @Getter
     private static final JFXButton.ButtonType TYPE = JFXButton.ButtonType.RAISED;
+    @Getter
     private static final boolean FOCUS_TRAVERSABLE = false;
+    @Getter
     private static final String STYLE = "hms-button";
     @Getter
     private static ButtonFactory defaultFactory = new ButtonFactory();
