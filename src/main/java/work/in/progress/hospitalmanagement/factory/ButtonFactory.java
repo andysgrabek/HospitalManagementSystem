@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ButtonFactory {
 
-    private static final double WIDTH = 130.0;
+    private static final double WIDTH = 80;
     private static final double HEIGHT = 30.0;
     private static final Paint PAINT = Paint.valueOf("#f0ab8d");
     private static final JFXButton.ButtonType TYPE = JFXButton.ButtonType.RAISED;
