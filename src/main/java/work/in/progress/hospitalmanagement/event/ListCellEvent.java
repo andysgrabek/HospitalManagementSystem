@@ -13,6 +13,7 @@ public class ListCellEvent<T> extends Event {
 
     public static final EventType<ListCellEvent> EDIT_EVENT = new EventType<>(ANY, "EDIT_EVENT");
     public static final EventType<ListCellEvent> DELETE_EVENT = new EventType<>(ANY, "DELETE_EVENT");
+    public static final EventType<ListCellEvent> NEW_EVENT = new EventType<>(ANY, "NEW_EVENT");
 
     @Getter
     @Setter
