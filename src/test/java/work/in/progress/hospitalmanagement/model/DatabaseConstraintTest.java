@@ -18,6 +18,7 @@ import work.in.progress.hospitalmanagement.repository.PatientRepository;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -86,7 +87,8 @@ public class DatabaseConstraintTest {
 
         OutpatientAdmission outpatientAdmission =
                 outpatientAdmissionRepository.saveAndFlush(
-                        new OutpatientAdmission(patientRepository.saveAndFlush(Mocks.patient()), department));
+                        new OutpatientAdmission(patientRepository.saveAndFlush(Mocks.patient()),
+                                department, LocalDateTime.now().plusHours(1)));
         Bed bed = bedRepository.saveAndFlush(new Bed(department, "12E"));
         InpatientAdmission inpatientAdmission =
                 inpatientAdmissionRepository.saveAndFlush(
@@ -131,7 +133,7 @@ public class DatabaseConstraintTest {
 
         OutpatientAdmission outpatientAdmission =
                 outpatientAdmissionRepository.saveAndFlush(
-                        new OutpatientAdmission(patient, department));
+                        new OutpatientAdmission(patient, department, LocalDateTime.now().plusHours(1)));
 
         patientRepository.delete(patient);
         patientRepository.flush();
@@ -140,22 +142,5 @@ public class DatabaseConstraintTest {
         assertThat(patientRepository.findAll()).isEmpty();
         assertThat(outpatientAdmissionRepository.findAll()).isEmpty();
     }
-
-//    @Test
-//    public void whenPatientCurrentAdmissionChanged_then() {
-//        Patient patient = patientRepository.saveAndFlush(Mocks.patient());
-//        Department department = departmentRepository.saveAndFlush(Mocks.department());
-//
-//        OutpatientAdmission outpatientAdmission =
-//                outpatientAdmissionRepository.saveAndFlush(
-//                        new OutpatientAdmission(patient, department));
-//        patient = patientRepository.findAll().get(0);
-//        assertThat(outpatientAdmissionRepository.findAll()).isNotEmpty();
-//        patient.setCurrentAdmission(null);
-//        patientRepository.save(patient);
-//        entityManager.clear();
-//        outpatientAdmissionRepository.flush();
-//        assertThat(outpatientAdmissionRepository.findAll()).isEmpty();
-//    }
 
 }
