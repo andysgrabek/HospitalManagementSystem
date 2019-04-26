@@ -3,9 +3,11 @@ package work.in.progress.hospitalmanagement.factory;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTimePicker;
 import javafx.beans.property.Property;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -31,8 +33,10 @@ import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.validator.ComboBoxValidator;
 import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
+import work.in.progress.hospitalmanagement.validator.VisitDateTimeValidator;
 
 import javax.validation.Validator;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -108,30 +112,91 @@ public final class DialogFactory {
         inpatientCheckbox.setCheckedColor(PAINT);
         JFXComboBox<Department> departmentComboBox =
                 new JFXComboBox<>(FXCollections.observableArrayList(departmentList));
-        departmentComboBox.setFocusColor(PAINT);
         JFXComboBox<Bed> bedComboBox = new JFXComboBox<>();
+        setUpAdmissionFormComboBoxes(bedService, departmentComboBox, bedComboBox);
+        JFXDatePicker datePicker = new JFXDatePicker();
+        JFXTimePicker timePicker = new JFXTimePicker();
+        timePicker.set24HourView(true);
+        datePicker.setVisible(false);
+        timePicker.setVisible(false);
+        vBox.setSpacing(VBOX_SPACING);
+        setUpAdmissionFormSwitching(inpatientCheckbox, bedComboBox, datePicker, timePicker);
+        JFXButton confirmButton = ButtonFactory.getDefaultFactory().defaultButton("Admit");
+        content.setBody(vBox);
+        bedComboBox.setPromptText("Bed");
+        departmentComboBox.setPromptText("Department");
+        vBox.getChildren().addAll(inpatientCheckbox, departmentComboBox, bedComboBox, datePicker, timePicker);
+        styleAdmissionFormChildren(vBox);
+        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+        setAdmissionFieldsValidators(validator, departmentComboBox, bedComboBox, datePicker, timePicker);
+        setAdmissionDialogActions(patient, admissionProperty, onComplete, content, inpatientCheckbox,
+                departmentComboBox, bedComboBox, confirmButton, dialog, datePicker, timePicker);
+        return dialog;
+    }
+
+    private void setUpAdmissionFormComboBoxes(BedService bedService,
+                                              JFXComboBox<Department> departmentComboBox,
+                                              JFXComboBox<Bed> bedComboBox) {
+        departmentComboBox.setFocusColor(PAINT);
         departmentComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             bedComboBox.getSelectionModel().clearSelection();
             bedComboBox.setItems(FXCollections.observableArrayList(bedService.freeBeds(newValue)));
         });
         bedComboBox.setFocusColor(PAINT);
-        vBox.getChildren().addAll(inpatientCheckbox, departmentComboBox, bedComboBox);
+    }
+
+    private void styleAdmissionFormChildren(VBox vBox) {
         vBox.getChildren().forEach(child -> {
             child.getStyleClass().add("hms-form-text");
             ((Control) child).setPrefWidth(ADMISSION_PREF_WIDTH);
         });
-        vBox.setSpacing(VBOX_SPACING);
-        inpatientCheckbox.selectedProperty().addListener((obs, o, newValue) -> bedComboBox.setVisible(newValue));
-        JFXButton confirmButton = ButtonFactory.getDefaultFactory().defaultButton("Admit");
-        content.setBody(vBox);
-        bedComboBox.setPromptText("Bed");
-        departmentComboBox.setPromptText("Department");
-        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
+    }
+
+    private void setUpAdmissionFormSwitching(JFXCheckBox inpatientCheckbox,
+                                             JFXComboBox<Bed> bedComboBox,
+                                             JFXDatePicker datePicker,
+                                             JFXTimePicker timePicker) {
+        inpatientCheckbox.selectedProperty().addListener((obs, o, newValue) -> {
+            bedComboBox.setVisible(newValue);
+            datePicker.setVisible(!newValue);
+            timePicker.setVisible(!newValue);
+        });
+    }
+
+    private void setAdmissionFieldsValidators(Validator validator,
+                                              JFXComboBox<Department> departmentComboBox,
+                                              JFXComboBox<Bed> bedComboBox,
+                                              JFXDatePicker datePicker,
+                                              JFXTimePicker timePicker) {
+        VisitDateTimeValidator visitDateTimeValidator = new VisitDateTimeValidator(
+                OutpatientAdmission.class,
+                "visitDate",
+                validator,
+                datePicker, timePicker);
+        datePicker.getValidators().add(visitDateTimeValidator);
+        timePicker.getValidators().add(visitDateTimeValidator);
         bedComboBox.getValidators().add(
                 new ComboBoxValidator(InpatientAdmission.class, "bed", validator));
         departmentComboBox.getValidators().add(
                 new ComboBoxValidator(OutpatientAdmission.class, "department", validator));
+    }
+
+    private void setAdmissionDialogActions(Patient patient,
+                                           Property<Admission> admissionProperty,
+                                           EventHandler<ActionEvent> onComplete,
+                                           JFXDialogLayout content,
+                                           JFXCheckBox inpatientCheckbox,
+                                           JFXComboBox<Department> departmentComboBox,
+                                           JFXComboBox<Bed> bedComboBox,
+                                           JFXButton confirmButton,
+                                           JFXDialog dialog,
+                                           JFXDatePicker datePicker,
+                                           JFXTimePicker timePicker) {
         confirmButton.setOnAction(event -> {
+            bedComboBox.resetValidation();
+            departmentComboBox.resetValidation();
+            datePicker.resetValidation();
+            timePicker.resetValidation();
             if (inpatientCheckbox.isSelected()) {
                 if (bedComboBox.validate()) {
                     admissionProperty.setValue(
@@ -140,16 +205,17 @@ public final class DialogFactory {
                     dialog.close();
                 }
             } else {
-                if (departmentComboBox.validate()) {
+                if (departmentComboBox.validate() & datePicker.validate() & timePicker.validate()) {
                     admissionProperty.setValue(
-                            new OutpatientAdmission(patient, departmentComboBox.getSelectionModel().getSelectedItem()));
+                            new OutpatientAdmission(patient,
+                                    departmentComboBox.getSelectionModel().getSelectedItem(),
+                                    LocalDateTime.of(datePicker.getValue(), timePicker.getValue())));
                     onComplete.handle(event);
                     dialog.close();
                 }
             }
         });
         content.setActions(confirmButton);
-        return dialog;
     }
 
     public JFXDialog textFieldDialog(String header,
