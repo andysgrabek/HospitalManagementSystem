@@ -50,6 +50,7 @@ public abstract class Admission {
 
     Admission(Patient patient) {
         this.patient = patient;
+        admissionDate = LocalDate.now();
     }
 
     public abstract Department getDepartment();
