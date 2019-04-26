@@ -14,6 +14,7 @@ import work.in.progress.hospitalmanagement.util.Mocks;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +44,8 @@ public class PatientReportGeneratorTest {
     @Test
     public void whenDefaultReportGenerated_thenFileShouldBeCreated() throws IOException, DocumentException {
         Patient patient =  Mocks.patient();
-        patient.setCurrentAdmission(new OutpatientAdmission(patient, Mocks.department()));
+        patient.setCurrentAdmission(new OutpatientAdmission(patient, Mocks.department(),
+                LocalDateTime.now().plusHours(1)));
 
         File file = patientReportGenerator.generate(Collections.singletonList(patient));
         file.deleteOnExit();

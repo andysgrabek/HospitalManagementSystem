@@ -16,7 +16,8 @@ public class OutpatientAdmissionModelTest {
         assertThat(admission.toString()).isEqualTo("OutpatientAdmission(" +
                 "super=Admission(admissionDate=" + admission.getAdmissionDate() + ", " +
                 "patient=" + admission.getPatient() + "), " +
-                "department=" + admission.getDepartment() + ")");
+                "department=" + admission.getDepartment() + ", " +
+                "visitDate=" + admission.getVisitDate() + ")");
     }
 
 }
