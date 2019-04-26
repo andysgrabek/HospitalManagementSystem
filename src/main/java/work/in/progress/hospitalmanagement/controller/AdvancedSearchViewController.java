@@ -3,6 +3,7 @@ package work.in.progress.hospitalmanagement.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -13,54 +14,53 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.factory.DialogFactory;
+import work.in.progress.hospitalmanagement.model.SearchQuery;
+import work.in.progress.hospitalmanagement.service.SearchQueryService;
 import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
 
+import javax.persistence.Tuple;
+import javax.persistence.TupleElement;
 import javax.validation.Validator;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class AdvancedSearchViewController extends AbstractViewController {
+    private final Validator validator;
+    private final SearchQueryService searchQueryService;
     @FXML
     private JFXCheckBox saveCheckBox;
-    private final Validator validator;
     @FXML
     private JFXButton deleteQueryButton;
     @FXML
-    private ComboBox<Query> predefinedQueriesComboBox;
+    private ComboBox<SearchQuery> predefinedQueriesComboBox;
     @FXML
     private JFXTextField queryTextField;
     @FXML
     private JFXButton executeQueryButton;
     @FXML
-    private TableView<List<String>> tableView;
+    private TableView<Tuple> tableView;
 
     @Autowired
-    public AdvancedSearchViewController(Validator validator) {
+    public AdvancedSearchViewController(Validator validator, SearchQueryService searchQueryService) {
         this.validator = validator;
+        this.searchQueryService = searchQueryService;
     }
-
-    public class Query {
-        public String getQueryString() { return "SELECT * FROM ..."; }
-        public String getQueryLabel() { return "Select everything from ellipsis"; }
-    } //TODO: remove after true query type is added
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        predefinedQueriesComboBox.setItems(queryService.findAll());//TODO uncomment
+        predefinedQueriesComboBox.setItems(FXCollections.observableArrayList(searchQueryService.findAll()));
         predefinedQueriesComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (o, oV, newValue) -> deleteQueryButton.setDisable(newValue == null));
-        queryTextField.getValidators().add(new TextFieldValidator(Query.class, "queryString", validator));//TODO change field name
+        queryTextField.getValidators().add(new TextFieldValidator(SearchQuery.class, "expression", validator));
         queryTextField.textProperty().addListener((o, oV, nV) -> {
             saveCheckBox.setDisable(false);
             saveCheckBox.setSelected(true);
@@ -74,50 +74,54 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     @FXML
     private void selectedQuery(ActionEvent actionEvent) {
-        queryTextField.setText(predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getQueryString());
+        queryTextField.setText(predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getExpression());
         saveCheckBox.setDisable(true);
         saveCheckBox.setSelected(false);
     }
 
     @FXML
     private void executeQuery(ActionEvent actionEvent) {
-       if (queryTextField.validate()) {
-           if (saveCheckBox.isSelected()) {
-               StringProperty stringProperty = new SimpleStringProperty();
-               DialogFactory.getDefaultFactory().textFieldDialog(
-                       "Enter query name",
-                       "Query name",
-                       stringProperty,
-                       event -> {
-                           Query query = new Query();
-//                           queryService.save(query);//TODO use value from stringProperty as the name
-                           execute(query);
-                       },
-                       (StackPane) getRoot()).show();
-           } else {
-               execute(new Query());
-           }
-       }
+        if (queryTextField.validate()) {
+            if (saveCheckBox.isSelected()) {
+                StringProperty stringProperty = new SimpleStringProperty();
+                DialogFactory.getDefaultFactory().textFieldDialog(
+                        "Enter query name",
+                        "Query name",
+                        stringProperty,
+                        event -> {
+                            SearchQuery searchQuery = new SearchQuery(stringProperty.get(), queryTextField.getText());
+                            searchQueryService.save(searchQuery);
+                            execute(searchQuery);
+                        },
+                        (StackPane) getRoot(),
+                        new TextFieldValidator(SearchQuery.class, "label", validator)).show();
+            } else {
+                execute(new SearchQuery("CustomQuery", queryTextField.getText()));
+            }
+        }
     }
 
-    private void execute(Query query) {
-//        queryService.execute?//TODO uncomment
-        //TODO execute query
-        List<List<String>> result = new ArrayList<>(Arrays.asList(
-                new ArrayList<>(Arrays.asList("Aaaaaaaaaa", "Bbbbbbbbb", "Ccccccccc")),
-                new ArrayList<>(Arrays.asList("Pppppppppp", "Qqqqqqqqq", "Fffffffff")),
-                new ArrayList<>(Arrays.asList("D", "E", "F"))));
-        for (int i = 0; i < result.get(0).size(); ++i) {
-            List<String> header = result.get(0);
-            TableColumn<List<String>, String> column = new TableColumn<>(header.get(i) + " ");
-            int finalI = i;
-            column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(finalI)) {
-            });
-            tableView.getColumns().add(column);
+    private void execute(SearchQuery searchQuery) {
+        tableView.getColumns().clear();
+        List<Tuple> result = searchQueryService.execute(searchQuery);
+
+        if (result.size() > 0) {
+            int i = 0;
+            List<TupleElement<?>> columns = result.get(0).getElements();
+            for (TupleElement column : columns) {
+                TableColumn<Tuple, Object> tableColumn = new TableColumn<>(
+                        ObjectUtils.defaultIfNull(column.getAlias(), "Unnamed"));
+
+                final int index = i++;
+                tableColumn.setCellValueFactory(param ->
+                        new SimpleObjectProperty<Object>(param.getValue().get(index)) {
+                        });
+
+                tableView.getColumns().add(tableColumn);
+            }
         }
-        tableView.setItems(FXCollections.observableArrayList(
-                result.stream().filter(p -> result.indexOf(p) != 0).collect(Collectors.toList())));
-        predefinedQueriesComboBox.setItems(FXCollections.emptyObservableList());//TODO: retrieve list of queries from query service
+
+        tableView.setItems(FXCollections.observableArrayList(result));
     }
 
     @FXML
@@ -125,14 +129,16 @@ public class AdvancedSearchViewController extends AbstractViewController {
         DialogFactory.getDefaultFactory().imageDialog(
                 "Hospital Management System Schema",
                 new Image("images/admission.png"),
-                event -> { },
+                event -> {
+                },
                 (StackPane) getRoot()
         ).show();
     }
 
     @FXML
     private void deleteQuery(ActionEvent actionEvent) {
-//        queryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());//TODO uncomment
+        searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
         predefinedQueriesComboBox.getItems().remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+        predefinedQueriesComboBox.getSelectionModel().clearSelection();
     }
 }

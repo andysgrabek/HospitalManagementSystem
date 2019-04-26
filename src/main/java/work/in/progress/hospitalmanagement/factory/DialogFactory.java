@@ -10,14 +10,17 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DialogFactory {
 
+    private static final Paint PAINT = Paint.valueOf("#f0ab8d");
     private static final double IMAGE_DIALOG_IMAGE_HEIGHT = 0.8;
     @Getter
     private static DialogFactory defaultFactory = new DialogFactory();
@@ -50,10 +53,13 @@ public final class DialogFactory {
                                      String prompt,
                                      StringProperty stringProperty,
                                      EventHandler<ActionEvent> onConfirm,
-                                     StackPane root) {
+                                     StackPane root,
+                                     TextFieldValidator validator) {
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text(header));
         JFXTextField jfxTextField = new JFXTextField();
+        jfxTextField.getValidators().add(validator);
+        jfxTextField.setFocusColor(PAINT);
         jfxTextField.setPromptText(prompt);
         content.setBody(jfxTextField);
         JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
