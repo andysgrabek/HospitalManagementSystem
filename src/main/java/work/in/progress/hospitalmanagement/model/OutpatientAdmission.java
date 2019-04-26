@@ -8,11 +8,14 @@ import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 /**
  * Provides a table definition with constraints and relations.
@@ -33,9 +36,17 @@ public class OutpatientAdmission extends Admission {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Department department;
 
-    public OutpatientAdmission(Patient patient, Department department) {
+    @Setter
+    @Getter
+    @NotNull
+    @Future
+    @Column(nullable = false)
+    private LocalDateTime visitDate;
+
+    public OutpatientAdmission(Patient patient, Department department, LocalDateTime visitDate) {
         super(patient);
         this.department = department;
+        this.visitDate = visitDate;
     }
 
 }

@@ -1,6 +1,13 @@
 package work.in.progress.hospitalmanagement.util;
 
-import work.in.progress.hospitalmanagement.model.*;
+import work.in.progress.hospitalmanagement.model.Address;
+import work.in.progress.hospitalmanagement.model.Bed;
+import work.in.progress.hospitalmanagement.model.Department;
+import work.in.progress.hospitalmanagement.model.HospitalStaff;
+import work.in.progress.hospitalmanagement.model.InpatientAdmission;
+import work.in.progress.hospitalmanagement.model.OutpatientAdmission;
+import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.model.SearchQuery;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
@@ -9,6 +16,7 @@ import javax.validation.executable.ExecutableValidator;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,7 +61,7 @@ public final class Mocks {
     }
 
     public static OutpatientAdmission outpatientAdmission() {
-        return new OutpatientAdmission(patient(), department());
+        return new OutpatientAdmission(patient(), department(), LocalDateTime.now().plusHours(1));
     }
 
     public static SearchQuery searchQuery() {
