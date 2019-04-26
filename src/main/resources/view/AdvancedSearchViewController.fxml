@@ -42,10 +42,10 @@
                            <JFXButton fx:id="deleteQueryButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#deleteQuery" prefHeight="40.0" prefWidth="150.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="DELETE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children>
                      </AnchorPane>
-                     <AnchorPane prefHeight="40.0" prefWidth="992.0">
+                     <AnchorPane prefHeight="60.0" prefWidth="992.0">
                         <children>
                            <Label prefHeight="36.0" prefWidth="192.0" styleClass="hms-text" text="Type your query" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           <JFXTextField fx:id="queryTextField" focusColor="#f0ab8d" prefHeight="40.0" prefWidth="553.0" promptText="SELECT * FROM ..." styleClass="hms-form-text" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="0.0" />
+                           <JFXTextField fx:id="queryTextField" focusColor="#f0ab8d" prefHeight="40.0" prefWidth="553.0" promptText="SELECT * FROM ..." styleClass="hms-form-text" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="0.0" />
                            <JFXCheckBox fx:id="saveCheckBox" checkedColor="#f0ab8d" mnemonicParsing="false" styleClass="hms-form-text" text="SAVE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0" />
                            <JFXButton fx:id="executeQueryButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#executeQuery" prefHeight="40.0" prefWidth="150.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="EXECUTE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         </children></AnchorPane>

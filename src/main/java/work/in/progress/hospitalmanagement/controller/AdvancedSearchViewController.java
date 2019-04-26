@@ -90,7 +90,7 @@ public class AdvancedSearchViewController extends AbstractViewController {
                         stringProperty,
                         event -> {
                             SearchQuery searchQuery = new SearchQuery(stringProperty.get(), queryTextField.getText());
-                            searchQueryService.save(searchQuery);
+                            predefinedQueriesComboBox.getItems().add(searchQueryService.save(searchQuery));
                             execute(searchQuery);
                         },
                         (StackPane) getRoot(),

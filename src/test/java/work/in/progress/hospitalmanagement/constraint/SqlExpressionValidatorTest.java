@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.model.SearchQuery;
 
 import javax.validation.ConstraintValidator;
@@ -24,23 +25,24 @@ public class SqlExpressionValidatorTest {
 
     @Before
     public void setUp() {
-        sqlExpressionValidator = new SqlExpressionValidator(
+        sqlExpressionValidator = new SqlExpressionValidator();
+        ReflectionTestUtils.setField(sqlExpressionValidator, "entityManagerFactory",
                 entityManager.getEntityManager().getEntityManagerFactory());
+
+        sqlExpressionValidator.initialize(null);
     }
 
     @Test
     public void whenSqlExpressionInvalid_thenConstraintValidationShouldOccur() {
         SearchQuery searchQuery = new SearchQuery("TestQuery", "InvalidExpression");
 
-        sqlExpressionValidator.initialize(null);
         assertThat(sqlExpressionValidator.isValid(searchQuery.getExpression(), null)).isFalse();
     }
 
     @Test
     public void whenSqlExpressionValid_thenConstraintValidationShouldNotOccur() {
         SearchQuery searchQuery = new SearchQuery("TestQuery", "SELECT name FROM Department");
-        
-        sqlExpressionValidator.initialize(null);
+
         assertThat(sqlExpressionValidator.isValid(searchQuery.getExpression(), null)).isTrue();
     }
 

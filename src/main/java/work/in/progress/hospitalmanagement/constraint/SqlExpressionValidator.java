@@ -18,13 +18,9 @@ import static org.hibernate.jpa.QueryHints.HINT_READONLY;
  */
 public class SqlExpressionValidator implements ConstraintValidator<SqlExpression, String> {
 
+    @Autowired
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
-
-    @Autowired
-    public SqlExpressionValidator(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
 
     /**
      * Initializes the validator in preparation for
@@ -41,7 +37,9 @@ public class SqlExpressionValidator implements ConstraintValidator<SqlExpression
      */
     @Override
     public void initialize(SqlExpression constraintAnnotation) {
-        entityManager = entityManagerFactory.createEntityManager();
+        if (entityManagerFactory != null) {
+            entityManager = entityManagerFactory.createEntityManager();
+        }
     }
 
     /**
@@ -57,8 +55,13 @@ public class SqlExpressionValidator implements ConstraintValidator<SqlExpression
      */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (entityManager == null) {
+            return true;
+        }
         try {
             entityManager.getTransaction().begin();
+            entityManager.getTransaction().setRollbackOnly();
+
             final Query validatedQuery = entityManager.createQuery(value);
             validatedQuery.setHint(HINT_READONLY, true);
             validatedQuery.getResultList();
