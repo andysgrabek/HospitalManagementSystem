@@ -129,4 +129,20 @@ public class MainMenuViewController extends AbstractViewController {
     private void openDepartmentManagement(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(DepartmentManagementViewController.class), true);
     }
+
+    @FXML
+    private void openAdvancedSearch(ActionEvent actionEvent) {
+        presentViewController(instantiateViewController(AdvancedSearchViewController.class), true);
+    }
+
+    @FXML
+    private void openAdmissionManagement(ActionEvent actionEvent) {
+        presentViewController(instantiateViewController(AdmissionManagementViewController.class), true);
+    }
+
+    @FXML
+    private void openPatientsWaiting(ActionEvent actionEvent) {
+        presentViewController(instantiateViewController(PatientsWaitingViewController.class), true);
+    }
+
 }
