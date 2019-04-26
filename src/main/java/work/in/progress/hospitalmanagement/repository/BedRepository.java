@@ -18,4 +18,5 @@ public interface BedRepository extends JpaRepository<Bed, Integer> {
 
     Collection<Bed> findAllByDepartment(Department department);
 
+    Collection<Bed> findByDepartmentAndAdmissionNull(Department department);
 }
