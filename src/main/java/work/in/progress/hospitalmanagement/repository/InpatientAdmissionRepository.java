@@ -1,6 +1,6 @@
 package work.in.progress.hospitalmanagement.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 import work.in.progress.hospitalmanagement.model.InpatientAdmission;
 
 /**
@@ -9,7 +9,7 @@ import work.in.progress.hospitalmanagement.model.InpatientAdmission;
  *
  * @author jablonskiba
  */
+@Transactional
 public interface InpatientAdmissionRepository
-        extends JpaRepository<InpatientAdmission, Integer> {
-
+        extends AdmissionRepository<InpatientAdmission> {
 }

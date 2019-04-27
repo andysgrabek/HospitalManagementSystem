@@ -123,7 +123,7 @@ public class PatientReportGenerator implements ReportGenerator<Patient> {
         table.addCell(patient.getSurname());
         table.addCell(patient.getBirthDate().toString());
         table.addCell(patient.isAlive() ? "Yes" : "No");
-        table.addCell(patient.getCurrentAdmission()
+        table.addCell(patient.getAdmission()
                 .map(admission -> admission.getDepartment().getName())
                 .orElseGet(() -> "None"));
     }

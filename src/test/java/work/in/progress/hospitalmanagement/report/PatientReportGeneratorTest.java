@@ -44,7 +44,7 @@ public class PatientReportGeneratorTest {
     @Test
     public void whenDefaultReportGenerated_thenFileShouldBeCreated() throws IOException, DocumentException {
         Patient patient =  Mocks.patient();
-        patient.setCurrentAdmission(new OutpatientAdmission(patient, Mocks.department(),
+        patient.setAdmission(new OutpatientAdmission(patient, Mocks.department(),
                 LocalDateTime.now().plusHours(1)));
 
         File file = patientReportGenerator.generate(Collections.singletonList(patient));
