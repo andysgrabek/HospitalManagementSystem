@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.converter.BedStringConverter;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
 import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.factory.PatientAdmissionCellFactory;
@@ -116,7 +117,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 event.getSubject(),
                 admissionProperty,
                 bedService,
-                departmentService.findAll(),
+                departmentService,
                 onCompleteEvent -> {
                     patientObservableList.remove(event.getSubject());
                     event.getSubject().setCurrentAdmission(admissionProperty.getValue());
@@ -157,6 +158,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 "Editing admission",
                 FXCollections.observableArrayList(beds),
                 selectedBedProperty,
+                new BedStringConverter(bedService.findAll()),
                 onConfirmEvent -> {
                     patientObservableList.remove(event.getSubject());
                     InpatientAdmission admission =

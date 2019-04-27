@@ -132,8 +132,10 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     @FXML
     private void deleteQuery(ActionEvent actionEvent) {
-        searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
-        predefinedQueriesComboBox.getItems().remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
-        predefinedQueriesComboBox.getSelectionModel().clearSelection();
+        if (!predefinedQueriesComboBox.getSelectionModel().isEmpty()) {
+            searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+            predefinedQueriesComboBox.getItems().remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+            predefinedQueriesComboBox.getSelectionModel().clearSelection();
+        }
     }
 }

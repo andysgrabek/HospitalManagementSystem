@@ -17,6 +17,7 @@ import work.in.progress.hospitalmanagement.factory.AppointmentCellFactory;
 import work.in.progress.hospitalmanagement.factory.AppointmentPredicateFactory;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.OutpatientAdmission;
+import work.in.progress.hospitalmanagement.service.DepartmentService;
 import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
 
 import java.net.URL;
@@ -37,17 +38,21 @@ public class PatientsWaitingViewController extends AbstractViewController {
     private JFXListView<OutpatientAdmission> appointmentListView;
 
     private final OutpatientAdmissionService outpatientAdmissionService;
+    private final DepartmentService departmentService;
     private ObservableList<OutpatientAdmission> list;
 
     @Autowired
-    public PatientsWaitingViewController(OutpatientAdmissionService outpatientAdmissionService) {
+    public PatientsWaitingViewController(OutpatientAdmissionService outpatientAdmissionService,
+                                         DepartmentService departmentService) {
         this.outpatientAdmissionService = outpatientAdmissionService;
+        this.departmentService = departmentService;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         list = FXCollections.observableArrayList(outpatientAdmissionService.findAll());
         appointmentListView.setCellFactory(new AppointmentCellFactory());
+        departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
         initListFiltering();
     }
 

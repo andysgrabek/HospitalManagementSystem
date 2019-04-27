@@ -2,9 +2,9 @@ package work.in.progress.hospitalmanagement.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,14 +13,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
 import work.in.progress.hospitalmanagement.factory.BedCellFactory;
-import work.in.progress.hospitalmanagement.factory.ButtonFactory;
 import work.in.progress.hospitalmanagement.factory.DepartmentCellFactory;
 import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.model.Bed;
@@ -229,40 +226,29 @@ public class DepartmentManagementViewController extends AbstractViewController {
     }
 
     private JFXDialog createBedRoomNumberDialog(String heading, Bed bed) {
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text(heading));
-        VBox vBox = new VBox();
-        JFXTextField jfxTextField = new JFXTextField();
-        jfxTextField.getValidators().add(new TextFieldValidator(Bed.class, "roomNumber", validator));
-        vBox.getChildren().add(new Text("Please provide room number of the bed."));
-        vBox.getChildren().add(jfxTextField);
-        content.setBody(vBox);
-        JFXDialog dialog = new JFXDialog((StackPane) getRoot(), content, JFXDialog.DialogTransition.CENTER);
-        JFXButton button = ButtonFactory.getDefaultFactory().defaultButton("Save");
-        JFXButton cancel = ButtonFactory.getDefaultFactory().defaultButton("Cancel");
-        content.getStyleClass().add("hms-text");
+        SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
+        EventHandler<ActionEvent> handler;
         if (bed == null) {
-            button.setOnAction(event -> {
-                if (jfxTextField.validate()) {
-                    bedsListView.getItems().add(bedService.save(new Bed(editedDepartment, jfxTextField.getText())));
-                    departmentsListView.setItems(FXCollections.observableArrayList(departmentService.findAll()));
-                    dialog.close();
-                }
-            });
+            handler = event -> {
+                bedsListView.getItems()
+                        .add(bedService.save(new Bed(editedDepartment, simpleStringProperty.getValue())));
+                departmentsListView.setItems(FXCollections.observableArrayList(departmentService.findAll()));
+            };
         } else {
-            button.setOnAction(event -> {
-                if (jfxTextField.validate()) {
-                    bedsListView.getItems().remove(bed);
-                    bed.setRoomNumber(jfxTextField.getText());
-                    bedsListView.getItems().add(bedService.save(bed));
-                    departmentsListView.setItems(FXCollections.observableArrayList(departmentService.findAll()));
-                    dialog.close();
-                }
-            });
-        }
-        cancel.setOnAction(event -> dialog.close());
-        content.setActions(button, cancel);
-        return dialog;
+            handler = event -> {
+                bedsListView.getItems().remove(bed);
+                bed.setRoomNumber(simpleStringProperty.getValue());
+                bedsListView.getItems().add(bedService.save(bed));
+                departmentsListView.setItems(FXCollections.observableArrayList(departmentService.findAll()));
+                };
+            }
+        return DialogFactory.getDefaultFactory().textFieldDialog(
+                heading,
+                "Please provide room number of the bed.",
+                simpleStringProperty,
+                handler,
+                (StackPane) getRoot(),
+                new TextFieldValidator(Bed.class, "roomNumber", validator));
     }
 
     private JFXDialog createDepartmentDeleteDialog(Department department) {
