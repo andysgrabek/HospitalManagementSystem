@@ -25,7 +25,7 @@ import java.util.Optional;
  *
  * @author jablonskiba
  */
-@ToString(callSuper = true, exclude = "currentAdmission")
+@ToString(callSuper = true, exclude = "admission")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Patient extends Person {
@@ -53,21 +53,21 @@ public class Patient extends Person {
     private Address homeAddress;
     @Setter
     @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Admission currentAdmission;
+    private Admission admission;
 
     @Builder
     public Patient(String name, String surname, LocalDate birthDate, String phoneNumber,
-                   boolean isAlive, Address homeAddress, Admission currentAdmission) {
+                   boolean isAlive, Address homeAddress, Admission admission) {
         super(name, surname);
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.isAlive = isAlive;
         this.homeAddress = homeAddress;
-        this.currentAdmission = currentAdmission;
+        this.admission = admission;
     }
 
-    public Optional<Admission> getCurrentAdmission() {
-        return Optional.ofNullable(currentAdmission);
+    public Optional<Admission> getAdmission() {
+        return Optional.ofNullable(admission);
     }
 
 }

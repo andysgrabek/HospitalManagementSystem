@@ -48,7 +48,6 @@ public class DatabaseConstraintTest {
     @Autowired
     private OutpatientAdmissionRepository outpatientAdmissionRepository;
 
-
     @Test(expected = ConstraintViolationException.class)
     public void whenDepartmentNameToLong_thenConstraintViolationExceptionShouldBeThrown() {
         Department department = Mocks.department();
@@ -97,6 +96,7 @@ public class DatabaseConstraintTest {
                 HospitalStaff.builder().name("Rzon").surname("Lok")
                         .role(HospitalStaff.Role.DOCTOR).department(department).build());
 
+        entityManager.clear();
         departmentRepository.delete(department);
         departmentRepository.flush();
         entityManager.clear();
@@ -117,6 +117,7 @@ public class DatabaseConstraintTest {
                 inpatientAdmissionRepository.saveAndFlush(
                         new InpatientAdmission(patientRepository.saveAndFlush(Mocks.patient()), bed));
 
+        entityManager.clear();
         bedRepository.delete(bed);
         bedRepository.flush();
         entityManager.clear();
@@ -135,11 +136,50 @@ public class DatabaseConstraintTest {
                 outpatientAdmissionRepository.saveAndFlush(
                         new OutpatientAdmission(patient, department, LocalDateTime.now().plusHours(1)));
 
+        entityManager.clear();
         patientRepository.delete(patient);
         patientRepository.flush();
         entityManager.clear();
 
         assertThat(patientRepository.findAll()).isEmpty();
+        assertThat(outpatientAdmissionRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    public void whenInpatientAdmissionDeleted_thenAdmissionShouldNotBeFound() {
+        Patient patient = patientRepository.saveAndFlush(Mocks.patient());
+        Department department = departmentRepository.saveAndFlush(Mocks.department());
+
+        Bed bed = bedRepository.saveAndFlush(new Bed(department, "12E"));
+        InpatientAdmission inpatientAdmission =
+                inpatientAdmissionRepository.saveAndFlush(new InpatientAdmission(patient, bed));
+
+        entityManager.clear();
+        inpatientAdmissionRepository.delete(inpatientAdmission);
+        inpatientAdmissionRepository.flush();
+        entityManager.clear();
+
+        assertThat(patientRepository.findAll()).isNotEmpty();
+        assertThat(departmentRepository.findAll()).isNotEmpty();
+        assertThat(inpatientAdmissionRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    public void whenOutpatientAdmissionDeleted_thenAdmissionShouldNotBeFound() {
+        Patient patient = patientRepository.saveAndFlush(Mocks.patient());
+        Department department = departmentRepository.saveAndFlush(Mocks.department());
+
+        OutpatientAdmission outpatientAdmission =
+                outpatientAdmissionRepository.saveAndFlush(
+                        new OutpatientAdmission(patient, department, LocalDateTime.now().plusHours(1)));
+
+        entityManager.clear();
+        outpatientAdmissionRepository.delete(outpatientAdmission);
+        outpatientAdmissionRepository.flush();
+        entityManager.clear();
+
+        assertThat(patientRepository.findAll()).isNotEmpty();
+        assertThat(departmentRepository.findAll()).isNotEmpty();
         assertThat(outpatientAdmissionRepository.findAll()).isEmpty();
     }
 

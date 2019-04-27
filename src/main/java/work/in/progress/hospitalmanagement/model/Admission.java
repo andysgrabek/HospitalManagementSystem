@@ -18,6 +18,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -51,6 +52,11 @@ public abstract class Admission {
     Admission(Patient patient) {
         this.patient = patient;
         admissionDate = LocalDate.now();
+    }
+
+    @PreRemove
+    private void preRemove() {
+        patient.setAdmission(null);
     }
 
     public abstract Department getDepartment();
