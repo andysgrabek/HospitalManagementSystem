@@ -32,8 +32,8 @@ public class PatientAdmissionCell extends PersonCell<Patient> {
         });
         getDeleteButton().setText("Discharge");
         getDeleteButton().setPrefWidth(ButtonFactory.getLARGE_BUTTON_WIDTH());
-        if (item.getCurrentAdmission().isPresent()) {
-            if (item.getCurrentAdmission().get() instanceof OutpatientAdmission) {
+        if (item.getAdmission().isPresent()) {
+            if (item.getAdmission().get() instanceof OutpatientAdmission) {
                 getHBox().getChildren().remove(getEditButton());
             }
             getLabel().setText("ID: "
@@ -42,7 +42,7 @@ public class PatientAdmissionCell extends PersonCell<Patient> {
                     + item.getName()
                     + " " + item.getSurname()
                     + " admitted to "
-                    + item.getCurrentAdmission().get().getDepartment().getName());
+                    + item.getAdmission().get().getDepartment().getName());
         } else {
             getHBox().getChildren().remove(getDeleteButton());
             getHBox().getChildren().remove(getEditButton());

@@ -35,8 +35,8 @@ public class PatientPredicateFactory {
         return (department == null)
                 ? patient -> true
                 : patient -> {
-            if (patient.getCurrentAdmission().isPresent()) {
-                return patient.getCurrentAdmission().get().getDepartment().equals(department);
+            if (patient.getAdmission().isPresent()) {
+                return patient.getAdmission().get().getDepartment().equals(department);
             } else {
                 return true;
             }

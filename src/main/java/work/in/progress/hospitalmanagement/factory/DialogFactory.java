@@ -37,6 +37,8 @@ import work.in.progress.hospitalmanagement.model.OutpatientAdmission;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
+import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
 import work.in.progress.hospitalmanagement.validator.ComboBoxValidator;
 import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
 import work.in.progress.hospitalmanagement.validator.VisitDateTimeValidator;
@@ -138,6 +140,8 @@ public final class DialogFactory {
                                          Property<Admission> admissionProperty,
                                          BedService bedService,
                                          DepartmentService departmentService,
+                                         InpatientAdmissionService inpatientAdmissionService,
+                                         OutpatientAdmissionService outpatientAdmissionService,
                                          EventHandler<ActionEvent> onComplete,
                                          Validator validator,
                                          StackPane root) {
@@ -167,12 +171,12 @@ public final class DialogFactory {
         JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
         setAdmissionFieldsValidators(validator, departmentComboBox, bedComboBox, datePicker, timePicker);
         setAdmissionDialogActions(patient, admissionProperty, onComplete, content, inpatientCheckbox,
-                departmentComboBox, bedComboBox, confirmButton, dialog, datePicker, timePicker);
+                departmentComboBox, bedComboBox, confirmButton, dialog, datePicker, timePicker,
+                inpatientAdmissionService, outpatientAdmissionService);
         return dialog;
     }
 
     private void setUpAppointmentTimePickers(JFXDatePicker datePicker, JFXTimePicker timePicker) {
-        timePicker.set24HourView(true);
         datePicker.setVisible(false);
         timePicker.setVisible(false);
         datePicker.setPromptText("Appointment date");
@@ -241,7 +245,9 @@ public final class DialogFactory {
                                            JFXButton confirmButton,
                                            JFXDialog dialog,
                                            JFXDatePicker datePicker,
-                                           JFXTimePicker timePicker) {
+                                           JFXTimePicker timePicker,
+                                           InpatientAdmissionService inpatientAdmissionService,
+                                           OutpatientAdmissionService outpatientAdmissionService) {
         confirmButton.setOnAction(event -> {
             bedComboBox.resetValidation();
             departmentComboBox.resetValidation();
@@ -250,16 +256,18 @@ public final class DialogFactory {
             if (inpatientCheckbox.isSelected()) {
                 if (bedComboBox.validate()) {
                     admissionProperty.setValue(
-                            new InpatientAdmission(patient, bedComboBox.getSelectionModel().getSelectedItem()));
+                            inpatientAdmissionService.save(
+                                    new InpatientAdmission(patient,
+                                            bedComboBox.getSelectionModel().getSelectedItem())));
                     onComplete.handle(event);
                     dialog.close();
                 }
             } else {
                 if (departmentComboBox.validate() & datePicker.validate() & timePicker.validate()) {
-                    admissionProperty.setValue(
+                    admissionProperty.setValue(outpatientAdmissionService.save(
                             new OutpatientAdmission(patient,
                                     departmentComboBox.getSelectionModel().getSelectedItem(),
-                                    LocalDateTime.of(datePicker.getValue(), timePicker.getValue())));
+                                    LocalDateTime.of(datePicker.getValue(), timePicker.getValue()))));
                     onComplete.handle(event);
                     dialog.close();
                 }
@@ -282,7 +290,7 @@ public final class DialogFactory {
         jfxTextField.setPromptText(prompt);
         content.setBody(jfxTextField);
         JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
-        JFXButton yesButton = ButtonFactory.getDefaultFactory().defaultButton("CONFIRM");
+        JFXButton yesButton = ButtonFactory.getDefaultFactory().defaultButton("Confirm");
         content.getStyleClass().add("hms-text");
         yesButton.setOnAction(event -> {
             if (jfxTextField.validate()) {

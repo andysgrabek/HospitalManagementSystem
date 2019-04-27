@@ -118,9 +118,11 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 admissionProperty,
                 bedService,
                 departmentService,
+                inpatientAdmissionService,
+                outpatientAdmissionService,
                 onCompleteEvent -> {
                     patientObservableList.remove(event.getSubject());
-                    event.getSubject().setCurrentAdmission(admissionProperty.getValue());
+                    event.getSubject().setAdmission(admissionProperty.getValue());
                     patientObservableList.add(patientService.save(event.getSubject()));
                 },
                 validator,
@@ -133,17 +135,14 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 "Are you sure you want to discharge the patient?",
                 "The patient will be immediately discharged from their department.",
                 onCompleteEvent -> {
-//                    patientObservableList.remove(event.getSubject());
-                    if (event.getSubject().getCurrentAdmission().get() instanceof InpatientAdmission) {
+                    if (event.getSubject().getAdmission().get() instanceof InpatientAdmission) {
                         inpatientAdmissionService
-                                .delete((InpatientAdmission) event.getSubject().getCurrentAdmission().get());
+                                .delete((InpatientAdmission) event.getSubject().getAdmission().get());
                     } else {
                         outpatientAdmissionService
-                                .delete((OutpatientAdmission) event.getSubject().getCurrentAdmission().get());
+                                .delete((OutpatientAdmission) event.getSubject().getAdmission().get());
                     }
-//                    event.getSubject().setCurrentAdmission(null);
-//                    patientObservableList.remove(event.getSubject());
-//                    patientObservableList.add(patientService.save(event.getSubject()));
+                    registeredPatientListView.setItems(FXCollections.observableArrayList(patientService.findAll()));
                 },
                 Event::consume,
                 (StackPane) getRoot());
@@ -153,7 +152,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
     private void handleEdit(ListCellEvent<Patient> event) {
         Property<Bed> selectedBedProperty = new SimpleObjectProperty<>();
         Collection<Bed> beds =
-                bedService.findByDepartment(event.getSubject().getCurrentAdmission().get().getDepartment());
+                bedService.findByDepartment(event.getSubject().getAdmission().get().getDepartment());
         JFXDialog dialog = DialogFactory.getDefaultFactory().comboBoxDialog(
                 "Editing admission",
                 FXCollections.observableArrayList(beds),
@@ -162,10 +161,10 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 onConfirmEvent -> {
                     patientObservableList.remove(event.getSubject());
                     InpatientAdmission admission =
-                            (InpatientAdmission) event.getSubject().getCurrentAdmission().get();
+                            (InpatientAdmission) event.getSubject().getAdmission().get();
                     admission.getBed().setAdmission(null);
                     selectedBedProperty.getValue().setAdmission(admission);
-                    event.getSubject().setCurrentAdmission(admission);
+                    event.getSubject().setAdmission(admission);
                     patientObservableList.remove(event.getSubject());
                     patientObservableList.add(patientService.save(event.getSubject()));
                 },
