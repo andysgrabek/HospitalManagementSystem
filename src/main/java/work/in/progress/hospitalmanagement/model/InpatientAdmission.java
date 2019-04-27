@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -33,6 +34,11 @@ public class InpatientAdmission extends Admission {
     public InpatientAdmission(Patient patient, Bed bed) {
         super(patient);
         this.bed = bed;
+    }
+
+    @PreRemove
+    private void preRemove() {
+        bed.setAdmission(null);
     }
 
     @Override
