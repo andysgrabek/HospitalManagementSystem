@@ -32,7 +32,20 @@
                                 </children>
                             </AnchorPane>
                             <Label alignment="CENTER" prefHeight="63.0" prefWidth="317.0" styleClass="hms-text" text="DEPARTMENTS" />
-                            <JFXListView fx:id="departmentsListView" prefHeight="530.0" prefWidth="495.0" VBox.vgrow="ALWAYS" />
+                            <JFXListView fx:id="departmentsListView" prefHeight="530.0" prefWidth="491.0" VBox.vgrow="ALWAYS" />
+                     <AnchorPane prefHeight="40.0" prefWidth="200.0">
+                        <children>
+                           <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                                  <Label prefHeight="20.0" prefWidth="254.0" styleClass="hms-text" text="Generate report for departments:">
+                                      
+                                  </Label>
+                                 <JFXButton buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#generateReportAllDepartments" prefHeight="32.0" prefWidth="61.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="ALL" />
+                                 <JFXButton buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#generateReportSelectedDepartments" prefHeight="32.0" prefWidth="108.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="SELECTED" />
+                              </children>
+                           </HBox>
+                        </children>
+                     </AnchorPane>
                         </children>
                     </VBox>
                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">

@@ -1,5 +1,6 @@
 package work.in.progress.hospitalmanagement.controller;
 
+import com.itextpdf.text.DocumentException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXListView;
@@ -8,11 +9,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -23,12 +26,20 @@ import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.model.Bed;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.report.ReportGenerator;
 import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
+import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
 import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
 
 import javax.validation.Validator;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.DELETE_EVENT;
@@ -45,6 +56,9 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     private final DepartmentService departmentService;
     private final BedService bedService;
+    private final ReportGenerator<Patient> reportGenerator;
+    private final OutpatientAdmissionService outpatientAdmissionService;
+    private final InpatientAdmissionService inpatientAdmissionService;
     @FXML
     private JFXButton addBedButton;
     private Validator validator;
@@ -67,10 +81,16 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     public DepartmentManagementViewController(DepartmentService departmentService,
                                               BedService bedService,
+                                              ReportGenerator<Patient> reportGenerator,
+                                              OutpatientAdmissionService outpatientAdmissionService,
+                                              InpatientAdmissionService inpatientAdmissionService,
                                               Validator validator) {
         this.departmentService = departmentService;
         this.bedService = bedService;
         this.validator = validator;
+        this.reportGenerator = reportGenerator;
+        this.inpatientAdmissionService = inpatientAdmissionService;
+        this.outpatientAdmissionService = outpatientAdmissionService;
     }
 
     /**
@@ -318,5 +338,77 @@ public class DepartmentManagementViewController extends AbstractViewController {
                         },
                         event -> { },
                         (StackPane) getRoot());
+    }
+
+    /**
+     * Handler to save an {@link work.in.progress.hospitalmanagement.model.Admission} report for all departments in PDF.
+     * @param actionEvent event that triggered the action
+     */
+    @FXML
+    public void generateReportAllDepartments(ActionEvent actionEvent) {
+        ObservableList<Department> departments = departmentsListView.getItems();
+        findPatientsForReport(departments);
+    }
+
+    /**
+     * Method searches the database for patients admitted to the selected departments and proceeds with generating
+     * the report for them.
+     * @param departments selected departments
+     */
+    private void findPatientsForReport(ObservableList<Department> departments) {
+        if (departments.isEmpty()) {
+            DialogFactory.getDefaultFactory().infoTextDialog(
+                    "No departments selected",
+                    "Please select at least one department from the list above.",
+                    Event::consume,
+                    (StackPane) getRoot());
+        } else {
+            List<Patient> patients = new ArrayList<>();
+            inpatientAdmissionService.findAll().forEach(inpatientAdmission -> {
+                if (departments.contains(inpatientAdmission.getDepartment())) {
+                    patients.add(inpatientAdmission.getPatient());
+                }
+            });
+            outpatientAdmissionService.findAll().forEach(outpatientAdmission -> {
+                if (departments.contains(outpatientAdmission.getDepartment())) {
+                    patients.add(outpatientAdmission.getPatient());
+                }
+            });
+            saveParticipationReport(patients);
+        }
+    }
+
+    /**
+     * Handler to save an {@link work.in.progress.hospitalmanagement.model.Admission} report to a file in PDF format
+     * for the selected departments.
+     * @param actionEvent event that triggered the action
+     */
+    @FXML
+    public void generateReportSelectedDepartments(ActionEvent actionEvent) {
+        ObservableList<Department> departments = departmentsListView.getSelectionModel().getSelectedItems();
+        findPatientsForReport(departments);
+    }
+
+    /**
+     * Method to save participation lists for a given set of .
+     */
+    private void saveParticipationReport(Collection<Patient> patients) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter
+                = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName(reportGenerator.createDefaultPath());
+        File file = fileChooser.showSaveDialog(getStage());
+        if (file != null) {
+            try {
+                reportGenerator.generate(patients, file.getPath());
+            } catch (IOException | DocumentException e) {
+                DialogFactory.getDefaultFactory().infoTextDialog(
+                        "Error saving report!",
+                        "An unexpected error has occured when saving the report. Please try again.",
+                        Event::consume,
+                        (StackPane) getRoot());
+            }
+        }
     }
 }

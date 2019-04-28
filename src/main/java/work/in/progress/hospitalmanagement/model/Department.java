@@ -2,6 +2,7 @@ package work.in.progress.hospitalmanagement.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,6 +18,7 @@ import javax.validation.constraints.Size;
  *
  * @author jablonskiba
  */
+@EqualsAndHashCode
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
