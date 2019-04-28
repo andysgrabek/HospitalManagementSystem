@@ -194,7 +194,6 @@ public class DepartmentManagementViewController extends AbstractViewController {
      */
     private void removeBedOnDelete(ListCellEvent<Bed> event) {
         createBedDeleteDialog(event.getSubject()).show();
-
     }
 
     /**

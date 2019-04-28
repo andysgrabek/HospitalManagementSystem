@@ -4,17 +4,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import work.in.progress.hospitalmanagement.model.Department;
-import work.in.progress.hospitalmanagement.repository.BedRepository;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
-import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import static org.junit.Assert.assertEquals;
@@ -22,14 +18,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class,
-        classes = { DepartmentCell.class, BedService.class })
+@SpringBootTest
 public class DepartmentCellTest implements ApplicationContextAware {
-
-    @MockBean
-    private BedService bedService;
-    @MockBean
-    private BedRepository bedRepository;
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();

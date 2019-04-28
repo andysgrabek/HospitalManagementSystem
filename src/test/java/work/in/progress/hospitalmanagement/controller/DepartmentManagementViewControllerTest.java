@@ -2,45 +2,45 @@ package work.in.progress.hospitalmanagement.controller;
 
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
-import javafx.event.ActionEvent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
 import work.in.progress.hospitalmanagement.model.Bed;
 import work.in.progress.hospitalmanagement.model.Department;
+import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.report.ReportGenerator;
 import work.in.progress.hospitalmanagement.repository.BedRepository;
 import work.in.progress.hospitalmanagement.repository.DepartmentRepository;
+import work.in.progress.hospitalmanagement.repository.InpatientAdmissionRepository;
+import work.in.progress.hospitalmanagement.repository.OutpatientAdmissionRepository;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
+import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.Validator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class,
-        classes = { AbstractViewControllerTest.class,
-                DepartmentManagementViewController.class,
-                MainMenuViewController.class,
-                DepartmentService.class,
-                BedService.class,
-                Validator.class})
+@SpringBootTest
 public class DepartmentManagementViewControllerTest implements ApplicationContextAware {
 
     @Rule
@@ -56,6 +56,16 @@ public class DepartmentManagementViewControllerTest implements ApplicationContex
     private BedService bedService;
     @MockBean
     private DepartmentRepository departmentRepository;
+    @MockBean
+    private OutpatientAdmissionService outpatientAdmissionService;
+    @MockBean
+    private InpatientAdmissionService inpatientAdmissionService;
+    @MockBean
+    ReportGenerator<Patient> reportGenerator;
+    @MockBean
+    private OutpatientAdmissionRepository outpatientAdmissionRepository;
+    @MockBean
+    private InpatientAdmissionRepository inpatientAdmissionRepository;
     private ConfigurableApplicationContext context;
     private DepartmentManagementViewController vc;
 
@@ -115,11 +125,6 @@ public class DepartmentManagementViewControllerTest implements ApplicationContex
     public void removeBedOnDeleteTest() {
         ListCellEvent<Bed> event = new ListCellEvent<>(ListCellEvent.DELETE_EVENT, Mocks.bed());
         ReflectionTestUtils.invokeMethod(vc, "removeBedOnDelete", event);
-    }
-
-    @Test
-    public void backToMainMenuTest() {
-        ReflectionTestUtils.invokeMethod(AbstractViewController.instantiateViewController(vc.getClass()), "backToMainMenu", new ActionEvent());
     }
 
     @Test
