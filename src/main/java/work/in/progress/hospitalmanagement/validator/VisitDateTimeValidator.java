@@ -8,6 +8,11 @@ import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Validator class to validate the {@link LocalDateTime}
+ * of an {@link work.in.progress.hospitalmanagement.model.OutpatientAdmission}
+ * @author Andrzej Grabowski
+ */
 public class VisitDateTimeValidator extends AbstractFieldValidator {
 
     private JFXDatePicker datePicker;
@@ -31,6 +36,9 @@ public class VisitDateTimeValidator extends AbstractFieldValidator {
         this.datePicker = datePicker;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void eval() {
         hasErrors.set(false);
