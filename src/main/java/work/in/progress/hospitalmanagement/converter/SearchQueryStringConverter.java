@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.model.SearchQuery;
 import work.in.progress.hospitalmanagement.service.SearchQueryService;
 
+/**
+ * Concretization of a {@link StringConverter} to convert a {@link SearchQuery} to a {@link String} and back
+ * to be used with a {@link javafx.scene.control.ComboBox}
+ * @author Andrzej Grabowski
+ */
 @Component
 public class SearchQueryStringConverter extends StringConverter<SearchQuery> {
 
@@ -16,11 +21,17 @@ public class SearchQueryStringConverter extends StringConverter<SearchQuery> {
         this.searchQueryService = searchQueryService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString(SearchQuery object) {
         return object.getLabel();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchQuery fromString(String string) {
         return searchQueryService.findAll()
