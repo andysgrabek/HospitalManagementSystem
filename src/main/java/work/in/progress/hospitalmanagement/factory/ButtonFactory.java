@@ -6,6 +6,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Factory for creating programatically buttons that conform to the Hospital Management Application's style
+ * @author Andrzej Grabowski
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ButtonFactory {
 
@@ -34,13 +38,24 @@ public class ButtonFactory {
         return customButton(title, HEIGHT, WIDTH, STYLE, PAINT, TYPE, FOCUS_TRAVERSABLE);
     }
 
-    public JFXButton customButton(String title,
-                                  double height,
-                                  double width,
-                                  String styleClass,
-                                  Paint ripplerFill,
-                                  JFXButton.ButtonType type,
-                                  boolean focusTraversable) {
+    /**
+     * Creates a custom button
+     * @param title the title of the button
+     * @param height the height of the button
+     * @param width the width of the button
+     * @param styleClass the style class of the button to be applied
+     * @param ripplerFill the rippler fill color to be applied
+     * @param type the type of the button to be created
+     * @param focusTraversable states if the button should be focus-traverable
+     * @return the custom button
+     */
+    private JFXButton customButton(String title,
+                                   double height,
+                                   double width,
+                                   String styleClass,
+                                   Paint ripplerFill,
+                                   JFXButton.ButtonType type,
+                                   boolean focusTraversable) {
         JFXButton button = new JFXButton(title);
         button.setPrefWidth(width);
         button.setPrefHeight(height);

@@ -41,7 +41,6 @@ import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
 import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
 import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
-import work.in.progress.hospitalmanagement.service.PatientService;
 import work.in.progress.hospitalmanagement.validator.ComboBoxValidator;
 import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
 import work.in.progress.hospitalmanagement.validator.VisitDateTimeValidator;
@@ -50,6 +49,11 @@ import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Factory for creation of {@link JFXDialog}s presented to the user on various occasions like confirming
+ * the deletion of an object from the database.
+ * @author Andrzej Grabowski
+ */
 @Component
 public final class DialogFactory {
 
@@ -58,6 +62,10 @@ public final class DialogFactory {
     private final InpatientAdmissionService inpatientAdmissionService;
     private final OutpatientAdmissionService outpatientAdmissionService;
 
+    /**
+     * Helper class representing elements of the admission dialog.
+     * @author Andrzej Grabowski
+     */
     @AllArgsConstructor
     private class AdmissionDialogFormElements {
         @Getter
@@ -96,10 +104,22 @@ public final class DialogFactory {
     private static final int INFO_DIALOG_LOGO_SIZE = 75;
     private static final double INFO_DIALOG_HBOX_SPACING = 20.0;
 
+    /**
+     * Method retrieving the default factory
+     * @return default {@link JFXDialog} factory
+     */
     public static DialogFactory getDefaultFactory() {
         return ApplicationContextSingleton.getContext().getBean(DialogFactory.class);
     }
 
+    /**
+     * Creates an informative text {@link JFXDialog}
+     * @param header header to de displayed
+     * @param body body text to be displayed
+     * @param onConfirm handler to be run upon closing the dialog with its button
+     * @param root the owner object of the dialog
+     * @return the newly created dialog
+     */
     public JFXDialog infoTextDialog(String header, String body, EventHandler<ActionEvent> onConfirm, StackPane root) {
         JFXDialogLayout jfxDialogLayout = new JFXDialogLayout();
         Text headingText = new Text(header);
@@ -126,6 +146,17 @@ public final class DialogFactory {
         return jfxDialog;
     }
 
+    /**
+     * Creates a parametrized dialog with a {@link javafx.scene.control.ComboBox}
+     * @param header header text to be displayed
+     * @param values list of values to be available in the {@link javafx.scene.control.ComboBox}
+     * @param property a property object through which the selected value is returned
+     * @param converter the {@link StringConverter} to be used for the type of values controlled by the dialog
+     * @param onConfirm handler to be run upon closing the dialog with its button
+     * @param root the owner of the dialog
+     * @param <T> type of the objects controlled by the {@link javafx.scene.control.ComboBox}
+     * @return the newly created dialog
+     */
     public <T> JFXDialog comboBoxDialog(String header,
                                         ObservableList<T> values,
                                         Property<T> property,
@@ -151,6 +182,15 @@ public final class DialogFactory {
         return dialog;
     }
 
+    /**
+     * Creates a deletion dialog prompting the user during critical times in application operation.
+     * @param header header text to be displayed
+     * @param bodyText body text to be displayed
+     * @param onConfirm handler to be run when user confirms the action
+     * @param onCancel handler to be run when user cancels the action
+     * @param root owner of the dialog
+     * @return the newly created dialog
+     */
     public JFXDialog deletionDialog(String header,
                                     String bodyText,
                                     EventHandler<ActionEvent> onConfirm,
@@ -175,11 +215,19 @@ public final class DialogFactory {
         return dialog;
     }
 
+    /**
+     * Creates a dialog facilitating the creation of {@link Admission}
+     * @param header header text to be displayed
+     * @param patient the patient which is to be admitted
+     * @param admissionProperty property object through which the newly created admission is returned
+     * @param onComplete handler to be run when the user confirms the creation of the admission
+     * @param root owner of the dialog
+     * @return the newly created dialog
+     */
     public JFXDialog admissionFormDialog(String header,
                                          Patient patient,
                                          Property<Admission> admissionProperty,
                                          EventHandler<ActionEvent> onComplete,
-                                         Validator validator,
                                          StackPane root) {
         JFXDialogLayout content = new JFXDialogLayout();
         List<Department> departmentList = departmentService.findAll();
@@ -212,6 +260,12 @@ public final class DialogFactory {
         return dialog;
     }
 
+    /**
+     * Method to set up appointment time and picker controls for the dialog responsible for creating an
+     * {@link OutpatientAdmission}
+     * @param datePicker date picker control to be set up
+     * @param timePicker time picker control to be set up
+     */
     private void setUpAppointmentTimePickers(JFXDatePicker datePicker, JFXTimePicker timePicker) {
         datePicker.setVisible(false);
         timePicker.setVisible(false);
@@ -221,6 +275,11 @@ public final class DialogFactory {
         timePicker.setDefaultColor(PAINT);
     }
 
+    /**
+     * Method to set up the combo boxes for the dialog responsible for creating an {@link Admission}
+     * @param departmentComboBox combo box representing available {@link Department}s
+     * @param bedComboBox combo box representing available {@link Bed}s in the selected department
+     */
     private void setUpAdmissionFormComboBoxes(JFXComboBox<Department> departmentComboBox,
                                               JFXComboBox<Bed> bedComboBox) {
         departmentComboBox.setFocusColor(PAINT);
@@ -235,6 +294,10 @@ public final class DialogFactory {
         bedComboBox.setFocusColor(PAINT);
     }
 
+    /**
+     * Method styling the children of the admission dialog form
+     * @param vBox the vbox container of the child elements
+     */
     private void styleAdmissionFormChildren(VBox vBox) {
         vBox.getChildren().forEach(child -> {
             child.getStyleClass().add("hms-form-text");
@@ -242,6 +305,14 @@ public final class DialogFactory {
         });
     }
 
+    /**
+     * Method to set up the switching of admission dialog versions between {@link InpatientAdmission} and
+     * {@link OutpatientAdmission} variants by clicking the available checkbox
+     * @param inpatientCheckbox the checkbox on which the change is to be registered
+     * @param bedComboBox bed combo box to be shown when the checkbox is selected
+     * @param datePicker date picker to be shown when the checkbox is unselected
+     * @param timePicker time picker to be shown when the checkbox is unselected
+     */
     private void setUpAdmissionFormSwitching(JFXCheckBox inpatientCheckbox,
                                              JFXComboBox<Bed> bedComboBox,
                                              JFXDatePicker datePicker,
@@ -255,6 +326,13 @@ public final class DialogFactory {
 
     private void setAdmissionFieldsValidators(Validator validator,
                                               JFXComboBox<Department> departmentComboBox,
+    /**
+     * Method to set up validation of the admission dialog form fields
+     * @param departmentComboBox combo box containing available department values to be validated
+     * @param bedComboBox combo box containing available bed values to be validated
+     * @param datePicker visit date picker to be validated
+     * @param timePicker visit time picker to be validated
+     */
                                               JFXComboBox<Bed> bedComboBox,
                                               JFXDatePicker datePicker,
                                               JFXTimePicker timePicker) {
@@ -271,6 +349,14 @@ public final class DialogFactory {
                 new ComboBoxValidator(OutpatientAdmission.class, "department", validator));
     }
 
+    /**
+     * Method to set up the actions of the admission dialog
+     * @param patient the {@link Patient} for which the admission is to be made
+     * @param admissionProperty the property through which the created {@link Admission} is returned
+     * @param onComplete the handler to be run when the user confirms the creation of the {@link Admission}
+     * @param content the content of the {@link JFXDialog} to be shown
+     * @param admissionDialogFormElements the form elements of the dialog e.g. combo box with available departments
+     */
     private void setAdmissionDialogActions(Patient patient,
                                            Property<Admission> admissionProperty,
                                            EventHandler<ActionEvent> onComplete,
@@ -312,6 +398,16 @@ public final class DialogFactory {
         content.setActions(admissionDialogFormElements.getConfirmButton());
     }
 
+    /**
+     * Creates a {@link JFXDialog} with a {@link JFXTextField} input control.
+     * @param header header text to be displayed
+     * @param prompt prompt text to be dispalyed
+     * @param stringProperty string property through which the provided text is returned
+     * @param onConfirm the handler to be run when user confirms the input with a button click
+     * @param root owner of the dialog
+     * @param validator the validator to be used on the text field
+     * @return the newly created dialog
+     */
     public JFXDialog textFieldDialog(String header,
                                      String prompt,
                                      StringProperty stringProperty,
@@ -339,6 +435,14 @@ public final class DialogFactory {
         return dialog;
     }
 
+    /**
+     * Creates a {@link JFXDialog} that simply displays an image to the user
+     * @param header header text to be displayed
+     * @param image image to be displayed
+     * @param onClose handler to be run when the user closes the dialog with a button click
+     * @param root owner of the dialog
+     * @return the newly created dialog
+     */
     public JFXDialog imageDialog(String header,
                                  Image image,
                                  EventHandler<ActionEvent> onClose,
