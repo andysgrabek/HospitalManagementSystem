@@ -121,10 +121,6 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 "Create a new admission",
                 event.getSubject(),
                 admissionProperty,
-                bedService,
-                departmentService,
-                inpatientAdmissionService,
-                outpatientAdmissionService,
                 onCompleteEvent -> {
                     patientObservableList.remove(event.getSubject());
                     event.getSubject().setAdmission(admissionProperty.getValue());
