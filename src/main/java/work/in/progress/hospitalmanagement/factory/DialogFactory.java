@@ -96,7 +96,7 @@ public final class DialogFactory {
     private static final int INFO_DIALOG_LOGO_SIZE = 75;
     private static final double INFO_DIALOG_HBOX_SPACING = 20.0;
 
-    public DialogFactory getDefaultFactory() {
+    public static DialogFactory getDefaultFactory() {
         return ApplicationContextSingleton.getContext().getBean(DialogFactory.class);
     }
 
