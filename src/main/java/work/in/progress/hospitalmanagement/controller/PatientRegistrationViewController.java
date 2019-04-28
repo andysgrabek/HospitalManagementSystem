@@ -10,16 +10,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
+import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.factory.PersonCellFactory;
 import work.in.progress.hospitalmanagement.model.Address;
 import work.in.progress.hospitalmanagement.model.Patient;
@@ -111,6 +114,9 @@ public class PatientRegistrationViewController extends AbstractViewController {
         patientObservableList.addAll(patientService.findAll());
         registeredPatientListView.addEventHandler(EDIT_EVENT, handlePatientEditPressed());
         registeredPatientListView.addEventHandler(DELETE_EVENT, handlePatientDeletePressed());
+        Label placeholder = new Label("No patients matching search criteria.");
+        placeholder.getStyleClass().add("hms-text");
+        registeredPatientListView.setPlaceholder(placeholder);
         initFormValidation();
         initListFiltering();
     }
@@ -165,11 +171,19 @@ public class PatientRegistrationViewController extends AbstractViewController {
      * @param event the received deletion event
      */
     private void removePatientOnDelete(ListCellEvent<Patient> event) {
-        if (editedPatient != null) {
-            cancelEditPatient(null);
-        }
-        patientService.delete(event.getSubject());
-        patientObservableList.remove(event.getSubject());
+        DialogFactory.getDefaultFactory().deletionDialog(
+                "Are you sure you want to delete the patient?",
+                event.getSubject().getName() + " " + event.getSubject().getSurname(),
+                event1 -> {
+                    if (editedPatient != null) {
+                        cancelEditPatient(null);
+                    }
+                    patientService.delete(event.getSubject());
+                    patientObservableList.remove(event.getSubject());
+                },
+                Event::consume,
+                (StackPane) getRoot()
+        );
     }
 
     /**

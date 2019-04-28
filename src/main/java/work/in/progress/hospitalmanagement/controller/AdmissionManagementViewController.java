@@ -15,11 +15,13 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.converter.BedStringConverter;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
 import work.in.progress.hospitalmanagement.factory.DialogFactory;
@@ -97,6 +99,9 @@ public class AdmissionManagementViewController extends AbstractViewController {
         registeredPatientListView.addEventHandler(DELETE_EVENT, handlePatientDeletePressed());
         registeredPatientListView.addEventHandler(NEW_EVENT, handlePatientCreatePressed());
         departmentSearchField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
+        Label placeholder = new Label("No admissions matching search criteria");
+        placeholder.getStyleClass().add("hms-text");
+        registeredPatientListView.setPlaceholder(placeholder);
         initListFiltering();
     }
 
@@ -157,7 +162,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 "Editing admission",
                 FXCollections.observableArrayList(beds),
                 selectedBedProperty,
-                new BedStringConverter(bedService.findAll()),
+                ApplicationContextSingleton.getContext().getBean(BedStringConverter.class),
                 onConfirmEvent -> {
                     patientObservableList.remove(event.getSubject());
                     InpatientAdmission admission =

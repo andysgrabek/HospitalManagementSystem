@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.converter.SearchQueryStringConverter;
 import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.model.SearchQuery;
 import work.in.progress.hospitalmanagement.service.SearchQueryService;
@@ -65,13 +66,16 @@ public class AdvancedSearchViewController extends AbstractViewController {
             saveCheckBox.setDisable(false);
             saveCheckBox.setSelected(true);
         });
+        predefinedQueriesComboBox.setConverter(new SearchQueryStringConverter(searchQueryService));
     }
 
     @FXML
     private void selectedQuery(ActionEvent actionEvent) {
-        queryTextField.setText(predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getExpression());
-        saveCheckBox.setDisable(true);
-        saveCheckBox.setSelected(false);
+        if (predefinedQueriesComboBox.getSelectionModel().getSelectedItem() != null) {
+            queryTextField.setText(predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getExpression());
+            saveCheckBox.setDisable(true);
+            saveCheckBox.setSelected(false);
+        }
     }
 
     @FXML
@@ -123,7 +127,7 @@ public class AdvancedSearchViewController extends AbstractViewController {
     private void showSchema(ActionEvent actionEvent) {
         DialogFactory.getDefaultFactory().imageDialog(
                 "Hospital Management System Schema",
-                new Image("images/admission.png"),
+                new Image("images/schema.png"),
                 event -> {
                 },
                 (StackPane) getRoot()
@@ -134,7 +138,8 @@ public class AdvancedSearchViewController extends AbstractViewController {
     private void deleteQuery(ActionEvent actionEvent) {
         if (!predefinedQueriesComboBox.getSelectionModel().isEmpty()) {
             searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
-            predefinedQueriesComboBox.getItems().remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+            predefinedQueriesComboBox.getItems()
+                    .remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
             predefinedQueriesComboBox.getSelectionModel().clearSelection();
         }
     }

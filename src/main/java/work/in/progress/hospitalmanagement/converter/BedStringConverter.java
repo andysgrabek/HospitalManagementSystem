@@ -1,20 +1,23 @@
 package work.in.progress.hospitalmanagement.converter;
 
 import javafx.util.StringConverter;
-import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.model.Bed;
-
-import java.util.List;
+import work.in.progress.hospitalmanagement.service.BedService;
 
 /**
  * Concretization of a {@link StringConverter} to convert a {@link Bed} to a {@link String} and back
  * to be used with a {@link javafx.scene.control.ComboBox}
  * @author Andrzej Grabowski
  */
-@AllArgsConstructor
+@Component
 public class BedStringConverter extends StringConverter<Bed> {
 
-    private List<Bed> list;
+    private final BedService bedService;
+
+    public BedStringConverter(BedService bedService) {
+        this.bedService = bedService;
+    }
 
     /**
      * {@inheritDoc}
@@ -29,7 +32,7 @@ public class BedStringConverter extends StringConverter<Bed> {
      */
     @Override
     public Bed fromString(String string) {
-        return list.stream().filter(object ->
+        return bedService.findAll().stream().filter(object ->
                 (object.getDepartment().getName() + " " + object.getRoomNumber())
                         .equals(string)).findFirst().orElse(null);
     }

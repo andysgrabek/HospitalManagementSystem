@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -53,6 +54,9 @@ public class PatientsWaitingViewController extends AbstractViewController {
         list = FXCollections.observableArrayList(outpatientAdmissionService.findAll());
         appointmentListView.setCellFactory(new AppointmentCellFactory());
         departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
+        Label label = new Label("No outpatient admissions matching search criteria");
+        label.getStyleClass().add("hms-text");
+        appointmentListView.setPlaceholder(label);
         initListFiltering();
     }
 

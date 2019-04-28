@@ -1,24 +1,30 @@
 package work.in.progress.hospitalmanagement.converter;
 
 import javafx.util.StringConverter;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.model.SearchQuery;
+import work.in.progress.hospitalmanagement.service.SearchQueryService;
 
-import java.util.List;
-
-@AllArgsConstructor
+@Component
 public class SearchQueryStringConverter extends StringConverter<SearchQuery> {
 
-    private List<SearchQuery> list;
+    private final SearchQueryService searchQueryService;
+
+    @Autowired
+    public SearchQueryStringConverter(SearchQueryService searchQueryService) {
+        this.searchQueryService = searchQueryService;
+    }
 
     @Override
     public String toString(SearchQuery object) {
-        return object.getExpression();
+        return object.getLabel();
     }
 
     @Override
     public SearchQuery fromString(String string) {
-        return list.stream().filter(obj -> obj.getLabel().equals(string)).findFirst().orElse(null);
+        return searchQueryService.findAll()
+                .stream().filter(obj -> obj.getLabel().equals(string)).findFirst().orElse(null);
     }
 
 }

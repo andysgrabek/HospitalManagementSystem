@@ -24,9 +24,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.converter.BedStringConverter;
 import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
 import work.in.progress.hospitalmanagement.model.Admission;
@@ -39,6 +41,7 @@ import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
 import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
 import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.PatientService;
 import work.in.progress.hospitalmanagement.validator.ComboBoxValidator;
 import work.in.progress.hospitalmanagement.validator.TextFieldValidator;
 import work.in.progress.hospitalmanagement.validator.VisitDateTimeValidator;
@@ -47,11 +50,44 @@ import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
 public final class DialogFactory {
 
-    @Getter
-    private static DialogFactory defaultFactory = new DialogFactory();
+    private final BedService bedService;
+    private final DepartmentService departmentService;
+    private final InpatientAdmissionService inpatientAdmissionService;
+    private final OutpatientAdmissionService outpatientAdmissionService;
+
+    @AllArgsConstructor
+    private class AdmissionDialogFormElements {
+        @Getter
+        private JFXCheckBox inpatientCheckbox;
+        @Getter
+        private JFXComboBox<Department> departmentComboBox;
+        @Getter
+        private JFXComboBox<Bed> bedComboBox;
+        @Getter
+        private JFXButton confirmButton;
+        @Getter
+        private JFXDialog dialog;
+        @Getter
+        private JFXDatePicker datePicker;
+        @Getter
+        private JFXTimePicker timePicker;
+    };
+
+    @Autowired
+    public DialogFactory(BedService bedService,
+                         DepartmentService departmentService,
+                         InpatientAdmissionService inpatientAdmissionService,
+                         OutpatientAdmissionService outpatientAdmissionService,
+                         PatientService patientService) {
+        this.bedService = bedService;
+        this.departmentService = departmentService;
+        this.inpatientAdmissionService = inpatientAdmissionService;
+        this.outpatientAdmissionService = outpatientAdmissionService;
+    }
+
     private static final Paint PAINT = Paint.valueOf("#f0ab8d");
     private static final double VBOX_SPACING = 20.0;
     private static final double ADMISSION_PREF_WIDTH = 400.0;
@@ -59,6 +95,10 @@ public final class DialogFactory {
     private static final double INFO_DIALOG_LINE_SPACING = 2.0;
     private static final int INFO_DIALOG_LOGO_SIZE = 75;
     private static final double INFO_DIALOG_HBOX_SPACING = 20.0;
+
+    public DialogFactory getDefaultFactory() {
+        return ApplicationContextSingleton.getContext().getBean(DialogFactory.class);
+    }
 
     public JFXDialog infoTextDialog(String header, String body, EventHandler<ActionEvent> onConfirm, StackPane root) {
         JFXDialogLayout jfxDialogLayout = new JFXDialogLayout();
@@ -138,10 +178,6 @@ public final class DialogFactory {
     public JFXDialog admissionFormDialog(String header,
                                          Patient patient,
                                          Property<Admission> admissionProperty,
-                                         BedService bedService,
-                                         DepartmentService departmentService,
-                                         InpatientAdmissionService inpatientAdmissionService,
-                                         OutpatientAdmissionService outpatientAdmissionService,
                                          EventHandler<ActionEvent> onComplete,
                                          Validator validator,
                                          StackPane root) {
@@ -158,7 +194,7 @@ public final class DialogFactory {
         JFXComboBox<Bed> bedComboBox = new JFXComboBox<>();
         JFXDatePicker datePicker = new JFXDatePicker();
         JFXTimePicker timePicker = new JFXTimePicker();
-        setUpAdmissionFormComboBoxes(bedService, departmentComboBox, bedComboBox, departmentService);
+        setUpAdmissionFormComboBoxes(departmentComboBox, bedComboBox);
         setUpAppointmentTimePickers(datePicker, timePicker);
         vBox.setSpacing(VBOX_SPACING);
         setUpAdmissionFormSwitching(inpatientCheckbox, bedComboBox, datePicker, timePicker);
@@ -170,9 +206,9 @@ public final class DialogFactory {
         styleAdmissionFormChildren(vBox);
         JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
         setAdmissionFieldsValidators(validator, departmentComboBox, bedComboBox, datePicker, timePicker);
-        setAdmissionDialogActions(patient, admissionProperty, onComplete, content, inpatientCheckbox,
-                departmentComboBox, bedComboBox, confirmButton, dialog, datePicker, timePicker,
-                inpatientAdmissionService, outpatientAdmissionService);
+        AdmissionDialogFormElements formElements = new AdmissionDialogFormElements(
+                inpatientCheckbox, departmentComboBox, bedComboBox, confirmButton, dialog, datePicker, timePicker);
+        setAdmissionDialogActions(patient, admissionProperty, onComplete, content, formElements);
         return dialog;
     }
 
@@ -185,17 +221,17 @@ public final class DialogFactory {
         timePicker.setDefaultColor(PAINT);
     }
 
-    private void setUpAdmissionFormComboBoxes(BedService bedService,
-                                              JFXComboBox<Department> departmentComboBox,
-                                              JFXComboBox<Bed> bedComboBox,
-                                              DepartmentService departmentService) {
+    private void setUpAdmissionFormComboBoxes(JFXComboBox<Department> departmentComboBox,
+                                              JFXComboBox<Bed> bedComboBox) {
         departmentComboBox.setFocusColor(PAINT);
         departmentComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             bedComboBox.getSelectionModel().clearSelection();
             bedComboBox.setItems(FXCollections.observableArrayList(bedService.freeBeds(newValue)));
         });
-        departmentComboBox.setConverter(new DepartmentStringConverter(departmentService.findAll()));
-        bedComboBox.setConverter(new BedStringConverter(bedService.findAll()));
+        departmentComboBox
+                .setConverter(ApplicationContextSingleton.getContext().getBean(DepartmentStringConverter.class));
+        bedComboBox
+                .setConverter(ApplicationContextSingleton.getContext().getBean(BedStringConverter.class));
         bedComboBox.setFocusColor(PAINT);
     }
 
@@ -239,41 +275,41 @@ public final class DialogFactory {
                                            Property<Admission> admissionProperty,
                                            EventHandler<ActionEvent> onComplete,
                                            JFXDialogLayout content,
-                                           JFXCheckBox inpatientCheckbox,
-                                           JFXComboBox<Department> departmentComboBox,
-                                           JFXComboBox<Bed> bedComboBox,
-                                           JFXButton confirmButton,
-                                           JFXDialog dialog,
-                                           JFXDatePicker datePicker,
-                                           JFXTimePicker timePicker,
-                                           InpatientAdmissionService inpatientAdmissionService,
-                                           OutpatientAdmissionService outpatientAdmissionService) {
-        confirmButton.setOnAction(event -> {
-            bedComboBox.resetValidation();
-            departmentComboBox.resetValidation();
-            datePicker.resetValidation();
-            timePicker.resetValidation();
-            if (inpatientCheckbox.isSelected()) {
-                if (bedComboBox.validate()) {
+                                           AdmissionDialogFormElements admissionDialogFormElements) {
+        admissionDialogFormElements.getConfirmButton().setOnAction(event -> {
+            admissionDialogFormElements.getBedComboBox().resetValidation();
+            admissionDialogFormElements.getDepartmentComboBox().resetValidation();
+            admissionDialogFormElements.getDatePicker().resetValidation();
+            admissionDialogFormElements.getTimePicker().resetValidation();
+            if (admissionDialogFormElements.getInpatientCheckbox().isSelected()) {
+                if (admissionDialogFormElements.getBedComboBox().validate()) {
                     admissionProperty.setValue(
                             inpatientAdmissionService.save(
-                                    new InpatientAdmission(patient,
-                                            bedComboBox.getSelectionModel().getSelectedItem())));
+                                    new InpatientAdmission(patient, admissionDialogFormElements
+                                                    .getBedComboBox()
+                                                    .getSelectionModel()
+                                                    .getSelectedItem())));
                     onComplete.handle(event);
-                    dialog.close();
+                    admissionDialogFormElements.dialog.close();
                 }
             } else {
-                if (departmentComboBox.validate() & datePicker.validate() & timePicker.validate()) {
+                if (admissionDialogFormElements.getDepartmentComboBox().validate()
+                        & admissionDialogFormElements.getDatePicker().validate()
+                        & admissionDialogFormElements.getDatePicker().validate()) {
                     admissionProperty.setValue(outpatientAdmissionService.save(
                             new OutpatientAdmission(patient,
-                                    departmentComboBox.getSelectionModel().getSelectedItem(),
-                                    LocalDateTime.of(datePicker.getValue(), timePicker.getValue()))));
+                                    admissionDialogFormElements
+                                            .getDepartmentComboBox()
+                                            .getSelectionModel()
+                                            .getSelectedItem(),
+                                    LocalDateTime.of(admissionDialogFormElements.getDatePicker().getValue(),
+                                            admissionDialogFormElements.getTimePicker().getValue()))));
                     onComplete.handle(event);
-                    dialog.close();
+                    admissionDialogFormElements.getDialog().close();
                 }
             }
         });
-        content.setActions(confirmButton);
+        content.setActions(admissionDialogFormElements.getConfirmButton());
     }
 
     public JFXDialog textFieldDialog(String header,

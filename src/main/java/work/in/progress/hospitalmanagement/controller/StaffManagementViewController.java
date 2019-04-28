@@ -9,19 +9,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
 import work.in.progress.hospitalmanagement.converter.RoleStringConverter;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
+import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.factory.PersonCellFactory;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
@@ -51,6 +55,8 @@ public class StaffManagementViewController extends AbstractViewController {
     private final Validator validator;
     private final HospitalStaffService hospitalStaffService;
     private final DepartmentService departmentService;
+    @FXML
+    private Label emailLabel;
     @FXML
     private JFXComboBox<HospitalStaff.Role> roleField;
     @FXML
@@ -111,14 +117,22 @@ public class StaffManagementViewController extends AbstractViewController {
         staffListView.addEventHandler(DELETE_EVENT, handleStaffDeletedEvent());
         initFormValidation();
         initListFiltering();
-        departmentSearchField.setConverter(new DepartmentStringConverter(departmentService.findAll()));
+        departmentSearchField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
+        departmentSearchField.setConverter(
+                ApplicationContextSingleton.getContext().getBean(DepartmentStringConverter.class)
+        );
         roleField.setConverter(new RoleStringConverter());
-        departmentField.setConverter(new DepartmentStringConverter(departmentService.findAll()));
+        departmentField.setConverter(
+                ApplicationContextSingleton.getContext().getBean(DepartmentStringConverter.class)
+        );
         departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
         if (HospitalStaff.Role.values().length != 0) {
             roleField.setItems(FXCollections.observableArrayList(HospitalStaff.Role.values()));
             roleField.getSelectionModel().selectFirst();
         }
+        Label label = new Label("No staff matching search criteria");
+        label.getStyleClass().add("hms-text");
+        staffListView.setPlaceholder(label);
     }
 
     /**
@@ -190,6 +204,7 @@ public class StaffManagementViewController extends AbstractViewController {
         formButtonsParent.getChildren().remove(cancelEditStaffButton);
         formButtonsParent.getChildren().remove(confirmEditStaffButton);
         lockEditableFormFields(false);
+        emailLabel.setText("");
         editedStaff = null;
         formLabel.setText("CREATE NEW STAFF MEMBER");
     }
@@ -262,11 +277,19 @@ public class StaffManagementViewController extends AbstractViewController {
      * @param event the received deletion event
      */
     private void removeStaffOnDelete(ListCellEvent<HospitalStaff> event) {
-        if (editedStaff != null) {
-            cancelEditStaff(null);
-        }
-        hospitalStaffService.delete(event.getSubject());
-        staffObservableList.remove(event.getSubject());
+        DialogFactory.getDefaultFactory().deletionDialog(
+                "Are you sure you want to delete the staff member?",
+                event.getSubject().getName() + " " + event.getSubject().getSurname(),
+                onConfirm -> {
+                    if (editedStaff != null) {
+                        cancelEditStaff(null);
+                    }
+                    hospitalStaffService.delete(event.getSubject());
+                    staffObservableList.remove(event.getSubject());
+                },
+                Event::consume,
+                (StackPane) getRoot()
+        );
     }
 
     /**
@@ -285,6 +308,7 @@ public class StaffManagementViewController extends AbstractViewController {
         if (editedStaff != null) {
             cancelEditStaff(null);
         }
+        emailLabel.setText(event.getSubject().getEmail());
         lockEditableFormFields(true);
         resetFormFields();
         HospitalStaff p = event.getSubject();

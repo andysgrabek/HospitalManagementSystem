@@ -80,6 +80,12 @@ public class DepartmentManagementViewController extends AbstractViewController {
         bedsListView.addEventHandler(DELETE_EVENT, handleBedDeletePressed());
         formButtonsParent.getChildren().remove(cancelEditDepartmentButton);
         formButtonsParent.getChildren().remove(addBedButton);
+        Label bedPlaceholder = new Label("List of beds in an edited department will appear here");
+        bedPlaceholder.getStyleClass().add("hms-text");
+        bedsListView.setPlaceholder(bedPlaceholder);
+        Label departmentPlaceholder = new Label("No departments. Added departments will appear here.");
+        departmentPlaceholder.getStyleClass().add("hms-text");
+        departmentsListView.setPlaceholder(departmentPlaceholder);
         initFormValidation();
     }
 
