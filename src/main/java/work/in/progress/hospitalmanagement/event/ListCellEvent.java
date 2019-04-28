@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Custom event class for handling the deletions and updates of subjects in various list views
+ * Custom event class for handling the deletions, creations and updates of subjects in various list views
  * @author Andrzej Grabowski
  */
 public class ListCellEvent<T> extends Event {
@@ -21,7 +21,7 @@ public class ListCellEvent<T> extends Event {
 
     /**
      * Creates an event with the given type and subject.
-     * @param eventType selected event type. Possible event types are edit and delete events.
+     * @param eventType selected event type. Possible event types are edit, create and delete events.
      * @param p the patient associated with the event
      */
     public ListCellEvent(EventType<? extends Event> eventType, T p) {
