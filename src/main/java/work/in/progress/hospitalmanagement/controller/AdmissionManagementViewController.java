@@ -150,6 +150,10 @@ public class AdmissionManagementViewController extends AbstractViewController {
         dialog.show();
     }
 
+    /**
+     * Method to handle edit of a list cell patient-related event
+     * @param event the event associated with the patient edited
+     */
     private void handleEdit(ListCellEvent<Patient> event) {
         Property<Bed> selectedBedProperty = new SimpleObjectProperty<>();
         Collection<Bed> beds =

@@ -13,6 +13,12 @@ import work.in.progress.hospitalmanagement.factory.ButtonFactory;
 
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT;
 
+/**
+ * A class to be used as a template for cells in {@link javafx.scene.control.ListView}
+ * elements requiring a delete button alongside an edit button
+ * @param <T> the type of the object represented
+ * @author Andrzej Grabowski
+ */
 public abstract class EditListCell<T> extends ListCell<T> {
 
     @Getter
@@ -22,6 +28,9 @@ public abstract class EditListCell<T> extends ListCell<T> {
     @Getter
     private JFXButton editButton;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);

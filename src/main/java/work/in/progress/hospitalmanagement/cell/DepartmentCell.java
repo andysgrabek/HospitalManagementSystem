@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.service.BedService;
 
+/**
+ * Class representing the cell displayed in a {@link javafx.scene.control.ListView} in e.g.
+ * {@link work.in.progress.hospitalmanagement.controller.DepartmentManagementViewController}
+ * showing how many beds are available in a single department
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class DepartmentCell extends DeleteListCell<Department> {
@@ -18,6 +24,9 @@ public class DepartmentCell extends DeleteListCell<Department> {
         this.bedService = bedService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateItem(Department item, boolean empty) {
         super.updateItem(item, empty);

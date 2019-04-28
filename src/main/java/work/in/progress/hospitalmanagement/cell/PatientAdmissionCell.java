@@ -10,6 +10,13 @@ import work.in.progress.hospitalmanagement.model.Patient;
 
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.NEW_EVENT;
 
+
+/**
+ * Class representing the cell displayed in a {@link javafx.scene.control.ListView} in e.g.
+ * {@link work.in.progress.hospitalmanagement.controller.AdmissionManagementViewController}
+ * showing if a patient is admitted to a department or not
+ * @author Andrzej Grabowski
+ */
 public class PatientAdmissionCell extends PersonCell<Patient> {
 
     @Getter
