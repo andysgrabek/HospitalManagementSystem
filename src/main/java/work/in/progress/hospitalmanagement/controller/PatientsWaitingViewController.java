@@ -25,6 +25,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
+/**
+ * Class serving as the controller for the view of managing patients that have made appointments with the hospital.
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class PatientsWaitingViewController extends AbstractViewController {
@@ -49,6 +53,9 @@ public class PatientsWaitingViewController extends AbstractViewController {
         this.departmentService = departmentService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         list = FXCollections.observableArrayList(outpatientAdmissionService.findAll());
@@ -61,7 +68,7 @@ public class PatientsWaitingViewController extends AbstractViewController {
     }
 
     /**
-     * Method setting up listeners on list filtering search boxes and date picker to filter the results using predicates
+     * Method setting up listeners on list filtering search boxes and pickers to filter the results using predicates
      */
     private void initListFiltering() {
         FilteredList<OutpatientAdmission> filteredList = new FilteredList<>(list, patient -> true);
@@ -75,6 +82,10 @@ public class PatientsWaitingViewController extends AbstractViewController {
         appointmentListView.setItems(filteredList);
     }
 
+    /**
+     * Method to create a composite predicate for the search values provided by the user in the form fields
+     * @return the composite predicate to filter the search results
+     */
     private Predicate<OutpatientAdmission> composeAdmissionPredicate() {
         AppointmentPredicateFactory factory = AppointmentPredicateFactory.getDefaultFactory();
         return factory.datePredicate(appointmentDatePicker.getValue())
@@ -82,6 +93,10 @@ public class PatientsWaitingViewController extends AbstractViewController {
                 .and(factory.departmentPredicate(departmentField.getSelectionModel().getSelectedItem()));
     }
 
+    /**
+     * Handler for the event of pressing the button to clear the search fields
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void clearSearchFields(ActionEvent actionEvent) {
         appointmentDatePicker.setValue(null);

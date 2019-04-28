@@ -96,6 +96,9 @@ public class PatientRegistrationViewController extends AbstractViewController {
         this.validator = validator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         patientObservableList = FXCollections.observableArrayList();
@@ -268,6 +271,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
         editedPatient = null;
     }
 
+    /**
+     * Handler for the event of pressing the button to register a new patient.
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void registerPatient(ActionEvent actionEvent) {
         if (validatePatientForm()) {
@@ -311,6 +318,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
                 .build();
     }
 
+    /**
+     * Handler for the event of pressing the button to finish editing a new patient saving the data in the form
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void confirmEditPatient(ActionEvent actionEvent) {
         if (validatePatientForm()) {
@@ -333,6 +344,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
         }
     }
 
+    /**
+     * Handler for the event of pressing the button to finish editing a new patient without saving the data in the form
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void cancelEditPatient(ActionEvent actionEvent) {
         resetFormFields();
@@ -345,6 +360,10 @@ public class PatientRegistrationViewController extends AbstractViewController {
         formLabel.setText("REGISTER NEW PATIENT");
     }
 
+    /**
+     * Handler for the event of pressing the button to clear the search fields
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void clearSearchFields(ActionEvent actionEvent) {
         nameSearchField.setText("");

@@ -32,6 +32,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Class serving as controller for the view in which the user can perform an advanced search through the hospital's
+ * database using a custom SQL-like query.
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class AdvancedSearchViewController extends AbstractViewController {
@@ -46,8 +51,6 @@ public class AdvancedSearchViewController extends AbstractViewController {
     @FXML
     private JFXTextField queryTextField;
     @FXML
-    private JFXButton executeQueryButton;
-    @FXML
     private TableView<Tuple> tableView;
 
     @Autowired
@@ -56,6 +59,9 @@ public class AdvancedSearchViewController extends AbstractViewController {
         this.searchQueryService = searchQueryService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         predefinedQueriesComboBox.setItems(FXCollections.observableArrayList(searchQueryService.findAll()));
@@ -69,6 +75,10 @@ public class AdvancedSearchViewController extends AbstractViewController {
         predefinedQueriesComboBox.setConverter(new SearchQueryStringConverter(searchQueryService));
     }
 
+    /**
+     * Handler for the event of selecting a new query in the {@link ComboBox containing predefined queries}
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void selectedQuery(ActionEvent actionEvent) {
         if (predefinedQueriesComboBox.getSelectionModel().getSelectedItem() != null) {
@@ -78,6 +88,10 @@ public class AdvancedSearchViewController extends AbstractViewController {
         }
     }
 
+    /**
+     * Handler for the event of pressing the button to execute the typed query
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void executeQuery(ActionEvent actionEvent) {
         if (queryTextField.validate()) {
@@ -100,6 +114,10 @@ public class AdvancedSearchViewController extends AbstractViewController {
         }
     }
 
+    /**
+     * Method executing the query typed in by the user
+     * @param searchQuery the query typed in by the user
+     */
     private void execute(SearchQuery searchQuery) {
         tableView.getColumns().clear();
         List<Tuple> result = searchQueryService.execute(searchQuery);
@@ -123,6 +141,10 @@ public class AdvancedSearchViewController extends AbstractViewController {
         tableView.setItems(FXCollections.observableArrayList(result));
     }
 
+    /**
+     * Handler for the event of clicking the button to view the database schema
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void showSchema(ActionEvent actionEvent) {
         DialogFactory.getDefaultFactory().imageDialog(
@@ -134,6 +156,10 @@ public class AdvancedSearchViewController extends AbstractViewController {
         ).show();
     }
 
+    /**
+     * Handler for the event of clicking the button to delete the currently selected predefined query
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void deleteQuery(ActionEvent actionEvent) {
         if (!predefinedQueriesComboBox.getSelectionModel().isEmpty()) {

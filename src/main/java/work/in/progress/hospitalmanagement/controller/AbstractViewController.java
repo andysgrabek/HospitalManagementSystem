@@ -119,6 +119,10 @@ public abstract class AbstractViewController implements Initializable {
         return viewController;
     }
 
+    /**
+     * Transitions to the {@link MainMenuViewController} in the current stage
+     * @param actionEvent event that triggered the transition
+     */
     public void backToMainMenu(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(MainMenuViewController.class), true);
     }

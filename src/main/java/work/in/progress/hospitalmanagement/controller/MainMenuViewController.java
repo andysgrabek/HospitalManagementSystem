@@ -26,8 +26,6 @@ public class MainMenuViewController extends AbstractViewController {
                     + "Agile Object-oriented Software Development course at Technical University of Denmark.\n"
                     + "Assets used with permission from pngtree.com/free-icon excluding application logo.";
     private static final String SOFTWARE_INFORMATION = "Software Information";
-    @FXML
-    private StackPane stackPane;
 
     /**
      * {@inheritDoc}
@@ -37,11 +35,19 @@ public class MainMenuViewController extends AbstractViewController {
 
     }
 
+    /**
+     * Method transitioning to the {@link PatientRegistrationViewController} screen in the current stage
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void openPatientRegistration(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(PatientRegistrationViewController.class), true);
     }
 
+    /**
+     * Method showing an information dialog on the screen about the software
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void showInfo(ActionEvent actionEvent) {
         DialogFactory.getDefaultFactory().infoTextDialog(
@@ -52,6 +58,10 @@ public class MainMenuViewController extends AbstractViewController {
         ).show();
     }
 
+    /**
+     * Method confirming if the user wants to quit the application via a {@link com.jfoenix.controls.JFXDialog}
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void exit(ActionEvent actionEvent) {
         DialogFactory.getDefaultFactory().deletionDialog(
@@ -63,26 +73,46 @@ public class MainMenuViewController extends AbstractViewController {
         ).show();
     }
 
+    /**
+     * Method transitioning to the {@link StaffManagementViewController} screen in the current stage
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void openStaffManagement(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(StaffManagementViewController.class), true);
     }
 
+    /**
+     * Method transitioning to the {@link DepartmentManagementViewController} screen in the current stage
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void openDepartmentManagement(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(DepartmentManagementViewController.class), true);
     }
 
+    /**
+     * Method transitioning to the {@link AdvancedSearchViewController} screen in the current stage
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void openAdvancedSearch(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(AdvancedSearchViewController.class), true);
     }
 
+    /**
+     * Method transitioning to the {@link AdmissionManagementViewController} screen in the current stage
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void openAdmissionManagement(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(AdmissionManagementViewController.class), true);
     }
 
+    /**
+     * Method transitioning to the {@link PatientsWaitingViewController} screen in the current stage
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void openPatientsWaiting(ActionEvent actionEvent) {
         presentViewController(instantiateViewController(PatientsWaitingViewController.class), true);

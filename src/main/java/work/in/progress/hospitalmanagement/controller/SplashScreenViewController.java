@@ -1,8 +1,6 @@
 package work.in.progress.hospitalmanagement.controller;
 
 import javafx.animation.PauseTransition;
-import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -21,8 +19,6 @@ import java.util.ResourceBundle;
 public class SplashScreenViewController extends AbstractViewController {
 
     private static final int LOADING_TRANSITION_DURATION = 3;
-    @FXML
-    private ImageView logoImageView;
 
     /**
      * {@inheritDoc}

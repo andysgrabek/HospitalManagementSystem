@@ -14,7 +14,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ import static work.in.progress.hospitalmanagement.event.ListCellEvent.DELETE_EVE
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT;
 
 /**
- * Controller for the view responsible for controlling staff registration
+ * Controller for the view responsible for controlling staff registration.
  * @author Andrzej Grabowski
  */
 @Component
@@ -71,8 +70,6 @@ public class StaffManagementViewController extends AbstractViewController {
     private JFXTextField nameField;
     @FXML
     private JFXTextField surnameField;
-    @FXML
-    private AnchorPane emailPane;
     @FXML
     private HBox formButtonsParent;
     @FXML
@@ -189,6 +186,10 @@ public class StaffManagementViewController extends AbstractViewController {
                 new ComboBoxValidator(HospitalStaff.class, "role", validator));
     }
 
+    /**
+     * Handler for the event of pressing the button to clear the search fields
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void clearSearchFields(ActionEvent actionEvent) {
         nameSearchField.setText("");
@@ -196,6 +197,10 @@ public class StaffManagementViewController extends AbstractViewController {
         surnameSearchField.setText("");
     }
 
+    /**
+     * Handler for the event of pressing the button to finish editing a staff member without saving data from the form.
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void cancelEditStaff(ActionEvent actionEvent) {
         resetFormFields();
@@ -209,6 +214,10 @@ public class StaffManagementViewController extends AbstractViewController {
         formLabel.setText("CREATE NEW STAFF MEMBER");
     }
 
+    /**
+     * handler for the event of pressing the button to finish editing a staff member with saving data from the form.
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void confirmEditStaff(ActionEvent actionEvent) {
         if (validateStaffForm()) {
@@ -227,6 +236,10 @@ public class StaffManagementViewController extends AbstractViewController {
         }
     }
 
+    /**
+     * Handler for the event of pressing the button to create a new staff member and saving them to the database.
+     * @param actionEvent the event that triggered the action
+     */
     @FXML
     private void registerStaff(ActionEvent actionEvent) {
         if (validateStaffForm()) {

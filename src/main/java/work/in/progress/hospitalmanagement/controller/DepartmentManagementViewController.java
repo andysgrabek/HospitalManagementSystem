@@ -34,6 +34,11 @@ import java.util.ResourceBundle;
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.DELETE_EVENT;
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT;
 
+/**
+ * Class serving as the controller for the view in which the user is able to manage the deparments and beds
+ * available in the hospital
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class DepartmentManagementViewController extends AbstractViewController {
@@ -68,6 +73,9 @@ public class DepartmentManagementViewController extends AbstractViewController {
         this.validator = validator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bedsListView.setCellFactory(new BedCellFactory());
@@ -86,27 +94,19 @@ public class DepartmentManagementViewController extends AbstractViewController {
         Label departmentPlaceholder = new Label("No departments. Added departments will appear here.");
         departmentPlaceholder.getStyleClass().add("hms-text");
         departmentsListView.setPlaceholder(departmentPlaceholder);
-        initFormValidation();
+        nameField.getValidators().add(new TextFieldValidator(Patient.class, "name", validator));
     }
 
     /**
-     * Method setting up validation of patient edit/register form using {@link Validator}
-     */
-    private void initFormValidation() {
-        nameField.getValidators().add(
-                new TextFieldValidator(Patient.class, "name", validator));
-    }
-
-    /**
-     * Method to return the event handler of pressing the delete button next to a patient entry in the list
-     * @return event handler deleting the patient from the database
+     * Method to return the event handler of pressing the delete button next to a department entry in the list
+     * @return event handler deleting the department from the database
      */
     private EventHandler<ListCellEvent> handleDepartmentDeletePressed() {
         return this::removeDepartmentOnDelete;
     }
 
     /**
-     * Method handling the deletion of a patient from the database and the list itself
+     * Method handling the deletion of a department from the database and the list itself
      * @param event the received deletion event
      */
     private void removeDepartmentOnDelete(ListCellEvent<Department> event) {
@@ -117,15 +117,15 @@ public class DepartmentManagementViewController extends AbstractViewController {
     }
 
     /**
-     * Method to return the event handler of pressing the edit button next to a patient entry in the list
-     * @return event handler editing the patient in the database
+     * Method to return the event handler of pressing the edit button next to a department entry in the list
+     * @return event handler editing the department in the database
      */
     private EventHandler<ListCellEvent> handleDepartmentEditPressed() {
         return this::updateDepartmentOnEditPressed;
     }
 
     /**
-     * Method handling the edition of a patient in the database and in the list itself
+     * Method handling the edition of a department in the database and in the list itself
      * @param event the received edition event
      */
     private void updateDepartmentOnEditPressed(ListCellEvent<Department> event) {
@@ -145,23 +145,23 @@ public class DepartmentManagementViewController extends AbstractViewController {
     }
 
     /**
-     * Method to return the event handler of pressing the delete button next to a patient entry in the list
-     * @return event handler deleting the patient from the database
+     * Method to return the event handler of pressing the delete button next to a bed entry in the list
+     * @return event handler deleting the bed from the database
      */
     private EventHandler<ListCellEvent> handleBedDeletePressed() {
         return this::removeBedOnDelete;
     }
 
     /**
-     * Method to return the event handler of pressing the delete button next to a patient entry in the list
-     * @return event handler deleting the patient from the database
+     * Method to return the event handler of pressing the bed button next to a patient entry in the list
+     * @return event handler deleting the bed from the database
      */
     private EventHandler<ListCellEvent> handleBedEditPressed() {
         return this::updateBedOnEdit;
     }
 
     /**
-     * Method handling the deletion of a patient from the database and the list itself
+     * Method handling the deletion of a bed from the database and the list itself
      * @param event the received deletion event
      */
     private void updateBedOnEdit(ListCellEvent<Bed> event) {
@@ -169,7 +169,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
     }
 
     /**
-     * Method handling the deletion of a patient from the database and the list itself
+     * Method handling the deletion of a bed from the database and the list itself
      * @param event the received deletion event
      */
     private void removeBedOnDelete(ListCellEvent<Bed> event) {
@@ -218,19 +218,37 @@ public class DepartmentManagementViewController extends AbstractViewController {
         formLabel.setText("CREATE NEW DEPARTMENT");
     }
 
+    /**
+     * Handler for the event of pressing the button to add more beds to the edited department
+     * @param actionEvent event triggered by pressing the button
+     */
     @FXML
     public void addBed(ActionEvent actionEvent) {
         createBedDialog().show();
     }
 
+    /**
+     * Method creating a {@link JFXDialog} with a form to create a new bed
+     * @return the dialog to be presented to the user
+     */
     private JFXDialog createBedDialog() {
         return createBedRoomNumberDialog("Add new bed", null);
     }
 
+    /**
+     * Method creating a {@link JFXDialog} with a form to edit a bed
+     * @return the dialog to be presented to the user
+     */
     private JFXDialog editBedDialog(Bed bed) {
         return createBedRoomNumberDialog("Edit bed", bed);
     }
 
+    /**
+     * Method creating a general {@link JFXDialog} e.g. for bed creation or edit.
+     * @param heading the heading to be displayed in the dialog
+     * @param bed the bed to be described in the dialog if any
+     * @return the dialog to be presented to the user
+     */
     private JFXDialog createBedRoomNumberDialog(String heading, Bed bed) {
         SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
         EventHandler<ActionEvent> handler;
@@ -257,6 +275,11 @@ public class DepartmentManagementViewController extends AbstractViewController {
                 new TextFieldValidator(Bed.class, "roomNumber", validator));
     }
 
+    /**
+     * Method creating a {@link JFXDialog} responsible for confirming the deletion of a department
+     * @param department the department to be deleted
+     * @return the dialog to be presented to the user
+     */
     private JFXDialog createDepartmentDeleteDialog(Department department) {
         return DialogFactory
                 .getDefaultFactory()
@@ -274,6 +297,11 @@ public class DepartmentManagementViewController extends AbstractViewController {
                         (StackPane) getRoot());
     }
 
+    /**
+     * Method creating a {@link JFXDialog} responsible for confirming the deletion of a bed
+     * @param bed the bed to be deleted
+     * @return the dialog to be presented to the user
+     */
     private JFXDialog createBedDeleteDialog(Bed bed) {
         return DialogFactory
                 .getDefaultFactory()

@@ -51,6 +51,10 @@ import static work.in.progress.hospitalmanagement.event.ListCellEvent.DELETE_EVE
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT;
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.NEW_EVENT;
 
+/**
+ * Class serving as controller for the view of admission management
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class AdmissionManagementViewController extends AbstractViewController {
@@ -90,7 +94,9 @@ public class AdmissionManagementViewController extends AbstractViewController {
         this.validator = validator;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         registeredPatientListView.setCellFactory(new PatientAdmissionCellFactory());
@@ -105,16 +111,38 @@ public class AdmissionManagementViewController extends AbstractViewController {
         initListFiltering();
     }
 
+    /**
+     * Method serving as intermediary for handling patient admission edit. Its sole purpose is calling
+     * {@link #handleEdit(ListCellEvent)}
+     * @return edit event handler
+     */
     private EventHandler<ListCellEvent> handlePatientEditPressed() {
         return this::handleEdit;
     }
+
+    /**
+     * Method serving as intermediary for handling patient admission deletion. Its sole purpose is calling
+     * {@link #handleDelete(ListCellEvent)}
+     * @return delete event handler
+     */
     private EventHandler<ListCellEvent> handlePatientDeletePressed() {
         return this::handleDelete;
     }
+
+    /**
+     * Method serving as intermediary for handling patient admission creation. Its sole purpose is calling
+     * {@link #handleCreate(ListCellEvent)}
+     * @return create event handler
+     */
     private EventHandler<ListCellEvent> handlePatientCreatePressed() {
         return this::handleCreate;
     }
 
+    /**
+     * Method handling the creation of an admission. It displays an appropriate {@link JFXDialog} with a form
+     * to be completed to create an admission
+     * @param event event that triggered the creation of an admission
+     */
     private void handleCreate(ListCellEvent<Patient> event) {
         Property<Admission> admissionProperty = new SimpleObjectProperty<>();
         JFXDialog dialog = DialogFactory.getDefaultFactory().admissionFormDialog(
@@ -131,6 +159,11 @@ public class AdmissionManagementViewController extends AbstractViewController {
         dialog.show();
     }
 
+    /**
+     * Method handling the deletion of an admission. It displays an appropriate {@link JFXDialog} with a form
+     * to be completed to confirm the deletion of an admission
+     * @param event event that triggered the deletion of an admission
+     */
     private void handleDelete(ListCellEvent<Patient> event) {
         JFXDialog dialog = DialogFactory.getDefaultFactory().deletionDialog(
                 "Are you sure you want to discharge the patient?",
@@ -151,8 +184,9 @@ public class AdmissionManagementViewController extends AbstractViewController {
     }
 
     /**
-     * Method to handle edit of a list cell patient-related event
-     * @param event the event associated with the patient edited
+     * Method handling the edit of an admission. It displays an appropriate {@link JFXDialog} with a form
+     * to be completed to edit the admission
+     * @param event event that triggered the edit of an admission
      */
     private void handleEdit(ListCellEvent<Patient> event) {
         Property<Bed> selectedBedProperty = new SimpleObjectProperty<>();
@@ -233,6 +267,10 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 .and(factory.departmentPredicate(department));
     }
 
+    /**
+     * Handler for pressing the button clearing the search form fields
+     * @param actionEvent event that triggered the event
+     */
     @FXML
     private void clearSearchFields(ActionEvent actionEvent) {
         nameSearchField.setText("");
