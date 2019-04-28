@@ -154,7 +154,6 @@ public class AdmissionManagementViewController extends AbstractViewController {
                     event.getSubject().setAdmission(admissionProperty.getValue());
                     patientObservableList.add(patientService.save(event.getSubject()));
                 },
-                validator,
                 (StackPane) getRoot());
         dialog.show();
     }

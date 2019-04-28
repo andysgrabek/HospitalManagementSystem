@@ -61,6 +61,7 @@ public final class DialogFactory {
     private final DepartmentService departmentService;
     private final InpatientAdmissionService inpatientAdmissionService;
     private final OutpatientAdmissionService outpatientAdmissionService;
+    private final Validator validator;
 
     /**
      * Helper class representing elements of the admission dialog.
@@ -89,11 +90,12 @@ public final class DialogFactory {
                          DepartmentService departmentService,
                          InpatientAdmissionService inpatientAdmissionService,
                          OutpatientAdmissionService outpatientAdmissionService,
-                         PatientService patientService) {
+                         Validator validator) {
         this.bedService = bedService;
         this.departmentService = departmentService;
         this.inpatientAdmissionService = inpatientAdmissionService;
         this.outpatientAdmissionService = outpatientAdmissionService;
+        this.validator = validator;
     }
 
     private static final Paint PAINT = Paint.valueOf("#f0ab8d");
@@ -253,7 +255,7 @@ public final class DialogFactory {
         vBox.getChildren().addAll(inpatientCheckbox, departmentComboBox, bedComboBox, datePicker, timePicker);
         styleAdmissionFormChildren(vBox);
         JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
-        setAdmissionFieldsValidators(validator, departmentComboBox, bedComboBox, datePicker, timePicker);
+        setAdmissionFieldsValidators(departmentComboBox, bedComboBox, datePicker, timePicker);
         AdmissionDialogFormElements formElements = new AdmissionDialogFormElements(
                 inpatientCheckbox, departmentComboBox, bedComboBox, confirmButton, dialog, datePicker, timePicker);
         setAdmissionDialogActions(patient, admissionProperty, onComplete, content, formElements);
@@ -324,8 +326,6 @@ public final class DialogFactory {
         });
     }
 
-    private void setAdmissionFieldsValidators(Validator validator,
-                                              JFXComboBox<Department> departmentComboBox,
     /**
      * Method to set up validation of the admission dialog form fields
      * @param departmentComboBox combo box containing available department values to be validated
@@ -333,6 +333,7 @@ public final class DialogFactory {
      * @param datePicker visit date picker to be validated
      * @param timePicker visit time picker to be validated
      */
+    private void setAdmissionFieldsValidators(JFXComboBox<Department> departmentComboBox,
                                               JFXComboBox<Bed> bedComboBox,
                                               JFXDatePicker datePicker,
                                               JFXTimePicker timePicker) {
