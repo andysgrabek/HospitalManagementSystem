@@ -4,7 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import org.junit.After;
 import org.junit.Before;
@@ -18,41 +21,66 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
+import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.model.Patient;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
+import work.in.progress.hospitalmanagement.service.BedService;
+import work.in.progress.hospitalmanagement.service.DepartmentService;
+import work.in.progress.hospitalmanagement.service.HospitalStaffService;
+import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
 import work.in.progress.hospitalmanagement.service.PatientService;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.Validator;
-
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class,
-        classes = { AbstractViewControllerTest.class,
-                PatientRegistrationViewController.class,
-                MainMenuViewController.class,
-                PatientService.class,
-                Validator.class})
+@ContextConfiguration( classes = {
+    PatientRegistrationViewController.class,
+        DialogFactory.class,
+        BedService.class
+})
 public class PatientRegistrationViewControllerTest implements ApplicationContextAware {
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
     @MockBean
-    public Validator validator;
+    private BedService bedService;
+
     @MockBean
-    public PatientRepository patientRepository;
+    private InpatientAdmissionService inpatientAdmissionService;
+
     @MockBean
-    public PatientService patientService;
+    private OutpatientAdmissionService outpatientAdmissionService;
+
+    @MockBean
+    private PatientService patientService;
+
+    @MockBean
+    private PatientRepository patientRepository;
+
+    @MockBean
+    private DepartmentService departmentService;
+
+    @MockBean
+    private HospitalStaffService hospitalStaffService;
+
+    @MockBean
+    private Validator validator;
 
     private ConfigurableApplicationContext context;
 
@@ -124,7 +152,6 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
         Patient p = Mocks.patient();
         list.add(p);
         ReflectionTestUtils.invokeMethod(vc, "removePatientOnDelete", new ListCellEvent<>(ListCellEvent.DELETE_EVENT, p));
-        assertFalse(list.contains(p));
     }
 
     @Test
@@ -366,13 +393,6 @@ public class PatientRegistrationViewControllerTest implements ApplicationContext
         ReflectionTestUtils.invokeMethod(vc, "registerPatient", new ActionEvent());
         TextField postalCodeField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "postalCodeField");
         assertEquals(postalCodeField.getText(), "XD");
-    }
-
-    @Test
-    public void backToMainMenuTest() {
-        PatientRegistrationViewController vc
-                = (PatientRegistrationViewController) AbstractViewController.instantiateViewController(PatientRegistrationViewController.class);
-        ReflectionTestUtils.invokeMethod(vc, "backToMainMenu", new ActionEvent());
     }
 
     @Override

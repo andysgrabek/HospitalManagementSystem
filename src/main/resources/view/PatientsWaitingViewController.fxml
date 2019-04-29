@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTimePicker?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -13,6 +17,7 @@
 <StackPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="work.in.progress.hospitalmanagement.controller.PatientsWaitingViewController">
     <AnchorPane>
         <children>
+
             <HBox alignment="CENTER" layoutX="72.0" layoutY="185.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="130.0">
                 <children>
                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
@@ -29,15 +34,15 @@
                                         </graphic></JFXButton>
                                 </children>
                             </AnchorPane>
-                        </children>
-                    </VBox>
-                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
-                        <children>
-                            <AnchorPane prefHeight="40.0" prefWidth="200.0">
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                                 <children>
-                                    <HBox fx:id="formButtonsParent" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <JFXDatePicker fx:id="appointmentDatePicker" defaultColor="#f0ab8d" prefHeight="50.0" prefWidth="157.0" promptText="Appointment date" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
+                           <JFXTimePicker fx:id="appointmentTimePicker" defaultColor="#f0ab8d" prefHeight="50.0" prefWidth="200.0" promptText="Appointment time" styleClass="hms-form-text" />
+                                    <JFXComboBox fx:id="departmentField" focusColor="#f0ab8d" prefHeight="50.0" prefWidth="271.0" promptText="Department" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
+                                    <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#clearSearchFields" prefHeight="27.0" prefWidth="115.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CLEAR" HBox.hgrow="ALWAYS" />
                                 </children>
-                            </AnchorPane>
+                            </HBox>
+                            <JFXListView fx:id="appointmentListView" prefHeight="529.0" prefWidth="507.0" VBox.vgrow="ALWAYS" />
                         </children>
                     </VBox>
                 </children>
@@ -51,7 +56,7 @@
                                     <Image url="@../images/icon_transparent.png" />
                                 </image>
                             </ImageView>
-                            <Label prefHeight="50.0" prefWidth="710.0" styleClass="hms-label-title" text="Patients waiting" HBox.hgrow="ALWAYS" />
+                            <Label prefHeight="50.0" prefWidth="710.0" styleClass="hms-label-title" text="Appointments and patients waiting" HBox.hgrow="ALWAYS" />
                         </children>
                     </HBox>
                 </children>

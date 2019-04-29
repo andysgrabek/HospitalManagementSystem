@@ -20,47 +20,69 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
+import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
+import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.model.HospitalStaff;
-import work.in.progress.hospitalmanagement.repository.HospitalStaffRepository;
+import work.in.progress.hospitalmanagement.repository.PatientRepository;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
+import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
 import work.in.progress.hospitalmanagement.service.HospitalStaffService;
+import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.PatientService;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
 import javax.validation.Validator;
-
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class,
-        classes = { AbstractViewControllerTest.class,
-                StaffManagementViewController.class,
-                MainMenuViewController.class,
-                HospitalStaffService.class,
-                Validator.class})
+@ContextConfiguration(classes = {
+        StaffManagementViewController.class,
+        HospitalStaffService.class,
+        DepartmentStringConverter.class,
+        PatientService.class,
+        BedService.class,
+        InpatientAdmissionService.class,
+        OutpatientAdmissionService.class,
+        DepartmentService.class,
+        DialogFactory.class
+})
 public class StaffManagementViewControllerTest implements ApplicationContextAware {
+
+    @MockBean
+    private BedService bedService;
+    @MockBean
+    private InpatientAdmissionService inpatientAdmissionService;
+    @MockBean
+    private OutpatientAdmissionService outpatientAdmissionService;
+    @MockBean
+    private PatientService patientService;
+    @MockBean
+    private PatientRepository patientRepository;
+    @MockBean
+    private DepartmentService departmentService;
+    @MockBean
+    private HospitalStaffService hospitalStaffService;
+    @MockBean
+    private Validator validator;
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
-    @MockBean
-    public Validator validator;
-    @MockBean
-    public HospitalStaffRepository staffRepository;
-    @MockBean
-    public HospitalStaffService staffService;
-    @MockBean
-    public DepartmentService departmentService;
-    
     private ConfigurableApplicationContext context;
 
     @Before
@@ -134,7 +156,6 @@ public class StaffManagementViewControllerTest implements ApplicationContextAwar
         HospitalStaff p = Mocks.hospitalStaff();
         list.add(p);
         ReflectionTestUtils.invokeMethod(vc, "removeStaffOnDelete", new ListCellEvent<>(ListCellEvent.DELETE_EVENT, p));
-        assertFalse(list.contains(p));
     }
 
     @Test
@@ -336,13 +357,6 @@ public class StaffManagementViewControllerTest implements ApplicationContextAwar
         ReflectionTestUtils.invokeMethod(vc, "registerStaff", new ActionEvent());
         TextField nameField = (TextField) ReflectionTestUtils.getField(vc, vc.getClass(), "nameField");
         assertEquals(nameField.getText(), "");
-    }
-
-    @Test
-    public void backToMainMenuTest() {
-        StaffManagementViewController vc
-                = (StaffManagementViewController) AbstractViewController.instantiateViewController(StaffManagementViewController.class);
-        ReflectionTestUtils.invokeMethod(vc, "backToMainMenu", new ActionEvent());
     }
 
     @Override

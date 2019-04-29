@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.converter.SearchQueryStringConverter;
 import work.in.progress.hospitalmanagement.factory.DialogFactory;
 import work.in.progress.hospitalmanagement.model.SearchQuery;
 import work.in.progress.hospitalmanagement.service.SearchQueryService;
@@ -31,6 +33,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Class serving as controller for the view in which the user can perform an advanced search through the hospital's
+ * database using a custom SQL-like query.
+ * @author Andrzej Grabowski
+ */
 @Component
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class AdvancedSearchViewController extends AbstractViewController {
@@ -45,8 +52,6 @@ public class AdvancedSearchViewController extends AbstractViewController {
     @FXML
     private JFXTextField queryTextField;
     @FXML
-    private JFXButton executeQueryButton;
-    @FXML
     private TableView<Tuple> tableView;
 
     @Autowired
@@ -55,6 +60,9 @@ public class AdvancedSearchViewController extends AbstractViewController {
         this.searchQueryService = searchQueryService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         predefinedQueriesComboBox.setItems(FXCollections.observableArrayList(searchQueryService.findAll()));
@@ -65,20 +73,28 @@ public class AdvancedSearchViewController extends AbstractViewController {
             saveCheckBox.setDisable(false);
             saveCheckBox.setSelected(true);
         });
+        predefinedQueriesComboBox.setConverter(new SearchQueryStringConverter(searchQueryService));
     }
 
-    @FXML
-    private void backToMainMenu(ActionEvent actionEvent) {
-        presentViewController(instantiateViewController(MainMenuViewController.class), true);
-    }
-
+    /**
+     * Handler for the event of selecting a new query in the {@link ComboBox containing predefined queries}
+     *
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void selectedQuery(ActionEvent actionEvent) {
-        queryTextField.setText(predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getExpression());
-        saveCheckBox.setDisable(true);
-        saveCheckBox.setSelected(false);
+        if (predefinedQueriesComboBox.getSelectionModel().getSelectedItem() != null) {
+            queryTextField.setText(predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getExpression());
+            saveCheckBox.setDisable(true);
+            saveCheckBox.setSelected(false);
+        }
     }
 
+    /**
+     * Handler for the event of pressing the button to execute the typed query
+     *
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void executeQuery(ActionEvent actionEvent) {
         if (queryTextField.validate()) {
@@ -101,6 +117,11 @@ public class AdvancedSearchViewController extends AbstractViewController {
         }
     }
 
+    /**
+     * Method executing the query typed in by the user
+     *
+     * @param searchQuery the query typed in by the user
+     */
     private void execute(SearchQuery searchQuery) {
         tableView.getColumns().clear();
         List<Tuple> result = searchQueryService.execute(searchQuery);
@@ -124,21 +145,42 @@ public class AdvancedSearchViewController extends AbstractViewController {
         tableView.setItems(FXCollections.observableArrayList(result));
     }
 
+    /**
+     * Handler for the event of clicking the button to view the database schema
+     *
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void showSchema(ActionEvent actionEvent) {
         DialogFactory.getDefaultFactory().imageDialog(
                 "Hospital Management System Schema",
-                new Image("images/admission.png"),
+                new Image("images/schema.png"),
                 event -> {
                 },
                 (StackPane) getRoot()
         ).show();
     }
 
+    /**
+     * Handler for the event of clicking the button to delete the currently selected predefined query
+     *
+     * @param actionEvent event that triggered the action
+     */
     @FXML
     private void deleteQuery(ActionEvent actionEvent) {
-        searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
-        predefinedQueriesComboBox.getItems().remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
-        predefinedQueriesComboBox.getSelectionModel().clearSelection();
+        if (!predefinedQueriesComboBox.getSelectionModel().isEmpty()) {
+            DialogFactory.getDefaultFactory().deletionDialog(
+                    "Are you sure you want to delete the query?",
+                    predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getLabel(),
+                    event -> {
+                        searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+                        predefinedQueriesComboBox.getItems()
+                                .remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+                        predefinedQueriesComboBox.getSelectionModel().clearSelection();
+                    },
+                    Event::consume,
+                    (StackPane) getRoot()
+            ).show();
+        }
     }
 }

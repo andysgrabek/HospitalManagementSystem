@@ -37,10 +37,6 @@ public final class ApplicationContextSingleton {
      * @throws IllegalStateException when the context is null
      */
     public static ConfigurableApplicationContext getContext() {
-        if (context == null) {
-            throw new IllegalStateException("Context not set");
-        } else {
-            return context;
-        }
+        return context;
     }
 }

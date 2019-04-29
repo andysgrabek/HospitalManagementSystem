@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -13,6 +17,7 @@
 <StackPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="work.in.progress.hospitalmanagement.controller.AdmissionManagementViewController">
     <AnchorPane>
         <children>
+
             <HBox alignment="CENTER" layoutX="72.0" layoutY="185.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="130.0">
                 <children>
                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
@@ -29,15 +34,20 @@
                                         </graphic></JFXButton>
                                 </children>
                             </AnchorPane>
-                        </children>
-                    </VBox>
-                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
-                        <children>
-                            <AnchorPane prefHeight="40.0" prefWidth="200.0">
+                            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                                 <children>
-                                    <HBox fx:id="formButtonsParent" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <JFXTextField fx:id="nameSearchField" focusColor="#f0ab8d" promptText="Name" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
+                                    <JFXTextField fx:id="surnameSearchField" focusColor="#f0ab8d" promptText="Surname" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
                                 </children>
-                            </AnchorPane>
+                            </HBox>
+                            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                <children>
+                                    <JFXDatePicker fx:id="birthDateSearchPicker" defaultColor="#f0ab8d" prefHeight="26.0" prefWidth="303.0" promptText="Date of birth" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
+                           <JFXComboBox fx:id="departmentSearchField" focusColor="#f0ab8d" prefHeight="26.0" prefWidth="271.0" promptText="Department" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
+                                    <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#clearSearchFields" prefHeight="27.0" prefWidth="115.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CLEAR" HBox.hgrow="ALWAYS" />
+                                </children>
+                            </HBox>
+                            <JFXListView fx:id="registeredPatientListView" prefHeight="529.0" prefWidth="507.0" VBox.vgrow="ALWAYS" />
                         </children>
                     </VBox>
                 </children>

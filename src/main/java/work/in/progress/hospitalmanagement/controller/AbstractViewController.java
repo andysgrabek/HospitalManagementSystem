@@ -5,6 +5,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -116,5 +117,13 @@ public abstract class AbstractViewController implements Initializable {
             Platform.exit();
         }
         return viewController;
+    }
+
+    /**
+     * Transitions to the {@link MainMenuViewController} in the current stage
+     * @param actionEvent event that triggered the transition
+     */
+    public void backToMainMenu(ActionEvent actionEvent) {
+        presentViewController(instantiateViewController(MainMenuViewController.class), true);
     }
 }

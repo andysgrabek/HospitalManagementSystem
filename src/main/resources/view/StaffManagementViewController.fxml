@@ -12,90 +12,93 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="work.in.progress.hospitalmanagement.controller.StaffManagementViewController">
-    <children>
-        <HBox alignment="CENTER" layoutX="72.0" layoutY="185.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="130.0">
-            <children>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <AnchorPane prefHeight="40.0" prefWidth="335.0">
-                            <children>
-                                <JFXButton buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#backToMainMenu" prefHeight="33.0" prefWidth="108.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="BACK" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
-                                    <graphic>
-                                        <ImageView fitHeight="21.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@../images/back.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic></JFXButton>
-                            </children>
-                        </AnchorPane>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                            <children>
-                                <JFXTextField fx:id="nameSearchField" focusColor="#f0ab8d" promptText="Name" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
-                                <JFXTextField fx:id="surnameSearchField" focusColor="#f0ab8d" promptText="Surname" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                            <children>
-                        <JFXComboBox fx:id="departmentSearchField" focusColor="#f0ab8d" prefHeight="27.0" prefWidth="220.0" promptText="Department" styleClass="hms-form-text" />
-                                <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#clearSearchFields" prefHeight="27.0" prefWidth="115.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CLEAR" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <JFXListView fx:id="staffListView" prefHeight="529.0" prefWidth="507.0" VBox.vgrow="ALWAYS" />
-                    </children>
-                </VBox>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Label fx:id="formLabel" alignment="CENTER" prefHeight="48.0" prefWidth="317.0" styleClass="hms-text" text="CREATE NEW STAFF MEMBER" />
-                        <JFXTextField fx:id="nameField" focusColor="#f0ab8d" promptText="Name" styleClass="hms-form-text" />
-                        <JFXTextField fx:id="surnameField" focusColor="#f0ab8d" promptText="Surname" styleClass="hms-form-text" />
-                  <AnchorPane prefHeight="40.0" prefWidth="200.0">
-                     <children>
-                        <JFXComboBox fx:id="departmentField" focusColor="#f0ab8d" prefHeight="27.0" prefWidth="230.0" promptText="Department" styleClass="hms-form-text" />
-                     </children>
-                  </AnchorPane>
-                        <AnchorPane prefHeight="40.0" prefWidth="200.0">
-                     <children>
-                        <JFXComboBox fx:id="roleField" focusColor="#f0ab8d" prefHeight="27.0" prefWidth="230.0" promptText="Role" styleClass="hms-form-text" />
-                     </children>
-                        </AnchorPane>
-                  <AnchorPane fx:id="emailPane" prefHeight="47.0" prefWidth="552.0">
-                     <children>
-                        <Label fx:id="emailLabel" prefHeight="40.0" prefWidth="552.0" styleClass="hms-form-text" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-                        <AnchorPane prefHeight="40.0" prefWidth="200.0">
-                            <children>
-                                <HBox fx:id="formButtonsParent" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <children>
-                                        <JFXButton fx:id="cancelEditStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#cancelEditStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CANCEL" />
-                                        <JFXButton fx:id="confirmEditStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#confirmEditStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CONFIRM" />
-                                        <JFXButton fx:id="createStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#registerStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CREATE" />
-                                    </children>
-                                </HBox>
-                            </children>
-                        </AnchorPane>
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
-        <AnchorPane prefHeight="112.0" prefWidth="768.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0">
-            <children>
-                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <ImageView fitHeight="104.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../images/icon_transparent.png" />
-                            </image>
-                        </ImageView>
-                        <Label prefHeight="50.0" prefWidth="710.0" styleClass="hms-label-title" text="Staff management" HBox.hgrow="ALWAYS" />
-                    </children>
-                </HBox>
-            </children>
-        </AnchorPane>
-    </children>
+<?import javafx.scene.layout.StackPane?>
+<StackPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="work.in.progress.hospitalmanagement.controller.StaffManagementViewController">
+    <AnchorPane>
+        <children>
+            <HBox alignment="CENTER" layoutX="72.0" layoutY="185.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="130.0">
+                <children>
+                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <AnchorPane prefHeight="40.0" prefWidth="335.0">
+                                <children>
+                                    <JFXButton buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#backToMainMenu" prefHeight="33.0" prefWidth="108.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="BACK" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+                                        <graphic>
+                                            <ImageView fitHeight="21.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@../images/back.png" />
+                                                </image>
+                                            </ImageView>
+                                        </graphic></JFXButton>
+                                </children>
+                            </AnchorPane>
+                            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                <children>
+                                    <JFXTextField fx:id="nameSearchField" focusColor="#f0ab8d" promptText="Name" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
+                                    <JFXTextField fx:id="surnameSearchField" focusColor="#f0ab8d" promptText="Surname" styleClass="hms-form-text" HBox.hgrow="ALWAYS" />
+                                </children>
+                            </HBox>
+                            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                <children>
+                                    <JFXComboBox fx:id="departmentSearchField" focusColor="#f0ab8d" prefHeight="27.0" prefWidth="220.0" promptText="Department" styleClass="hms-form-text" />
+                                    <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#clearSearchFields" prefHeight="27.0" prefWidth="115.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CLEAR" HBox.hgrow="ALWAYS" />
+                                </children>
+                            </HBox>
+                            <JFXListView fx:id="staffListView" prefHeight="529.0" prefWidth="507.0" VBox.vgrow="ALWAYS" />
+                        </children>
+                    </VBox>
+                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label fx:id="formLabel" alignment="CENTER" prefHeight="48.0" prefWidth="317.0" styleClass="hms-text" text="CREATE NEW STAFF MEMBER" />
+                            <JFXTextField fx:id="nameField" focusColor="#f0ab8d" promptText="Name" styleClass="hms-form-text" />
+                            <JFXTextField fx:id="surnameField" focusColor="#f0ab8d" promptText="Surname" styleClass="hms-form-text" />
+                            <AnchorPane prefHeight="40.0" prefWidth="200.0">
+                                <children>
+                                    <JFXComboBox fx:id="departmentField" focusColor="#f0ab8d" prefHeight="27.0" prefWidth="230.0" promptText="Department" styleClass="hms-form-text" />
+                                </children>
+                            </AnchorPane>
+                            <AnchorPane prefHeight="40.0" prefWidth="200.0">
+                                <children>
+                                    <JFXComboBox fx:id="roleField" focusColor="#f0ab8d" prefHeight="27.0" prefWidth="230.0" promptText="Role" styleClass="hms-form-text" />
+                                </children>
+                            </AnchorPane>
+                            <AnchorPane fx:id="emailPane" prefHeight="47.0" prefWidth="552.0">
+                                <children>
+                                    <Label fx:id="emailLabel" prefHeight="40.0" prefWidth="552.0" styleClass="hms-form-text" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                </children>
+                            </AnchorPane>
+                            <AnchorPane prefHeight="40.0" prefWidth="200.0">
+                                <children>
+                                    <HBox fx:id="formButtonsParent" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <children>
+                                            <JFXButton fx:id="cancelEditStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#cancelEditStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CANCEL" />
+                                            <JFXButton fx:id="confirmEditStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#confirmEditStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CONFIRM" />
+                                            <JFXButton fx:id="createStaffButton" buttonType="RAISED" focusTraversable="false" mnemonicParsing="false" onAction="#registerStaff" prefHeight="40.0" prefWidth="157.0" ripplerFill="#f0ab8d" styleClass="hms-button" text="CREATE" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </AnchorPane>
+                        </children>
+                    </VBox>
+                </children>
+            </HBox>
+            <AnchorPane prefHeight="112.0" prefWidth="768.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0">
+                <children>
+                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
+                        <children>
+                            <ImageView fitHeight="104.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/icon_transparent.png" />
+                                </image>
+                            </ImageView>
+                            <Label prefHeight="50.0" prefWidth="710.0" styleClass="hms-label-title" text="Staff management" HBox.hgrow="ALWAYS" />
+                        </children>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </children>
+    </AnchorPane>
     <stylesheets>
         <URL value="@ViewController.css" />
     </stylesheets>
-</AnchorPane>
+</StackPane>
