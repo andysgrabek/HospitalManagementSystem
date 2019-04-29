@@ -7,8 +7,5 @@ Feature: Register
     And I enter <birth-date>
     And I enter <home-address>
     And I enter <phone-number>
-    And I enter <tribe>
-    And I enter <alive/dead>
     And I click button <submit>
-    Then new patient is created
-    And I am redirected to <clerk_panel> screen
+    Then I can see new patient in the list

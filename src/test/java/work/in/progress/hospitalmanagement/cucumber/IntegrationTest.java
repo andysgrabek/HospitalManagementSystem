@@ -6,6 +6,7 @@ import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -13,7 +14,11 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.HospitalManagementApplication;
+import work.in.progress.hospitalmanagement.service.DepartmentService;
+import work.in.progress.hospitalmanagement.service.PatientService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeoutException;
 
@@ -71,4 +76,16 @@ public abstract class IntegrationTest extends ApplicationTest {
         return (T) lookup(query).queryAll().iterator().next();
     }
 
+    @Autowired
+    public PatientService patientService;
+
+    @Autowired
+    public DepartmentService departmentService;
+
+
+    public static final LocalDate LOCAL_DATE(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
 }
