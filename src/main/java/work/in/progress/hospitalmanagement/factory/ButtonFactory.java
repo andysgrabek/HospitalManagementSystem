@@ -23,7 +23,6 @@ public class ButtonFactory {
     private static final Paint PAINT = Paint.valueOf("#f0ab8d");
     @Getter
     private static final JFXButton.ButtonType TYPE = JFXButton.ButtonType.RAISED;
-    @Getter
     private static final boolean FOCUS_TRAVERSABLE = false;
     @Getter
     private static final String STYLE = "hms-button";
@@ -35,7 +34,7 @@ public class ButtonFactory {
      * @return a new button with HMS style attached
      */
     public JFXButton defaultButton(String title) {
-        return customButton(title, HEIGHT, WIDTH, STYLE, PAINT, TYPE, FOCUS_TRAVERSABLE);
+        return customButton(title, getHEIGHT(), getWIDTH(), getSTYLE(), getPAINT(), getTYPE(), FOCUS_TRAVERSABLE);
     }
 
     /**

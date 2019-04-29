@@ -61,7 +61,7 @@ public class PatientPredicateFactory {
             if (patient.getAdmission().isPresent()) {
                 return patient.getAdmission().get().getDepartment().equals(department);
             } else {
-                return true;
+                return false;
             }
         };
     }

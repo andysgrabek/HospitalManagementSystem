@@ -68,7 +68,7 @@ public final class DialogFactory {
      * @author Andrzej Grabowski
      */
     @AllArgsConstructor
-    private class AdmissionDialogFormElements {
+    static class AdmissionDialogFormElements {
         @Getter
         private JFXCheckBox inpatientCheckbox;
         @Getter
@@ -364,39 +364,47 @@ public final class DialogFactory {
                                            JFXDialogLayout content,
                                            AdmissionDialogFormElements admissionDialogFormElements) {
         admissionDialogFormElements.getConfirmButton().setOnAction(event -> {
-            admissionDialogFormElements.getBedComboBox().resetValidation();
-            admissionDialogFormElements.getDepartmentComboBox().resetValidation();
-            admissionDialogFormElements.getDatePicker().resetValidation();
-            admissionDialogFormElements.getTimePicker().resetValidation();
-            if (admissionDialogFormElements.getInpatientCheckbox().isSelected()) {
-                if (admissionDialogFormElements.getBedComboBox().validate()) {
-                    admissionProperty.setValue(
-                            inpatientAdmissionService.save(
-                                    new InpatientAdmission(patient, admissionDialogFormElements
-                                                    .getBedComboBox()
-                                                    .getSelectionModel()
-                                                    .getSelectedItem())));
-                    onComplete.handle(event);
-                    admissionDialogFormElements.dialog.close();
-                }
-            } else {
-                if (admissionDialogFormElements.getDepartmentComboBox().validate()
-                        & admissionDialogFormElements.getDatePicker().validate()
-                        & admissionDialogFormElements.getDatePicker().validate()) {
-                    admissionProperty.setValue(outpatientAdmissionService.save(
-                            new OutpatientAdmission(patient,
-                                    admissionDialogFormElements
-                                            .getDepartmentComboBox()
-                                            .getSelectionModel()
-                                            .getSelectedItem(),
-                                    LocalDateTime.of(admissionDialogFormElements.getDatePicker().getValue(),
-                                            admissionDialogFormElements.getTimePicker().getValue()))));
-                    onComplete.handle(event);
-                    admissionDialogFormElements.getDialog().close();
-                }
-            }
+            saveAdmissionForm(patient, admissionProperty, onComplete, admissionDialogFormElements, event);
         });
         content.setActions(admissionDialogFormElements.getConfirmButton());
+    }
+
+    private void saveAdmissionForm(Patient patient,
+                                   Property<Admission> admissionProperty,
+                                   EventHandler<ActionEvent> onComplete,
+                                   AdmissionDialogFormElements admissionDialogFormElements,
+                                   ActionEvent event) {
+        admissionDialogFormElements.getBedComboBox().resetValidation();
+        admissionDialogFormElements.getDepartmentComboBox().resetValidation();
+        admissionDialogFormElements.getDatePicker().resetValidation();
+        admissionDialogFormElements.getTimePicker().resetValidation();
+        if (admissionDialogFormElements.getInpatientCheckbox().isSelected()) {
+            if (admissionDialogFormElements.getBedComboBox().validate()) {
+                admissionProperty.setValue(
+                        inpatientAdmissionService.save(
+                                new InpatientAdmission(patient, admissionDialogFormElements
+                                                .getBedComboBox()
+                                                .getSelectionModel()
+                                                .getSelectedItem())));
+                onComplete.handle(event);
+                admissionDialogFormElements.dialog.close();
+            }
+        } else {
+            if (admissionDialogFormElements.getDepartmentComboBox().validate()
+                    & admissionDialogFormElements.getDatePicker().validate()
+                    & admissionDialogFormElements.getDatePicker().validate()) {
+                admissionProperty.setValue(outpatientAdmissionService.save(
+                        new OutpatientAdmission(patient,
+                                admissionDialogFormElements
+                                        .getDepartmentComboBox()
+                                        .getSelectionModel()
+                                        .getSelectedItem(),
+                                LocalDateTime.of(admissionDialogFormElements.getDatePicker().getValue(),
+                                        admissionDialogFormElements.getTimePicker().getValue()))));
+                onComplete.handle(event);
+                admissionDialogFormElements.getDialog().close();
+            }
+        }
     }
 
     /**
