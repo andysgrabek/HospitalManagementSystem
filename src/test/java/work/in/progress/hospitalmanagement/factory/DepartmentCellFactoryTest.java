@@ -44,6 +44,7 @@ public class DepartmentCellFactoryTest implements ApplicationContextAware {
 
     @Before
     public void setUp() {
+        ApplicationContextSingleton.setContext(null);
         ApplicationContextSingleton.setContext((ConfigurableApplicationContext) context);
     }
 
