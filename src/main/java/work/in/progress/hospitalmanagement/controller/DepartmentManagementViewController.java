@@ -356,11 +356,8 @@ public class DepartmentManagementViewController extends AbstractViewController {
      */
     private void findPatientsForReport(ObservableList<Department> departments) {
         if (departments.isEmpty()) {
-            DialogFactory.getDefaultFactory().infoTextDialog(
-                    "No departments selected",
-                    "Please select at least one department from the list above.",
-                    Event::consume,
-                    (StackPane) getRoot());
+            showReportErrorDialog("No departments selected",
+                    "Please select at least one department from the list above.");
         } else {
             List<Patient> patients = new ArrayList<>();
             inpatientAdmissionService.findAll().forEach(inpatientAdmission -> {
@@ -402,12 +399,19 @@ public class DepartmentManagementViewController extends AbstractViewController {
             try {
                 reportGenerator.generate(patients, file.getPath());
             } catch (IOException | DocumentException e) {
-                DialogFactory.getDefaultFactory().infoTextDialog(
-                        "Error saving report!",
-                        "An unexpected error has occured when saving the report. Please try again.",
-                        Event::consume,
-                        (StackPane) getRoot());
+                showReportErrorDialog("Error saving report!",
+                        "An unexpected error has occured when saving the report. Please try again.");
             }
         }
+    }
+
+    /**
+     * Utility method to create a {@link JFXDialog} signaling that a user must choose e.g. save directory
+     * when creating a participation report.
+     * @param header dialog header text
+     * @param body dialog body text
+     */
+    private void showReportErrorDialog(String header, String body) {
+        DialogFactory.getDefaultFactory().infoTextDialog(header, body, Event::consume, (StackPane) getRoot()).show();
     }
 }

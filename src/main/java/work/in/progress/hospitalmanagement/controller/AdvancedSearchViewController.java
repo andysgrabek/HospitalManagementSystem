@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -77,6 +78,7 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     /**
      * Handler for the event of selecting a new query in the {@link ComboBox containing predefined queries}
+     *
      * @param actionEvent event that triggered the action
      */
     @FXML
@@ -90,6 +92,7 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     /**
      * Handler for the event of pressing the button to execute the typed query
+     *
      * @param actionEvent event that triggered the action
      */
     @FXML
@@ -116,6 +119,7 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     /**
      * Method executing the query typed in by the user
+     *
      * @param searchQuery the query typed in by the user
      */
     private void execute(SearchQuery searchQuery) {
@@ -143,6 +147,7 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     /**
      * Handler for the event of clicking the button to view the database schema
+     *
      * @param actionEvent event that triggered the action
      */
     @FXML
@@ -158,15 +163,24 @@ public class AdvancedSearchViewController extends AbstractViewController {
 
     /**
      * Handler for the event of clicking the button to delete the currently selected predefined query
+     *
      * @param actionEvent event that triggered the action
      */
     @FXML
     private void deleteQuery(ActionEvent actionEvent) {
         if (!predefinedQueriesComboBox.getSelectionModel().isEmpty()) {
-            searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
-            predefinedQueriesComboBox.getItems()
-                    .remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
-            predefinedQueriesComboBox.getSelectionModel().clearSelection();
+            DialogFactory.getDefaultFactory().deletionDialog(
+                    "Are you sure you want to delete the query?",
+                    predefinedQueriesComboBox.getSelectionModel().getSelectedItem().getLabel(),
+                    event -> {
+                        searchQueryService.delete(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+                        predefinedQueriesComboBox.getItems()
+                                .remove(predefinedQueriesComboBox.getSelectionModel().getSelectedItem());
+                        predefinedQueriesComboBox.getSelectionModel().clearSelection();
+                    },
+                    Event::consume,
+                    (StackPane) getRoot()
+            ).show();
         }
     }
 }
