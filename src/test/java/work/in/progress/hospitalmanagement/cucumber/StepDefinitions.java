@@ -182,7 +182,7 @@ public class StepDefinitions extends IntegrationTest {
     @Given("^I set checkbox \"([^\"]*)\" as \"([^\"]*)\"$")
     public void i_set_checkbox_as(String id, String value) {
         JFXCheckBox checkBox = find("#" + id);
-        checkBox.setSelected(value.equals("true"));
+        Platform.runLater(() -> checkBox.setSelected(value.equals("true")));
     }
 
     @And("^I enter time into \"([^\"]*)\" input$")
