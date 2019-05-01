@@ -130,7 +130,7 @@ public class StepDefinitions extends IntegrationTest {
     public void i_am_in_the_screen(String screenName) throws Throwable {
         TimeUnit.SECONDS.sleep(5);
         final JFXButton button = find(screenName);
-        button.fire();
+        Platform.runLater(button::fire);
         TimeUnit.SECONDS.sleep(1);
     }
 
@@ -158,19 +158,19 @@ public class StepDefinitions extends IntegrationTest {
     @When("^I enter date \"([^\"]*)\" into \"([^\"]*)\" input$")
     public void i_enter_date(String value, String id) {
         final JFXDatePicker datePicker = find("#" + id);
-        datePicker.setValue(parseDateString(value));
+        Platform.runLater(() -> datePicker.setValue(parseDateString(value)));
     }
 
     @Then("I can see \"([^\"]*)\" in the \"([^\"]*)\" list")
     public void i_can_see_in_the_list(String text, String value) {
         JFXListView listView = find("#" + value + "ListView");
-        Assert.assertTrue(listView.getItems().toString().contains(text));
+        Platform.runLater(() -> Assert.assertTrue(listView.getItems().toString().contains(text)));
     }
 
     @Then("I can not see \"([^\"]*)\" in the \"([^\"]*)\" list")
     public void i_can_not_see_in_the_list(String text, String value) {
         JFXListView listView = find("#" + value + "ListView");
-        Assert.assertFalse(listView.getItems().toString().contains(text));
+        Platform.runLater(() -> Assert.assertFalse(listView.getItems().toString().contains(text)));
     }
 
     @When("^I pick first option in \"([^\"]*)\" comboBox$")

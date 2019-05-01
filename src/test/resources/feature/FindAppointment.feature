@@ -3,7 +3,7 @@ Feature: Find Appointment
   I want to be able to filter information in appointment list
   so that I can effortlessly search for particular appointment
 
-  Scenario: List all appointments
+  Background:
     Given Patient with name "John" and surname "Cucumber" exists
     And Patient with name "John" and surname "Apple" exists
     And Department "A" exists
@@ -11,6 +11,8 @@ Feature: Find Appointment
     And Patient with surname "Apple" is assigned to appointment in department "A"
     And Patient with surname "Cucumber" is assigned to appointment in department "B"
     And I am in the "Patients waiting" screen
+
+  Scenario: List all appointments
     Then I can see "Cucumber" in the "appointment" list
     And I can see "Apple" in the "appointment" list
 

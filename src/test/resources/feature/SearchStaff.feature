@@ -3,11 +3,13 @@ Feature: Search staff member
   I want to have a list with filters of all staff members
   so that I can quickly find and assign them to particular department
 
-  Scenario: List all staff members with the same name
+  Background:
     Given Department "depA" exists
     And Staff member with name "John" and surname "Cucumber" exists
     And Staff member with name "John" and surname "Apple" exists
     And I am in the "Staff" screen
+
+  Scenario: List all staff members with the same name
     When I enter "John" into "nameSearch" input
     Then I can see "Cucumber" in the "staff" list
     And I can see "Apple" in the "staff" list
