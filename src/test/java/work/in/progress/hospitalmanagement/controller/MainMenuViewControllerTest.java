@@ -1,10 +1,6 @@
 package work.in.progress.hospitalmanagement.controller;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.layout.StackPane;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,47 +13,73 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
+import work.in.progress.hospitalmanagement.converter.BedStringConverter;
+import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
+import work.in.progress.hospitalmanagement.converter.SearchQueryStringConverter;
+import work.in.progress.hospitalmanagement.factory.DialogFactory;
+import work.in.progress.hospitalmanagement.model.Patient;
+import work.in.progress.hospitalmanagement.report.ReportGenerator;
 import work.in.progress.hospitalmanagement.repository.PatientRepository;
+import work.in.progress.hospitalmanagement.repository.SearchQueryRepository;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
+import work.in.progress.hospitalmanagement.service.BedService;
 import work.in.progress.hospitalmanagement.service.DepartmentService;
 import work.in.progress.hospitalmanagement.service.HospitalStaffService;
+import work.in.progress.hospitalmanagement.service.InpatientAdmissionService;
+import work.in.progress.hospitalmanagement.service.OutpatientAdmissionService;
 import work.in.progress.hospitalmanagement.service.PatientService;
+import work.in.progress.hospitalmanagement.service.SearchQueryService;
 
+import javax.persistence.EntityManager;
 import javax.validation.Validator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 @RunWith(SpringRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class,
+@ContextConfiguration(
         classes = {
-                AbstractViewControllerTest.class,
-                PatientRegistrationViewController.class,
-                StaffManagementViewController.class,
-                MainMenuViewController.class,
                 PatientService.class,
-                PatientRepository.class,
+                BedService.class,
+                InpatientAdmissionService.class,
+                OutpatientAdmissionService.class,
                 DepartmentService.class,
                 HospitalStaffService.class,
-                Validator.class
-        })
+                MainMenuViewController.class,
+                PatientRegistrationViewController.class,
+                AdmissionManagementViewController.class,
+                DepartmentManagementViewController.class,
+                BedStringConverter.class,
+                SearchQueryStringConverter.class,
+                PatientsWaitingViewController.class,
+                AdvancedSearchViewController.class,
+                StaffManagementViewController.class,
+                DepartmentStringConverter.class,
+                DialogFactory.class,
+                SearchQueryService.class,
+        }
+)
 public class MainMenuViewControllerTest implements ApplicationContextAware {
 
     @MockBean
+    private ReportGenerator<Patient> reportGenerator;
+    @MockBean
+    private BedService bedService;
+    @MockBean
+    private InpatientAdmissionService inpatientAdmissionService;
+    @MockBean
+    private OutpatientAdmissionService outpatientAdmissionService;
+    @MockBean
     private PatientService patientService;
-
+    @MockBean
+    private SearchQueryRepository searchQueryRepository;
+    @MockBean
+    private EntityManager entityManager;
     @MockBean
     private PatientRepository patientRepository;
-
     @MockBean
     private DepartmentService departmentService;
-
     @MockBean
     private HospitalStaffService hospitalStaffService;
-
     @MockBean
     private Validator validator;
 
@@ -81,33 +103,8 @@ public class MainMenuViewControllerTest implements ApplicationContextAware {
     }
 
     @Test
-    public void createActionDialogButtonTest() {
-        EventHandler<ActionEvent> eh = event -> {
-            System.out.println("Action event fired");
-        };
-        JFXButton button = ReflectionTestUtils.invokeMethod(
-                vc,
-                "createDialogActionButton",
-                "buttonText",
-                eh);
-        assertEquals("buttonText", button.getText());
-        assertEquals(eh, button.getOnAction());
-    }
-
-    @Test
-    public void createInfoDialogTest() {
-        JFXDialog dialog = ReflectionTestUtils.invokeMethod(vc, "createInfoDialog");
-        StackPane stackPane = (StackPane) ReflectionTestUtils.getField(vc, vc.getClass(), "stackPane");
-        assertEquals(stackPane, dialog.getDialogContainer());
-        assertNotNull(dialog);
-    }
-
-    @Test
-    public void createExitDialogTest() {
-        JFXDialog dialog = ReflectionTestUtils.invokeMethod(vc, "createExitDialog");
-        StackPane stackPane = (StackPane) ReflectionTestUtils.getField(vc, vc.getClass(), "stackPane");
-        assertEquals(stackPane, dialog.getDialogContainer());
-        assertNotNull(dialog);
+    public void showInfoTest() {
+        ReflectionTestUtils.invokeMethod(vc, "showInfo", new ActionEvent());
     }
 
     @Test
@@ -121,13 +118,28 @@ public class MainMenuViewControllerTest implements ApplicationContextAware {
     }
 
     @Test
-    public void exitTest() {
-        ReflectionTestUtils.invokeMethod(vc, "exit", new ActionEvent());
+    public void openDepartmentManagementTest() {
+        ReflectionTestUtils.invokeMethod(vc, "openDepartmentManagement", new ActionEvent());
     }
 
     @Test
-    public void showInfoTest() {
-        ReflectionTestUtils.invokeMethod(vc, "showInfo", new ActionEvent());
+    public void openAdvancedSearchTest() {
+        ReflectionTestUtils.invokeMethod(vc, "openAdvancedSearch", new ActionEvent());
+    }
+
+    @Test
+    public void openAdmissionManagementTest() {
+        ReflectionTestUtils.invokeMethod(vc, "openAdmissionManagement", new ActionEvent());
+    }
+
+    @Test
+    public void openPatientsWaitingTest() {
+        ReflectionTestUtils.invokeMethod(vc, "openPatientsWaiting", new ActionEvent());
+    }
+
+    @Test
+    public void exitTest() {
+        ReflectionTestUtils.invokeMethod(vc, "exit", new ActionEvent());
     }
 
     @Override

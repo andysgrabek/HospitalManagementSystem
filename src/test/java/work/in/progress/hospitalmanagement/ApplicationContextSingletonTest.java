@@ -17,12 +17,6 @@ public class ApplicationContextSingletonTest implements ApplicationContextAware 
 
     private ConfigurableApplicationContext configurableApplicationContext;
 
-    @Test(expected = IllegalStateException.class)
-    public void getContextTest_NullContext() {
-        ApplicationContextSingleton.setContext(null);
-        ConfigurableApplicationContext context = ApplicationContextSingleton.getContext();
-    }
-
     @Test
     public void setAndGetContextTest() {
         ApplicationContextSingleton.setContext(null);

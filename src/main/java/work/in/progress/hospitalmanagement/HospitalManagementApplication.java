@@ -3,6 +3,7 @@ package work.in.progress.hospitalmanagement;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,6 +45,7 @@ public class HospitalManagementApplication extends Application {
         primaryStage.setMinWidth(MIN_WINDOW_WIDTH);
         primaryStage.show();
         primaryStage.setTitle("Hospital Management System");
+        primaryStage.getIcons().add(new Image("images/icon_transparent.png"));
     }
 
     /**

@@ -1,5 +1,6 @@
 package work.in.progress.hospitalmanagement.controller;
 
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -14,20 +15,23 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.util.ReflectionTestUtils;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class,
-        classes = { AbstractViewControllerTest.class, TestViewController.class })
+@ContextConfiguration(
+        classes = {
+              MainMenuViewController.class,
+                TestViewController.class
+        }
+)
 public class AbstractViewControllerTest implements ApplicationContextAware {
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
-
 
     private AbstractViewController controller;
     private ConfigurableApplicationContext context;
@@ -57,6 +61,11 @@ public class AbstractViewControllerTest implements ApplicationContextAware {
     public void instantiateViewController_correctNaming() {
         AbstractViewController vc = AbstractViewController.instantiateViewController(TestViewController.class);
         assertNotNull(vc);
+    }
+
+    @Test
+    public void backToMainMenuTest() {
+        ReflectionTestUtils.invokeMethod(AbstractViewController.instantiateViewController(controller.getClass()), "backToMainMenu", new ActionEvent());
     }
 
     @Test

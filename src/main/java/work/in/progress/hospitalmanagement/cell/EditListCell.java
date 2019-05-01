@@ -7,12 +7,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Paint;
 import lombok.Getter;
 import work.in.progress.hospitalmanagement.event.ListCellEvent;
+import work.in.progress.hospitalmanagement.factory.ButtonFactory;
 
 import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT;
 
+/**
+ * A class to be used as a template for cells in {@link javafx.scene.control.ListView}
+ * elements requiring a delete button alongside an edit button
+ * @param <T> the type of the object represented
+ * @author Andrzej Grabowski
+ */
 public abstract class EditListCell<T> extends ListCell<T> {
 
     @Getter
@@ -22,6 +28,9 @@ public abstract class EditListCell<T> extends ListCell<T> {
     @Getter
     private JFXButton editButton;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
@@ -30,17 +39,14 @@ public abstract class EditListCell<T> extends ListCell<T> {
             return;
         }
         hBox.getChildren().clear();
+        editButton = ButtonFactory.getDefaultFactory().defaultButton("Edit");
         label.getStyleClass().add("hms-text");
-        editButton = new JFXButton("EDIT");
         editButton.setOnAction(event -> {
             Event e = new ListCellEvent<>(EDIT_EVENT, item);
             getListView().fireEvent(e);
         });
-        editButton.getStyleClass().add("hms-button");
         hBox.getChildren().add(editButton);
         hBox.getChildren().add(label);
-        editButton.setRipplerFill(Paint.valueOf("#f0ab8d"));
-        editButton.setButtonType(JFXButton.ButtonType.RAISED);
         HBox.setHgrow(label, Priority.ALWAYS);
         hBox.setAlignment(Pos.CENTER_LEFT);
         setGraphic(hBox);

@@ -4,6 +4,10 @@ import com.jfoenix.controls.JFXComboBox;
 
 import javax.validation.Validator;
 
+/**
+ * Validator class to validate a selection in a {@link javafx.scene.control.ComboBox}.
+ * @author Andrzej Grabowski
+ */
 public class ComboBoxValidator extends AbstractFieldValidator {
 
     /**

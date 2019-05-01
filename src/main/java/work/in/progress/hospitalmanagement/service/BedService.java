@@ -37,6 +37,10 @@ public class BedService extends AbstractService<Bed, Integer> {
         return bedRepository.findByDepartmentAndAdmissionNotNull(department);
     }
 
+    public Collection<Bed> freeBeds(Department department) {
+        return bedRepository.findByDepartmentAndAdmissionNull(department);
+    }
+
     public Collection<Bed> findByDepartment(Department department) {
         return bedRepository.findAllByDepartment(department);
     }
