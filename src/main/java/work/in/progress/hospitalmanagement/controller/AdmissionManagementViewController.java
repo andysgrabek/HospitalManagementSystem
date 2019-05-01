@@ -53,6 +53,7 @@ import static work.in.progress.hospitalmanagement.event.ListCellEvent.NEW_EVENT;
 
 /**
  * Class serving as controller for the view of admission management
+ *
  * @author Andrzej Grabowski
  */
 @Component
@@ -114,6 +115,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
     /**
      * Method serving as intermediary for handling patient admission edit. Its sole purpose is calling
      * {@link #handleEdit(ListCellEvent)}
+     *
      * @return edit event handler
      */
     private EventHandler<ListCellEvent> handlePatientEditPressed() {
@@ -123,6 +125,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
     /**
      * Method serving as intermediary for handling patient admission deletion. Its sole purpose is calling
      * {@link #handleDelete(ListCellEvent)}
+     *
      * @return delete event handler
      */
     private EventHandler<ListCellEvent> handlePatientDeletePressed() {
@@ -132,6 +135,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
     /**
      * Method serving as intermediary for handling patient admission creation. Its sole purpose is calling
      * {@link #handleCreate(ListCellEvent)}
+     *
      * @return create event handler
      */
     private EventHandler<ListCellEvent> handlePatientCreatePressed() {
@@ -141,6 +145,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
     /**
      * Method handling the creation of an admission. It displays an appropriate {@link JFXDialog} with a form
      * to be completed to create an admission
+     *
      * @param event event that triggered the creation of an admission
      */
     private void handleCreate(ListCellEvent<Patient> event) {
@@ -161,6 +166,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
     /**
      * Method handling the deletion of an admission. It displays an appropriate {@link JFXDialog} with a form
      * to be completed to confirm the deletion of an admission
+     *
      * @param event event that triggered the deletion of an admission
      */
     private void handleDelete(ListCellEvent<Patient> event) {
@@ -185,6 +191,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
     /**
      * Method handling the edit of an admission. It displays an appropriate {@link JFXDialog} with a form
      * to be completed to edit the admission
+     *
      * @param event event that triggered the edit of an admission
      */
     private void handleEdit(ListCellEvent<Patient> event) {
@@ -249,9 +256,10 @@ public class AdmissionManagementViewController extends AbstractViewController {
 
     /**
      * Method composing a complex predicate used to filter the results in the list of patients.
-     * @param name name of the patient in the search field
-     * @param surname surname of the patient in the search field
-     * @param date birth date of the patient in the search field
+     *
+     * @param name       name of the patient in the search field
+     * @param surname    surname of the patient in the search field
+     * @param date       birth date of the patient in the search field
      * @param department department in the search field
      * @return the composed filtering predicate
      */
@@ -268,6 +276,7 @@ public class AdmissionManagementViewController extends AbstractViewController {
 
     /**
      * Handler for pressing the button clearing the search form fields
+     *
      * @param actionEvent event that triggered the event
      */
     @FXML

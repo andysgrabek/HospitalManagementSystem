@@ -4,6 +4,8 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 
 /**
@@ -13,6 +15,11 @@ import java.util.NoSuchElementException;
  * @author jablonskiba
  */
 public abstract class IntegrationTest extends ApplicationTest {
+
+    static LocalDate parseDateString(String dateString) {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(dateString, formatter);
+    }
 
     @Override
     public void start(Stage stage) {

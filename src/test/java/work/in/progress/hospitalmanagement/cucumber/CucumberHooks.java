@@ -18,7 +18,7 @@ import work.in.progress.hospitalmanagement.HospitalManagementApplication;
 @SpringBootTest
 public class CucumberHooks {
 
-    private final static boolean IS_HEADLESS = true;
+    private final static boolean IS_HEADLESS = false;
 
     @Before
     public void beforeEachScenario() {
