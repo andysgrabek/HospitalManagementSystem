@@ -5,7 +5,6 @@ import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/feature/RegisterPatient.feature")
+@CucumberOptions(plugin = "pretty", features = "src/test/resources/feature/RegisterPatient.feature")
 public class RegisterPatientCucumberIntegrationTest {
-
 }

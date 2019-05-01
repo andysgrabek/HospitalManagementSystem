@@ -1,23 +1,20 @@
 package work.in.progress.hospitalmanagement.validator;
 
 import com.jfoenix.controls.JFXComboBox;
-import de.saxsys.javafx.test.JfxRunner;
 import javafx.collections.FXCollections;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import work.in.progress.hospitalmanagement.model.Department;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
-import java.time.LocalDate;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
-
-@RunWith(JfxRunner.class)
 public class ComboBoxValidatorTest {
+
+    @Rule
+    public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
     @Test
     public void evalCorrect() {
