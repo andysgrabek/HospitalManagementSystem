@@ -6,11 +6,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
+@DirtiesContext
 public class ApplicationContextSingletonTest implements ApplicationContextAware {
 
     private ConfigurableApplicationContext configurableApplicationContext;
@@ -29,7 +31,6 @@ public class ApplicationContextSingletonTest implements ApplicationContextAware 
         ApplicationContextSingleton.setContext(configurableApplicationContext);
         ApplicationContextSingleton.setContext(configurableApplicationContext);
     }
-
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

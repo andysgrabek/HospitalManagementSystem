@@ -1,9 +1,8 @@
 package work.in.progress.hospitalmanagement.validator;
 
-import de.saxsys.javafx.test.JfxRunner;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import work.in.progress.hospitalmanagement.rule.JavaFXThreadingRule;
 import work.in.progress.hospitalmanagement.util.Mocks;
 
@@ -11,16 +10,23 @@ import javax.validation.Validator;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(JfxRunner.class)
 public class AbstractFieldValidatorTest {
 
-    private Validator validatorB = Mocks.validatorAlwaysCorrect();
-    private AbstractFieldValidator validator = new AbstractFieldValidator(Class.class, "field", validatorB) {
-        @Override
-        protected void eval() {
+    private final Validator validatorB = Mocks.validatorAlwaysCorrect();
 
-        }
-    };
+    @Rule
+    public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
+    private AbstractFieldValidator validator;
+
+    @Before
+    public void setUp() {
+        validator = new AbstractFieldValidator(Class.class, "field", validatorB) {
+            @Override
+            protected void eval() {
+
+            }
+        };
+    }
 
     @Test
     public void getValidator() {
@@ -36,4 +42,5 @@ public class AbstractFieldValidatorTest {
     public void getC() {
         assertEquals(Class.class, validator.getC());
     }
+
 }

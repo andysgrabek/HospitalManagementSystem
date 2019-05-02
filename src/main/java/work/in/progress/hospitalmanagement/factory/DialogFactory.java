@@ -237,18 +237,24 @@ public final class DialogFactory {
         VBox vBox = new VBox();
         vBox.setMaxHeight(MAX_HEIGHT_RATIO * root.getHeight());
         JFXCheckBox inpatientCheckbox = new JFXCheckBox("Admit as inpatient?");
+        inpatientCheckbox.setId("inpatientField");
         inpatientCheckbox.setSelected(true);
         inpatientCheckbox.setCheckedColor(PAINT);
         JFXComboBox<Department> departmentComboBox =
                 new JFXComboBox<>(FXCollections.observableArrayList(departmentList));
+        departmentComboBox.setId("departmentField");
         JFXComboBox<Bed> bedComboBox = new JFXComboBox<>();
+        bedComboBox.setId("bedField");
         JFXDatePicker datePicker = new JFXDatePicker();
+        datePicker.setId("datePicker");
         JFXTimePicker timePicker = new JFXTimePicker();
+        timePicker.setId("appointmentTime");
         setUpAdmissionFormComboBoxes(departmentComboBox, bedComboBox);
         setUpAppointmentTimePickers(datePicker, timePicker);
         vBox.setSpacing(VBOX_SPACING);
         setUpAdmissionFormSwitching(inpatientCheckbox, bedComboBox, datePicker, timePicker);
         JFXButton confirmButton = ButtonFactory.getDefaultFactory().defaultButton("Admit");
+        confirmButton.setId("admitButton");
         content.setBody(vBox);
         bedComboBox.setPromptText("Bed");
         departmentComboBox.setPromptText("Department");
