@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("SpringJavaAutowiredMembersInspection")
 @Ignore
-public class StepDefinitions extends IntegrationTest {
+public class StepDefinitions extends ApplicationFXTest {
 
     @Autowired
     private PatientService patientService;

@@ -13,11 +13,19 @@ import org.testfx.framework.junit.ApplicationTest;
 import work.in.progress.hospitalmanagement.ApplicationContextSingleton;
 import work.in.progress.hospitalmanagement.HospitalManagementApplication;
 
+/**
+ * Provides hooks that are executed before and after each cucumber scenario with proper context.
+ *
+ * @author jablonskiba
+ */
 @Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CucumberHooks {
 
+    /**
+     * If {@code true} then cucumber tests are run in a headless mode
+     */
     private static final boolean IS_HEADLESS = true;
 
     static {

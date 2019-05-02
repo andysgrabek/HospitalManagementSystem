@@ -9,12 +9,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 
 /**
- * A common class for all integration tests that provides proper Spring Boot and JavaFX initialisation and operation.
- * All cucumber step definition classes should extend it.
+ * A common class for all integration tests that provides JavaFX related functions.
+ * All cucumber step definition classes should extend it in order to interact with an interface.
  *
  * @author jablonskiba
  */
-public abstract class IntegrationTest extends ApplicationTest {
+public abstract class ApplicationFXTest extends ApplicationTest {
 
     static LocalDate parseDateString(String dateString) {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
