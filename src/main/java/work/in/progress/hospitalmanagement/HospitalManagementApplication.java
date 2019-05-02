@@ -25,6 +25,7 @@ public class HospitalManagementApplication extends Application {
 
     /**
      * Application entry point. Requires no arguments.
+     *
      * @param args CL arguments list. Unused.
      */
     public static void main(String[] args) {
@@ -57,4 +58,5 @@ public class HospitalManagementApplication extends Application {
         Platform.exit();
         System.exit(0);
     }
+
 }

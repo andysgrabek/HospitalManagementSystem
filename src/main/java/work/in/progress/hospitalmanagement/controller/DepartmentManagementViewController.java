@@ -48,6 +48,7 @@ import static work.in.progress.hospitalmanagement.event.ListCellEvent.EDIT_EVENT
 /**
  * Class serving as the controller for the view in which the user is able to manage the deparments and beds
  * available in the hospital
+ *
  * @author Andrzej Grabowski
  */
 @Component
@@ -119,6 +120,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method to return the event handler of pressing the delete button next to a department entry in the list
+     *
      * @return event handler deleting the department from the database
      */
     private EventHandler<ListCellEvent> handleDepartmentDeletePressed() {
@@ -127,6 +129,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method handling the deletion of a department from the database and the list itself
+     *
      * @param event the received deletion event
      */
     private void removeDepartmentOnDelete(ListCellEvent<Department> event) {
@@ -138,6 +141,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method to return the event handler of pressing the edit button next to a department entry in the list
+     *
      * @return event handler editing the department in the database
      */
     private EventHandler<ListCellEvent> handleDepartmentEditPressed() {
@@ -146,6 +150,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method handling the edition of a department in the database and in the list itself
+     *
      * @param event the received edition event
      */
     private void updateDepartmentOnEditPressed(ListCellEvent<Department> event) {
@@ -166,6 +171,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method to return the event handler of pressing the delete button next to a bed entry in the list
+     *
      * @return event handler deleting the bed from the database
      */
     private EventHandler<ListCellEvent> handleBedDeletePressed() {
@@ -174,6 +180,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method to return the event handler of pressing the bed button next to a patient entry in the list
+     *
      * @return event handler deleting the bed from the database
      */
     private EventHandler<ListCellEvent> handleBedEditPressed() {
@@ -182,6 +189,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method handling the deletion of a bed from the database and the list itself
+     *
      * @param event the received deletion event
      */
     private void updateBedOnEdit(ListCellEvent<Bed> event) {
@@ -190,6 +198,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method handling the deletion of a bed from the database and the list itself
+     *
      * @param event the received deletion event
      */
     private void removeBedOnDelete(ListCellEvent<Bed> event) {
@@ -199,6 +208,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
     /**
      * Locks or unlocks fields that should not be available for edit when editing a {@link Department}
      * A department has no editable fields - one can only add or remove beds in the department.
+     *
      * @param lock indicates if the fields should be locked
      */
     private void lockEditableFormFields(boolean lock) {
@@ -217,6 +227,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Creates a {@link Department} object from data provided by the user in the edit/register form.
+     *
      * @return the newly created department
      */
     private Department getDepartmentFromForm() {
@@ -239,6 +250,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Handler for the event of pressing the button to add more beds to the edited department
+     *
      * @param actionEvent event triggered by pressing the button
      */
     @FXML
@@ -248,6 +260,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method creating a {@link JFXDialog} with a form to create a new bed
+     *
      * @return the dialog to be presented to the user
      */
     private JFXDialog createBedDialog() {
@@ -256,6 +269,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method creating a {@link JFXDialog} with a form to edit a bed
+     *
      * @return the dialog to be presented to the user
      */
     private JFXDialog editBedDialog(Bed bed) {
@@ -264,8 +278,9 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method creating a general {@link JFXDialog} e.g. for bed creation or edit.
+     *
      * @param heading the heading to be displayed in the dialog
-     * @param bed the bed to be described in the dialog if any
+     * @param bed     the bed to be described in the dialog if any
      * @return the dialog to be presented to the user
      */
     private JFXDialog createBedRoomNumberDialog(String heading, Bed bed) {
@@ -283,8 +298,8 @@ public class DepartmentManagementViewController extends AbstractViewController {
                 bed.setRoomNumber(simpleStringProperty.getValue());
                 bedsListView.getItems().add(bedService.save(bed));
                 departmentsListView.setItems(FXCollections.observableArrayList(departmentService.findAll()));
-                };
-            }
+            };
+        }
         return DialogFactory.getDefaultFactory().textFieldDialog(
                 heading,
                 "Please provide room number of the bed.",
@@ -296,6 +311,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
 
     /**
      * Method creating a {@link JFXDialog} responsible for confirming the deletion of a department
+     *
      * @param department the department to be deleted
      * @return the dialog to be presented to the user
      */
@@ -312,12 +328,14 @@ public class DepartmentManagementViewController extends AbstractViewController {
                             departmentService.delete(department);
                             departmentObservableList.remove(department);
                         },
-                        event -> { },
+                        event -> {
+                        },
                         (StackPane) getRoot());
     }
 
     /**
      * Method creating a {@link JFXDialog} responsible for confirming the deletion of a bed
+     *
      * @param bed the bed to be deleted
      * @return the dialog to be presented to the user
      */
@@ -335,12 +353,14 @@ public class DepartmentManagementViewController extends AbstractViewController {
                             departmentsListView
                                     .setItems(FXCollections.observableArrayList(departmentService.findAll()));
                         },
-                        event -> { },
+                        event -> {
+                        },
                         (StackPane) getRoot());
     }
 
     /**
      * Handler to save an {@link work.in.progress.hospitalmanagement.model.Admission} report for all departments in PDF.
+     *
      * @param actionEvent event that triggered the action
      */
     @FXML
@@ -352,6 +372,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
     /**
      * Method searches the database for patients admitted to the selected departments and proceeds with generating
      * the report for them.
+     *
      * @param departments selected departments
      */
     private void findPatientsForReport(ObservableList<Department> departments) {
@@ -377,6 +398,7 @@ public class DepartmentManagementViewController extends AbstractViewController {
     /**
      * Handler to save an {@link work.in.progress.hospitalmanagement.model.Admission} report to a file in PDF format
      * for the selected departments.
+     *
      * @param actionEvent event that triggered the action
      */
     @FXML
@@ -394,22 +416,28 @@ public class DepartmentManagementViewController extends AbstractViewController {
                 = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.setInitialFileName(reportGenerator.createDefaultPath());
-        File file = fileChooser.showSaveDialog(getStage());
-        if (file != null) {
-            try {
-                reportGenerator.generate(patients, file.getPath());
-            } catch (IOException | DocumentException e) {
-                showReportErrorDialog("Error saving report!",
-                        "An unexpected error has occured when saving the report. Please try again.");
+        try {
+            File file = fileChooser.showSaveDialog(getStage());
+            if (file != null) {
+                try {
+                    reportGenerator.generate(patients, file.getPath());
+                } catch (IOException | DocumentException e) {
+                    showReportErrorDialog("Error saving report!",
+                            "An unexpected error has occurred when saving the report. Please try again.");
+                }
             }
+        } catch (UnsupportedOperationException e) {
+            showReportErrorDialog("File chooser error!",
+                    "File chooser is not supported. Unable to save the report.");
         }
     }
 
     /**
      * Utility method to create a {@link JFXDialog} signaling that a user must choose e.g. save directory
      * when creating a participation report.
+     *
      * @param header dialog header text
-     * @param body dialog body text
+     * @param body   dialog body text
      */
     private void showReportErrorDialog(String header, String body) {
         DialogFactory.getDefaultFactory().infoTextDialog(header, body, Event::consume, (StackPane) getRoot()).show();

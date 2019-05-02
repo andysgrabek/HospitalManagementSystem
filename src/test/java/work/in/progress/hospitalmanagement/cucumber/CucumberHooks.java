@@ -18,10 +18,9 @@ import work.in.progress.hospitalmanagement.HospitalManagementApplication;
 @SpringBootTest
 public class CucumberHooks {
 
-    private final static boolean IS_HEADLESS = false;
+    private static final boolean IS_HEADLESS = true;
 
-    @Before
-    public void beforeEachScenario() {
+    static {
         if (IS_HEADLESS) {
             System.setProperty("testfx.robot", "glass");
             System.setProperty("testfx.headless", "true");
@@ -29,12 +28,15 @@ public class CucumberHooks {
             System.setProperty("prism.text", "t2k");
             System.setProperty("java.awt.headless", "true");
         }
+    }
 
+    @Before
+    public void beforeEachScenario() {
         try {
             ApplicationContextSingleton.setContext(null);
             final SpringApplicationBuilder springApplicationBuilder =
                     new SpringApplicationBuilder(HospitalManagementApplication.class);
-            ApplicationContextSingleton.setContext(springApplicationBuilder.headless(IS_HEADLESS).run());
+            ApplicationContextSingleton.setContext(springApplicationBuilder.headless(false).run());
             ApplicationTest.launch(HospitalManagementApplication.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,7 +48,7 @@ public class CucumberHooks {
         try {
             ConfigurableApplicationContext context = ApplicationContextSingleton.getContext();
             context.close();
-            FxToolkit.hideStage();
+            FxToolkit.cleanupStages();
         } catch (Exception ignored) {
         }
     }
