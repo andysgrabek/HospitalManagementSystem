@@ -62,7 +62,7 @@
                                     <Image url="@../images/icon_transparent.png" />
                                 </image>
                             </ImageView>
-                            <Label prefHeight="50.0" prefWidth="710.0" styleClass="hms-label-title" text="Department management" HBox.hgrow="ALWAYS" />
+                            <Label prefHeight="50.0" prefWidth="710.0" styleClass="hms-label-title" text="Advanced search" HBox.hgrow="ALWAYS" />
                         </children>
                     </HBox>
                 </children>
