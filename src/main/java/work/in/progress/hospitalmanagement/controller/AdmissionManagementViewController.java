@@ -155,9 +155,9 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 event.getSubject(),
                 admissionProperty,
                 onCompleteEvent -> {
-                    patientObservableList.remove(event.getSubject());
                     event.getSubject().setAdmission(admissionProperty.getValue());
-                    patientObservableList.add(patientService.save(event.getSubject()));
+                    patientService.save(event.getSubject());
+                    registeredPatientListView.setItems(FXCollections.observableArrayList(patientService.findAll()));
                 },
                 (StackPane) getRoot());
         dialog.show();
@@ -204,14 +204,12 @@ public class AdmissionManagementViewController extends AbstractViewController {
                 selectedBedProperty,
                 ApplicationContextSingleton.getContext().getBean(BedStringConverter.class),
                 onConfirmEvent -> {
-                    patientObservableList.remove(event.getSubject());
                     InpatientAdmission admission =
                             (InpatientAdmission) event.getSubject().getAdmission().get();
                     admission.getBed().setAdmission(null);
                     selectedBedProperty.getValue().setAdmission(admission);
                     event.getSubject().setAdmission(admission);
-                    patientObservableList.remove(event.getSubject());
-                    patientObservableList.add(patientService.save(event.getSubject()));
+                    registeredPatientListView.setItems(FXCollections.observableArrayList(patientService.findAll()));
                 },
                 (StackPane) getRoot());
         dialog.show();
