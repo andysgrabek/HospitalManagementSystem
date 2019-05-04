@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import work.in.progress.hospitalmanagement.converter.DepartmentStringConverter;
 import work.in.progress.hospitalmanagement.factory.AppointmentCellFactory;
 import work.in.progress.hospitalmanagement.factory.AppointmentPredicateFactory;
 import work.in.progress.hospitalmanagement.model.Department;
@@ -61,6 +62,7 @@ public class PatientsWaitingViewController extends AbstractViewController {
         list = FXCollections.observableArrayList(outpatientAdmissionService.findAll());
         appointmentListView.setCellFactory(new AppointmentCellFactory());
         departmentField.setItems(FXCollections.observableArrayList(departmentService.findAll()));
+        departmentField.setConverter(new DepartmentStringConverter(departmentService));
         Label label = new Label("No outpatient admissions matching search criteria");
         label.getStyleClass().add("hms-text");
         appointmentListView.setPlaceholder(label);
