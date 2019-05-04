@@ -186,7 +186,7 @@ public class PatientRegistrationViewController extends AbstractViewController {
                 },
                 Event::consume,
                 (StackPane) getRoot()
-        );
+        ).show();
     }
 
     /**
