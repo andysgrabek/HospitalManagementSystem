@@ -25,6 +25,12 @@ public class HospitalStaffService extends AbstractService<HospitalStaff, Integer
         this.hospitalStaffRepository = hospitalStaffRepository;
     }
 
+    @Override
+    public HospitalStaff save(HospitalStaff entity) {
+        HospitalStaff temp = hospitalStaffRepository.save(entity);
+        return hospitalStaffRepository.findById(temp.getId()).orElseThrow(IllegalStateException::new);
+    }
+
     /**
      * Retrieves a hospital staff entries with a specified name
      * {@see HospitalStaff#getName()}.
