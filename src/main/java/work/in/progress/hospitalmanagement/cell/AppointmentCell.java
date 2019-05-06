@@ -2,6 +2,8 @@ package work.in.progress.hospitalmanagement.cell;
 
 import work.in.progress.hospitalmanagement.model.OutpatientAdmission;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * Class representing the cell displayed in a {@link javafx.scene.control.ListView} in e.g.
  * {@link work.in.progress.hospitalmanagement.controller.PatientsWaitingViewController}
@@ -19,14 +21,12 @@ public class AppointmentCell extends EditListCell<OutpatientAdmission> {
             setGraphic(null);
             return;
         }
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
         getHBox().getChildren().remove(getEditButton());
         getLabel().setText(item.getPatient().getName()
                 + " " + item.getPatient().getSurname()
                 + " appointment for "
-                + item.getVisitDate().getDayOfMonth()
-                + "-" + item.getVisitDate().getMonthValue()
-                + "-" + item.getVisitDate().getYear()
-                + " at " + item.getVisitDate().getHour() + ":" + item.getVisitDate().getMinute()
+                + timeFormatter.format(item.getVisitDate())
                 + " in " + item.getDepartment().getName());
         setGraphic(getHBox());
     }

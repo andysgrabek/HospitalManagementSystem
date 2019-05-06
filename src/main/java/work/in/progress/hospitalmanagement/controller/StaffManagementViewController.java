@@ -302,7 +302,7 @@ public class StaffManagementViewController extends AbstractViewController {
                 },
                 Event::consume,
                 (StackPane) getRoot()
-        );
+        ).show();
     }
 
     /**
